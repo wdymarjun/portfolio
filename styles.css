@@ -48,6 +48,22 @@ body {
   position: relative;
 }
 
+/* Subtle Architectural Blueprint Grid (Hardware CAD Inspired) */
+.blueprint-grid {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 25%, black 20%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 25%, black 20%, transparent 85%);
+  pointer-events: none;
+  z-index: 0;
+}
+
 /* Subtle Titanium Glow Background (Apple style, soft & monochromatic) */
 .ambient-glow {
   position: fixed;
@@ -233,12 +249,16 @@ body {
   padding: 13px 26px;
   border-radius: 999px;
   text-decoration: none;
-  transition: transform 0.2s ease, background 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn-primary:hover {
   background: #e5e5ea;
   transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.15);
 }
 
 .btn-secondary {
@@ -253,12 +273,33 @@ body {
   padding: 13px 26px;
   border-radius: 999px;
   text-decoration: none;
-  transition: background 0.2s ease, border-color 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.14);
   border-color: var(--border-hover);
+}
+
+/* Kinetic Specular Sheen Wave on Buttons */
+.btn-primary::after,
+.btn-secondary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.28) 50%, transparent 80%);
+  transform: translateX(-130%);
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.btn-primary:hover::after,
+.btn-secondary:hover::after {
+  transform: translateX(130%);
 }
 
 .hero-status-strip {
@@ -363,6 +404,78 @@ body {
 }
 
 /* ==========================================================================
+   ARCHITECTURAL TECH SPEC TICKER (Infinite Hardware & Systems Marquee)
+   ========================================================================== */
+.spec-ticker-wrap {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  position: relative;
+  overflow: hidden;
+  padding: 24px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: rgba(12, 12, 14, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 14%, black 86%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, black 14%, black 86%, transparent 100%);
+  contain: layout style;
+}
+
+.spec-ticker-track {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: max-content;
+  animation: specTickerSlide 34s linear infinite;
+  will-change: transform;
+}
+
+.spec-ticker-wrap:hover .spec-ticker-track {
+  animation-play-state: paused;
+}
+
+.spec-ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-secondary);
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 6px 14px;
+  border-radius: 999px;
+  white-space: nowrap;
+  transition: all 0.25s var(--ease-apple);
+  cursor: default;
+}
+
+.spec-ticker-item:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.22);
+  transform: translateY(-2px);
+}
+
+.ticker-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+  opacity: 0.85;
+}
+
+@keyframes specTickerSlide {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ==========================================================================
    FEATURED WORK (Apple Bento Product Showcase)
    ========================================================================== */
 .work-section {
@@ -377,6 +490,8 @@ body {
 }
 
 .bento-card {
+  position: relative;
+  overflow: hidden;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -387,6 +502,33 @@ body {
   gap: 36px;
   min-height: 420px;
   transition: var(--transition);
+  isolation: isolate;
+}
+
+/* Dynamic Radial Spotlight Tracking Cursor */
+.bento-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    540px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+    rgba(255, 255, 255, 0.075),
+    transparent 65%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  z-index: 1;
+}
+
+.bento-card:hover::before {
+  opacity: 1;
+}
+
+.bento-card > * {
+  position: relative;
+  z-index: 2;
 }
 
 .bento-card:hover {
@@ -1147,13 +1289,20 @@ body.modal-open .nav-wrapper {
 }
 
 footer {
-  padding: 40px 0 60px;
+  padding: 48px 0 80px;
   border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.footer-top-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 12px;
-  color: var(--muted);
+  width: 100%;
 }
 
 .footer-links {
@@ -1169,6 +1318,37 @@ footer {
 
 .footer-links a:hover {
   color: var(--fg);
+}
+
+/* Monumental Architectural Titanium Wordmark */
+.footer-wordmark {
+  margin-top: 36px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+  pointer-events: none;
+  user-select: none;
+  overflow: hidden;
+  line-height: 0.76;
+  opacity: 0.07;
+  transition: opacity 0.4s ease;
+}
+
+footer:hover .footer-wordmark {
+  opacity: 0.14;
+}
+
+.footer-wordmark span {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+  font-weight: 800;
+  font-size: clamp(52px, 12.5vw, 170px);
+  letter-spacing: -0.06em;
+  color: #ffffff;
+  display: block;
+  white-space: nowrap;
 }
 
 /* ==========================================================================
@@ -1808,5 +1988,44 @@ footer {
 
   .modal-shortcuts-bar {
     display: none;
+  }
+
+  /* Mobile optimization for Blueprint Grid, Spec Ticker & Footer Wordmark */
+  .blueprint-grid {
+    background-size: 48px 48px;
+    opacity: 0.6;
+  }
+
+  .spec-ticker-wrap {
+    padding: 16px 0;
+  }
+
+  .spec-ticker-item {
+    font-size: 9.5px;
+    padding: 5px 11px;
+    gap: 7px;
+  }
+
+  .footer-top-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    text-align: center;
+  }
+
+  .footer-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+  }
+
+  .footer-wordmark {
+    margin-top: 24px;
+    padding-top: 20px;
+    justify-content: space-around;
+  }
+
+  .footer-wordmark span {
+    font-size: clamp(34px, 11vw, 56px);
   }
 }

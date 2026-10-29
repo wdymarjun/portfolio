@@ -282,4 +282,27 @@ document.addEventListener('DOMContentLoaded', () => {
       modalChassis.style.setProperty('--mouse-y', `${y}px`);
     });
   }
+
+  // 5. HIGH-ENGINEERED CURSOR SPOTLIGHT TRACKING ON BENTO CARDS (ZERO-LAG RAF)
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    const bentoCards = document.querySelectorAll('.bento-card');
+    bentoCards.forEach(card => {
+      let rafId = null;
+      card.addEventListener('mousemove', (e) => {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(() => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          card.style.setProperty('--mouse-x', `${x}px`);
+          card.style.setProperty('--mouse-y', `${y}px`);
+        });
+      }, { passive: true });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.removeProperty('--mouse-x');
+        card.style.removeProperty('--mouse-y');
+      });
+    });
+  }
 });
