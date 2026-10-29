@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (copyBtn) {
     copyBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      const email = 'arjunsingh.dev@outlook.com';
+      const email = 'mail6arjun478@gmail.com';
       navigator.clipboard.writeText(email).then(() => {
         if (copyText) copyText.textContent = 'Email Copied to Clipboard ✓';
         setTimeout(() => {
