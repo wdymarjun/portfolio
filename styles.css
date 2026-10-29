@@ -1171,16 +1171,210 @@ footer {
   color: var(--fg);
 }
 
-/* Scroll Fade Animation Classes */
-.fade-in-on-scroll {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.8s var(--ease-apple), transform 0.8s var(--ease-apple);
+/* ==========================================================================
+   STATE-OF-THE-ART BIDIRECTIONAL SCROLL REVEAL & FLUID ANIMATIONS
+   Apple Keynote Smooth Physics for Scrolling Down & Up
+   ========================================================================== */
+
+/* Top Titanium Monochromatic Scroll Progress Bar */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2.5px;
+  width: 0%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.25) 0%, #ffffff 50%, rgba(200, 200, 205, 0.85) 100%);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.45);
+  z-index: 10000;
+  pointer-events: none;
+  transition: width 0.08s ease-out;
 }
 
-.fade-in-on-scroll.visible {
+/* Base Scroll Reveal Classes (Entering from bottom when scrolling down) */
+.fade-in-on-scroll,
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(32px) scale(0.988);
+  transition: 
+    opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+/* In Viewport: fully visible and settled */
+.fade-in-on-scroll.visible,
+.scroll-reveal.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Scrolled above viewport: gently positioned so it glides down when scrolling up */
+.fade-in-on-scroll.scrolled-above,
+.scroll-reveal.scrolled-above {
+  opacity: 0;
+  transform: translateY(-24px) scale(0.988);
+}
+
+/* Section Header Labels & Titles Animation */
+.section-label,
+.section-headline {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: 
+    opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.work-section.visible .section-label,
+.awards-section.visible .section-label,
+.about-section.visible .section-label {
   opacity: 1;
   transform: translateY(0);
+  transition-delay: 0.02s;
+}
+
+.work-section.visible .section-headline,
+.awards-section.visible .section-headline {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.1s;
+}
+
+.work-section.scrolled-above .section-label,
+.work-section.scrolled-above .section-headline,
+.awards-section.scrolled-above .section-label,
+.awards-section.scrolled-above .section-headline {
+  opacity: 0;
+  transform: translateY(-16px);
+  transition-delay: 0s;
+}
+
+/* Staggered Bento Cards Scroll Animation */
+.bento-card {
+  opacity: 0;
+  transform: translateY(28px) scale(0.985);
+  transition: 
+    opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.35s ease,
+    border-color 0.35s ease;
+  will-change: opacity, transform;
+}
+
+.work-section.visible .bento-card {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.work-section.visible .bento-card:hover {
+  transform: translateY(-4px);
+}
+
+.work-section.visible .bento-card:nth-child(1) { transition-delay: 0.08s; }
+.work-section.visible .bento-card:nth-child(2) { transition-delay: 0.22s; }
+.work-section.visible .bento-card:nth-child(3) { transition-delay: 0.36s; }
+
+.work-section.scrolled-above .bento-card {
+  opacity: 0;
+  transform: translateY(-22px) scale(0.985);
+  transition-delay: 0s;
+}
+
+/* Staggered Award Rows Scroll Animation */
+.award-row {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: 
+    opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.25s ease;
+  will-change: opacity, transform;
+}
+
+.awards-section.visible .award-row {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.awards-section.visible .award-row:nth-child(1) { transition-delay: 0.06s; }
+.awards-section.visible .award-row:nth-child(2) { transition-delay: 0.14s; }
+.awards-section.visible .award-row:nth-child(3) { transition-delay: 0.22s; }
+.awards-section.visible .award-row:nth-child(4) { transition-delay: 0.30s; }
+
+.awards-section.scrolled-above .award-row {
+  opacity: 0;
+  transform: translateY(-16px);
+  transition-delay: 0s;
+}
+
+/* About Section Staggered Columns */
+.about-text-col,
+.competencies-box {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: 
+    opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.about-section.visible .about-text-col {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.08s;
+}
+
+.about-section.visible .competencies-box {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.22s;
+}
+
+.about-section.scrolled-above .about-text-col,
+.about-section.scrolled-above .competencies-box {
+  opacity: 0;
+  transform: translateY(-18px);
+  transition-delay: 0s;
+}
+
+/* Contact Section Staggered Reveal */
+.contact-headline,
+.contact-sub,
+.contact-actions-row > * {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: 
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.2s ease,
+    border-color 0.2s ease;
+  will-change: opacity, transform;
+}
+
+.contact-section.visible .contact-headline {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.05s;
+}
+
+.contact-section.visible .contact-sub {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.16s;
+}
+
+.contact-section.visible .contact-actions-row > *:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 0.24s; }
+.contact-section.visible .contact-actions-row > *:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 0.32s; }
+.contact-section.visible .contact-actions-row > *:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 0.40s; }
+.contact-section.visible .contact-actions-row > *:nth-child(4) { opacity: 1; transform: translateY(0); transition-delay: 0.48s; }
+
+.contact-section.scrolled-above .contact-headline,
+.contact-section.scrolled-above .contact-sub,
+.contact-section.scrolled-above .contact-actions-row > * {
+  opacity: 0;
+  transform: translateY(-16px);
+  transition-delay: 0s;
 }
 
 @keyframes appleFadeUp {
@@ -1191,6 +1385,25 @@ footer {
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Accessibility: respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .fade-in-on-scroll,
+  .scroll-reveal,
+  .bento-card,
+  .award-row,
+  .about-text-col,
+  .competencies-box,
+  .section-label,
+  .section-headline,
+  .contact-headline,
+  .contact-sub,
+  .contact-actions-row > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 }
 

@@ -4,37 +4,93 @@
 // ==========================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. APPLE-STYLE SCROLL REVEAL (IntersectionObserver)
-  const scrollElements = document.querySelectorAll('.fade-in-on-scroll');
-
-  const checkVisibility = () => {
-    scrollElements.forEach(el => {
-      const rect = el.getBoundingClientRect();
-      if (rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.92) {
-        el.classList.add('visible');
-      }
-    });
-  };
-
-  checkVisibility();
-  window.addEventListener('scroll', checkVisibility, { passive: true });
-  window.addEventListener('resize', checkVisibility, { passive: true });
-
-  // 2. NAVBAR BLUR & SCROLL ELEVATION
+  // 1. TOP PROGRESS BAR & PARALLAX ENGINE (SCROLLING DOWN & UP)
+  const progressBar = document.getElementById('scrollProgress');
+  const ambientGlow = document.querySelector('.ambient-glow');
   const appleNav = document.querySelector('.apple-nav');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 30) {
-      if (appleNav) {
-        appleNav.style.background = 'rgba(18, 18, 19, 0.88)';
-        appleNav.style.borderColor = 'rgba(255, 255, 255, 0.14)';
-      }
-    } else {
-      if (appleNav) {
+
+  const onScrollFrame = () => {
+    const scrollY = window.scrollY || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+
+    // Fluid progress bar width
+    if (progressBar && docHeight > 0) {
+      const progress = Math.min(100, Math.max(0, (scrollY / docHeight) * 100));
+      progressBar.style.width = `${progress}%`;
+    }
+
+    // Parallax spatial depth on ambient glow
+    if (ambientGlow) {
+      ambientGlow.style.transform = `translateX(-50%) translateY(${scrollY * 0.14}px)`;
+    }
+
+    // Navbar blur & scroll elevation
+    if (appleNav) {
+      if (scrollY > 30) {
+        appleNav.style.background = 'rgba(18, 18, 19, 0.9)';
+        appleNav.style.borderColor = 'rgba(255, 255, 255, 0.16)';
+        appleNav.style.boxShadow = '0 12px 40px rgba(0, 0, 0, 0.75)';
+      } else {
         appleNav.style.background = 'rgba(22, 22, 23, 0.75)';
         appleNav.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+        appleNav.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.6)';
       }
     }
-  }, { passive: true });
+  };
+
+  window.addEventListener('scroll', onScrollFrame, { passive: true });
+  window.addEventListener('resize', onScrollFrame, { passive: true });
+  onScrollFrame();
+
+  // 2. APPLE-STYLE BIDIRECTIONAL SCROLL REVEAL (INTERSECTION OBSERVER)
+  const scrollElements = document.querySelectorAll('.fade-in-on-scroll, .scroll-reveal');
+
+  if ('IntersectionObserver' in window) {
+    const observerOptions = {
+      root: null,
+      rootMargin: '50px 0px -40px 0px',
+      threshold: [0, 0.12]
+    };
+
+    const scrollObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const el = entry.target;
+        const rect = entry.boundingClientRect;
+
+        if (entry.isIntersecting) {
+          // Entering view: smoothly settle into position
+          el.classList.add('visible');
+          el.classList.remove('scrolled-above');
+        } else {
+          // Offscreen checks for fluid re-entrance when scrolling up or down
+          if (rect.bottom < 0) {
+            // Passed above the viewport
+            el.classList.remove('visible');
+            el.classList.add('scrolled-above');
+          } else if (rect.top > window.innerHeight) {
+            // Below the viewport
+            el.classList.remove('visible');
+            el.classList.remove('scrolled-above');
+          }
+        }
+      });
+    }, observerOptions);
+
+    scrollElements.forEach(el => scrollObserver.observe(el));
+  } else {
+    // Fallback for browsers without IntersectionObserver
+    const checkVisibility = () => {
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      scrollElements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= vh * 0.92) {
+          el.classList.add('visible');
+        }
+      });
+    };
+    checkVisibility();
+    window.addEventListener('scroll', checkVisibility, { passive: true });
+  }
 
   // 3. COPY EMAIL INTERACTION
   const copyBtn = document.getElementById('copyEmailBtn');
