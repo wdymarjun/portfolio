@@ -305,4 +305,42 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
+
+  // 6. ASC (A SATANIC CHURCH) MULTI-ANGLE GALLERY SWITCHER
+  const ascThumbs = document.querySelectorAll('.bento-gallery-thumb');
+  const ascMainWrap = document.getElementById('ascMediaMain');
+  const ascMainImg = document.getElementById('ascMainImg');
+
+  ascThumbs.forEach(thumb => {
+    thumb.addEventListener('click', (e) => {
+      e.stopPropagation();
+      ascThumbs.forEach(t => t.classList.remove('active'));
+      thumb.classList.add('active');
+
+      const newImg = thumb.getAttribute('data-img');
+      const newTitle = thumb.getAttribute('data-title');
+      const newDesc = thumb.getAttribute('data-desc');
+
+      if (ascMainImg) {
+        ascMainImg.style.opacity = '0.35';
+        setTimeout(() => {
+          ascMainImg.src = newImg;
+          ascMainImg.style.opacity = '1';
+        }, 140);
+      }
+
+      if (ascMainWrap) {
+        ascMainWrap.setAttribute('data-modal-img', newImg);
+        ascMainWrap.setAttribute('data-modal-title', newTitle);
+        ascMainWrap.setAttribute('data-modal-desc', newDesc);
+      }
+
+      // Synchronize modal data registry
+      if (projectsData && projectsData[0]) {
+        projectsData[0].img = newImg;
+        projectsData[0].title = newTitle;
+        projectsData[0].desc = newDesc;
+      }
+    });
+  });
 });

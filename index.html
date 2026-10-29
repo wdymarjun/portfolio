@@ -111,40 +111,65 @@
         <div class="bento-card full-width">
           <div class="bento-card-split">
             <div>
-              <p class="card-eyebrow">3D Engine &amp; Distributed Architecture</p>
-              <h3 class="card-title">Advanced 3D Spatial Engine &amp; Game Architecture</h3>
+              <p class="card-eyebrow">Atmospheric 3D Horror World &amp; Autonomous AI Backend</p>
+              <h3 class="card-title">ASC (A Satanic Church) — 3D Horror Engine &amp; AI Model Educator Backend</h3>
               <p class="card-desc">
-                Architected an atmospheric, high-fidelity 3D immersive world (ASC) with custom character animation pipelines, dynamic atmospheric lighting, and decoupled server-client networking using Luau metatables. Built to eliminate unauthorized state manipulation and deliver seamless multiplayer synchronization.
+                Architected a high-fidelity gothic horror church environment with custom point-light candelabras, dynamic volumetric shadowcasting, gothic organ acoustics, and decoupled Luau metatable networking running at locked 60 FPS.
+              </p>
+              <p class="card-desc" style="margin-top: 14px;">
+                <strong>Engineering Problem-Solving &amp; Scale:</strong> In-game theological guidance and community education initially relied on live human educators. This created critical operational bottlenecks—scheduling conflicts, timezone coverage gaps, human fatigue, and zero 24/7 concurrency—leaving international players unassisted. To solve this, I engineered a dedicated <strong>AI Model Educator backend</strong> that completely bypassed human dependency—delivering 24/7 intelligent, grounded responses with sub-second latency and scaling the live game to <strong>1,000+ real-world active users</strong>.
               </p>
               <div class="tech-pills">
                 <span class="tech-pill">Roblox Studio Engine</span>
-                <span class="tech-pill">Advanced Luau</span>
-                <span class="tech-pill">Metatables</span>
-                <span class="tech-pill">RemoteEvents / RemoteFunctions</span>
-                <span class="tech-pill">Part-Caching</span>
-                <span class="tech-pill">Anti-Cheat Logic</span>
+                <span class="tech-pill">Advanced Luau Metatables</span>
+                <span class="tech-pill">AI Model Educator Backend</span>
+                <span class="tech-pill">Autonomous Prompt Pipeline</span>
+                <span class="tech-pill">24/7 Zero-Human Uptime</span>
+                <span class="tech-pill">1,000+ Active Users Scaled</span>
+                <span class="tech-pill">Gothic Volumetric Lighting</span>
+                <span class="tech-pill">Server-Validated RemoteEvents</span>
+                <span class="tech-pill">Part-Caching &amp; Streaming</span>
               </div>
             </div>
 
-            <!-- Interactive Clickable Image for Modal Pop-up -->
-            <div class="bento-media-wrap" 
-                 data-project-index="0"
-                 data-modal-img="engine_preview.jpg"
-                 data-modal-title="Advanced 3D Spatial Engine Architecture (ASC)"
-                 data-modal-subtitle="Roblox Studio Engine · Advanced Luau Metatables · RemoteEvents"
-                 data-modal-desc="Atmospheric 3D spatial viewport with modular architecture assets, custom animation sequencing, and server-side validated RemoteEvents. Optimized for under 45ms replication latency across clients with efficient part-caching and collision matrices."
-                 data-modal-repo="https://github.com/wdymarjun"
-                 data-modal-specs='[{"label":"Memory Overhead","val":"-38%"},{"label":"Sync Latency","val":"<45ms"},{"label":"FPS Stability","val":"60 FPS Locked"},{"label":"Architecture","val":"Luau OOP"}]'>
-              <img src="engine_preview.jpg" alt="ASC 3D Spatial Engine Architecture" loading="lazy">
-              <span class="media-expand-badge">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-                <span>Expand View</span>
-              </span>
+            <!-- Interactive Clickable Image for Modal Pop-up + Multi-angle Switcher -->
+            <div class="bento-media-container">
+              <div class="bento-media-wrap" 
+                   id="ascMediaMain"
+                   data-project-index="0"
+                   data-modal-img="asc_main_preview.jpg"
+                   data-modal-title="ASC (A Satanic Church) — Atmospheric 3D Horror Cathedral"
+                   data-modal-subtitle="Roblox Studio Engine · Advanced Luau Metatables · 24/7 AI Model Educator Backend"
+                   data-modal-desc="Gothic horror cathedral nave with custom candle volumetric illumination, organ pipe acoustics, and decoupled server-client networking. Backed by an autonomous 24/7 AI Model Educator pipeline that permanently bypassed human moderator bottlenecks to scale to 1,000+ real-world players."
+                   data-modal-repo="https://github.com/wdymarjun"
+                   data-modal-specs='[{"label":"Active Community","val":"1,000+ Users"},{"label":"Educator Availability","val":"24/7 Autonomous AI"},{"label":"Human Bottleneck","val":"100% Bypassed"},{"label":"Replication Latency","val":"<45ms"}]'>
+                <img id="ascMainImg" src="asc_main_preview.jpg" alt="ASC (A Satanic Church) Gothic Horror Cathedral" loading="lazy">
+                <span class="media-expand-badge">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                  <span id="ascBadgeText">Expand View</span>
+                </span>
+              </div>
+
+              <!-- Interactive Multi-Angle Gallery Strip -->
+              <div class="bento-gallery-strip" id="ascGalleryStrip">
+                <button type="button" class="bento-gallery-thumb active" data-img="asc_main_preview.jpg" data-title="ASC (A Satanic Church) — Atmospheric 3D Horror Cathedral" data-desc="Gothic horror cathedral nave with custom candle volumetric illumination, organ pipe acoustics, and decoupled server-client networking. Backed by an autonomous 24/7 AI Model Educator pipeline that permanently bypassed human moderator bottlenecks to scale to 1,000+ real-world players.">
+                  <img src="asc_main_preview.jpg" alt="Gothic Cathedral Nave">
+                  <span>Cathedral Nave</span>
+                </button>
+                <button type="button" class="bento-gallery-thumb" data-img="asc_ai_educator.jpg" data-title="ASC: 24/7 AI Model Educator NPC" data-desc="In-game AI Educator NPC positioned within an illuminated candle ritual circle. Bypassed human moderator scheduling to provide continuous, 24/7 real-time answers for over 1,000+ active players.">
+                  <img src="asc_ai_educator.jpg" alt="AI Model Educator NPC">
+                  <span>AI Educator NPC</span>
+                </button>
+                <button type="button" class="bento-gallery-thumb" data-img="asc_ai_dialog.jpg" data-title="ASC: Interactive AI Archive Dialog Pipeline" data-desc="In-game custom UI dialog interface allowing players to consult the grand archives. Context-optimized prompt pipeline with strict moderation guardrails and sub-second answer latency.">
+                  <img src="asc_ai_dialog.jpg" alt="Archive Dialog UI">
+                  <span>Archive Dialog UI</span>
+                </button>
+              </div>
             </div>
           </div>
 
           <div class="card-footer">
-            <div class="card-metric-stat">Replication: <span>&lt;45ms</span> · Memory Reduction: <span>38%</span></div>
+            <div class="card-metric-stat">Scale: <span>1,000+ Active Users</span> · AI Uptime: <span>24/7 Continuous</span> · Latency: <span>&lt;45ms</span></div>
             <a href="https://github.com/wdymarjun" target="_blank" rel="noopener noreferrer" class="card-link">View Architecture ↗</a>
           </div>
         </div>
