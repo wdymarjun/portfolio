@@ -306,40 +306,111 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 6. ASC (A SATANIC CHURCH) MULTI-ANGLE GALLERY SWITCHER
-  const ascThumbs = document.querySelectorAll('.bento-gallery-thumb');
-  const ascMainWrap = document.getElementById('ascMediaMain');
-  const ascMainImg = document.getElementById('ascMainImg');
+  // 6. MULTI-ANGLE GALLERY SWITCHERS FOR BENTO CARDS
+  function setupGallerySwitcher(stripId, mainWrapId, mainImgId) {
+    const strip = document.getElementById(stripId);
+    const mainWrap = document.getElementById(mainWrapId);
+    const mainImg = document.getElementById(mainImgId);
+    if (!strip || !mainWrap || !mainImg) return;
 
-  ascThumbs.forEach(thumb => {
-    thumb.addEventListener('click', (e) => {
-      e.stopPropagation();
-      ascThumbs.forEach(t => t.classList.remove('active'));
-      thumb.classList.add('active');
+    const thumbs = strip.querySelectorAll('.bento-gallery-thumb');
+    thumbs.forEach(thumb => {
+      thumb.addEventListener('click', (e) => {
+        e.stopPropagation();
+        thumbs.forEach(t => t.classList.remove('active'));
+        thumb.classList.add('active');
 
-      const newImg = thumb.getAttribute('data-img');
-      const newTitle = thumb.getAttribute('data-title');
-      const newDesc = thumb.getAttribute('data-desc');
+        const newImg = thumb.getAttribute('data-img');
+        const newTitle = thumb.getAttribute('data-title');
+        const newDesc = thumb.getAttribute('data-desc');
 
-      if (ascMainImg) {
-        ascMainImg.style.opacity = '0.35';
+        mainImg.style.opacity = '0.35';
         setTimeout(() => {
-          ascMainImg.src = newImg;
-          ascMainImg.style.opacity = '1';
+          mainImg.src = newImg;
+          mainImg.style.opacity = '1';
         }, 140);
-      }
 
-      if (ascMainWrap) {
-        ascMainWrap.setAttribute('data-modal-img', newImg);
-        ascMainWrap.setAttribute('data-modal-title', newTitle);
-        ascMainWrap.setAttribute('data-modal-desc', newDesc);
-      }
+        mainWrap.setAttribute('data-modal-img', newImg);
+        mainWrap.setAttribute('data-modal-title', newTitle);
+        mainWrap.setAttribute('data-modal-desc', newDesc);
 
-      // Synchronize modal data registry
-      if (projectsData && projectsData[0]) {
-        projectsData[0].img = newImg;
-        projectsData[0].title = newTitle;
-        projectsData[0].desc = newDesc;
+        // Synchronize modal data registry dynamically
+        const foundIdx = triggerElements.indexOf(mainWrap);
+        if (foundIdx !== -1 && projectsData && projectsData[foundIdx]) {
+          projectsData[foundIdx].img = newImg;
+          projectsData[foundIdx].title = newTitle;
+          projectsData[foundIdx].desc = newDesc;
+        }
+      });
+    });
+  }
+
+  setupGallerySwitcher('ascGalleryStrip', 'ascMediaMain', 'ascMainImg');
+  setupGallerySwitcher('inboxGalleryStrip', 'inboxQuestBentoMedia', 'inboxQuestBentoImg');
+
+  // 7. GOOGLE GEMINI-INSPIRED "LOOK WHAT YOU CAN DO" INTERACTIVE STAGE CONTROLLER
+  const geminiTabs = document.querySelectorAll('.gemini-tab');
+  const geminiPanels = document.querySelectorAll('.gemini-panel');
+  const stageAura = document.getElementById('stageAura');
+
+  const auraThemes = {
+    'inbox-quest': 'radial-gradient(circle, rgba(66, 133, 244, 0.24) 0%, rgba(0, 229, 255, 0.15) 45%, transparent 70%)',
+    'asc-engine': 'radial-gradient(circle, rgba(234, 67, 53, 0.22) 0%, rgba(155, 81, 224, 0.16) 45%, transparent 70%)',
+    'cpp-systems': 'radial-gradient(circle, rgba(52, 211, 153, 0.22) 0%, rgba(66, 133, 244, 0.16) 45%, transparent 70%)',
+    'prompt-pipeline': 'radial-gradient(circle, rgba(155, 81, 224, 0.24) 0%, rgba(251, 188, 4, 0.14) 45%, transparent 70%)'
+  };
+
+  geminiTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const targetTabKey = tab.getAttribute('data-tab');
+      if (!targetTabKey) return;
+
+      // Update active tab button
+      geminiTabs.forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+
+      // Update active panel
+      geminiPanels.forEach(panel => {
+        if (panel.id === `panel-${targetTabKey}`) {
+          panel.classList.add('active');
+        } else {
+          panel.classList.remove('active');
+        }
+      });
+
+      // Shift dynamic ambient backdrop aura
+      if (stageAura && auraThemes[targetTabKey]) {
+        stageAura.style.background = auraThemes[targetTabKey];
+      }
+    });
+  });
+
+  // Angle switcher inside Gemini Inbox Quest showcase
+  const angleButtons = document.querySelectorAll('.gemini-angle-switcher .angle-btn');
+  angleButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      angleButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const targetImgId = btn.getAttribute('data-target');
+      const newSrc = btn.getAttribute('data-img');
+      const targetImg = document.getElementById(targetImgId);
+
+      if (targetImg && newSrc) {
+        targetImg.style.opacity = '0.3';
+        setTimeout(() => {
+          targetImg.src = newSrc;
+          targetImg.style.opacity = '1';
+        }, 140);
+
+        const parentFrame = targetImg.closest('.gemini-screen-frame');
+        if (parentFrame) {
+          parentFrame.setAttribute('data-modal-img', newSrc);
+        }
       }
     });
   });
