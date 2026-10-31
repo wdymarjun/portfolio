@@ -4,38 +4,43 @@
 // ==========================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. TOP PROGRESS BAR & PARALLAX ENGINE (SCROLLING DOWN & UP)
+  // 1. TOP PROGRESS BAR & PARALLAX ENGINE (SCROLLING DOWN & UP - 60FPS RAF DEBOUNCED)
   const progressBar = document.getElementById('scrollProgress');
   const ambientGlow = document.querySelector('.ambient-glow');
   const appleNav = document.querySelector('.apple-nav');
 
+  let scrollRafId = null;
   const onScrollFrame = () => {
-    const scrollY = window.scrollY || document.documentElement.scrollTop;
-    const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    if (scrollRafId) return;
+    scrollRafId = requestAnimationFrame(() => {
+      scrollRafId = null;
+      const scrollY = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
 
-    // Fluid progress bar width
-    if (progressBar && docHeight > 0) {
-      const progress = Math.min(100, Math.max(0, (scrollY / docHeight) * 100));
-      progressBar.style.width = `${progress}%`;
-    }
-
-    // Parallax spatial depth on ambient glow
-    if (ambientGlow) {
-      ambientGlow.style.transform = `translateX(-50%) translateY(${scrollY * 0.14}px)`;
-    }
-
-    // Navbar blur & scroll elevation
-    if (appleNav) {
-      if (scrollY > 30) {
-        appleNav.style.background = 'rgba(18, 18, 19, 0.9)';
-        appleNav.style.borderColor = 'rgba(255, 255, 255, 0.16)';
-        appleNav.style.boxShadow = '0 12px 40px rgba(0, 0, 0, 0.75)';
-      } else {
-        appleNav.style.background = 'rgba(22, 22, 23, 0.75)';
-        appleNav.style.borderColor = 'rgba(255, 255, 255, 0.08)';
-        appleNav.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.6)';
+      // Fluid progress bar width
+      if (progressBar && docHeight > 0) {
+        const progress = Math.min(100, Math.max(0, (scrollY / docHeight) * 100));
+        progressBar.style.width = `${progress}%`;
       }
-    }
+
+      // Parallax spatial depth on ambient glow (disabled on small screens for performance)
+      if (ambientGlow && window.innerWidth > 768) {
+        ambientGlow.style.transform = `translateX(-50%) translateY(${scrollY * 0.12}px)`;
+      }
+
+      // Navbar blur & scroll elevation
+      if (appleNav) {
+        if (scrollY > 25) {
+          appleNav.style.background = 'rgba(18, 18, 19, 0.92)';
+          appleNav.style.borderColor = 'rgba(255, 255, 255, 0.16)';
+          appleNav.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.65)';
+        } else {
+          appleNav.style.background = 'rgba(22, 22, 23, 0.75)';
+          appleNav.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+          appleNav.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.6)';
+        }
+      }
+    });
   };
 
   window.addEventListener('scroll', onScrollFrame, { passive: true });
@@ -348,7 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupGallerySwitcher('ascGalleryStrip', 'ascMediaMain', 'ascMainImg');
   setupGallerySwitcher('inboxGalleryStrip', 'inboxQuestBentoMedia', 'inboxQuestBentoImg');
 
-  // 7. CINEMATIC FULLSCREEN INTRO VIDEO CONTROLLER
+  // 7. CINEMATIC FULLSCREEN INTRO VIDEO CONTROLLER (MOBILE ULTRA-OPTIMIZED)
   const introOverlay = document.getElementById('introVideoOverlay');
   const introVideo = document.getElementById('introVideo');
   const skipBtn = document.getElementById('skipIntroBtn');
@@ -363,7 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (isIntroDismissed) return;
       isIntroDismissed = true;
 
-      // Smooth fade-down and scale transition
+      // Smooth hardware-accelerated fade-down transition
       introOverlay.classList.add('fading-out');
       document.body.classList.remove('intro-active');
       document.body.classList.add('intro-revealed');
@@ -373,7 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         try { introVideo.pause(); } catch (e) {}
         introOverlay.style.display = 'none';
-      }, 1200);
+      }, 950);
     };
 
     // When the video ends naturally
@@ -386,6 +391,9 @@ document.addEventListener('DOMContentLoaded', () => {
         progressBarFill.style.width = `${pct}%`;
       }
     });
+
+    // Tap/Click anywhere on mobile or desktop to dismiss instantly!
+    introOverlay.addEventListener('click', dismissIntro);
 
     // Skip button click
     if (skipBtn) {
@@ -409,6 +417,16 @@ document.addEventListener('DOMContentLoaded', () => {
         console.warn('Intro video autoplay requires user interaction or was blocked:', err);
       });
     }
+
+    // Safety fallback: if video stalls or network is slow, never block user after 3.2s
+    let hasPlayedFrame = false;
+    introVideo.addEventListener('playing', () => { hasPlayedFrame = true; });
+    setTimeout(() => {
+      if (!hasPlayedFrame && !isIntroDismissed) {
+        console.info('Auto-revealing portfolio after intro timeout.');
+        dismissIntro();
+      }
+    }, 3200);
   }
 
 });
