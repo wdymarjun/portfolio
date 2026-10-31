@@ -16,6 +16,28 @@
 </head>
 <body>
 
+  <!-- CINEMATIC FULLSCREEN INTRO VIDEO OVERLAY -->
+  <div id="introVideoOverlay" class="intro-video-overlay" role="dialog" aria-label="Intro Cinematic Video">
+    <video id="introVideo" class="intro-video-element" src="intro_cinematic.mp4" muted playsinline autoplay preload="auto"></video>
+    
+    <!-- Top Bar Controls -->
+    <div class="intro-controls-bar">
+      <div class="intro-tag">
+        <span class="intro-pulse-dot"></span>
+        <span>Arjun Singh — Cinematic Intro</span>
+      </div>
+      <button id="skipIntroBtn" class="intro-skip-btn" title="Skip Intro (Press ESC)">
+        <span>Skip Intro</span>
+        <kbd class="intro-kbd">ESC</kbd>
+      </button>
+    </div>
+
+    <!-- Bottom Progress Bar -->
+    <div class="intro-video-progress-wrap" aria-hidden="true">
+      <div id="introVideoProgressBar" class="intro-video-progress-fill"></div>
+    </div>
+  </div>
+
   <!-- Apple-Grade Titanium Scroll Progress Bar (Responsive to scroll up & down) -->
   <div class="scroll-progress-bar" id="scrollProgress" aria-hidden="true"></div>
 

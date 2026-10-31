@@ -348,4 +348,67 @@ document.addEventListener('DOMContentLoaded', () => {
   setupGallerySwitcher('ascGalleryStrip', 'ascMediaMain', 'ascMainImg');
   setupGallerySwitcher('inboxGalleryStrip', 'inboxQuestBentoMedia', 'inboxQuestBentoImg');
 
+  // 7. CINEMATIC FULLSCREEN INTRO VIDEO CONTROLLER
+  const introOverlay = document.getElementById('introVideoOverlay');
+  const introVideo = document.getElementById('introVideo');
+  const skipBtn = document.getElementById('skipIntroBtn');
+  const progressBarFill = document.getElementById('introVideoProgressBar');
+
+  if (introOverlay && introVideo) {
+    document.body.classList.add('intro-active');
+
+    let isIntroDismissed = false;
+
+    const dismissIntro = () => {
+      if (isIntroDismissed) return;
+      isIntroDismissed = true;
+
+      // Smooth fade-down and scale transition
+      introOverlay.classList.add('fading-out');
+      document.body.classList.remove('intro-active');
+      document.body.classList.add('intro-revealed');
+      document.body.style.overflow = '';
+
+      // Safely pause video after transition finishes
+      setTimeout(() => {
+        try { introVideo.pause(); } catch (e) {}
+        introOverlay.style.display = 'none';
+      }, 1200);
+    };
+
+    // When the video ends naturally
+    introVideo.addEventListener('ended', dismissIntro);
+
+    // Update bottom progress bar smoothly
+    introVideo.addEventListener('timeupdate', () => {
+      if (introVideo.duration && progressBarFill) {
+        const pct = (introVideo.currentTime / introVideo.duration) * 100;
+        progressBarFill.style.width = `${pct}%`;
+      }
+    });
+
+    // Skip button click
+    if (skipBtn) {
+      skipBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dismissIntro();
+      });
+    }
+
+    // ESC key to dismiss intro
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !isIntroDismissed) {
+        dismissIntro();
+      }
+    });
+
+    // Start video playback (muted autoplay)
+    const playPromise = introVideo.play();
+    if (playPromise !== undefined) {
+      playPromise.catch((err) => {
+        console.warn('Intro video autoplay requires user interaction or was blocked:', err);
+      });
+    }
+  }
+
 });
