@@ -1448,191 +1448,162 @@ footer:hover .footer-wordmark {
   transition: width 0.08s ease-out;
 }
 
-/* Base Scroll Reveal Classes (Entering from bottom when scrolling down) */
+/* ==========================================================================
+   SLOW, LOW-BLUR TO CLEAR SCROLL REVEAL ENGINE (PREMIUM KEYNOTE & GEMINI SPEC)
+   Hardware-accelerated optical reveal with zero lag on low-end devices
+   ========================================================================== */
+
 .fade-in-on-scroll,
-.scroll-reveal {
+.scroll-reveal,
+.gemini-work-row,
+.award-row,
+.about-text-col,
+.competencies-box,
+.contact-section,
+.footer-top-row,
+.footer-wordmark {
   opacity: 0;
-  transform: translateY(32px) scale(0.988);
+  filter: blur(8px);
+  transform: translate3d(0, 36px, 0) scale(0.985);
   transition: 
-    opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
+    opacity 1.35s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 1.35s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.35s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, filter, transform;
 }
 
-/* In Viewport: fully visible and settled */
 .fade-in-on-scroll.visible,
-.scroll-reveal.visible {
+.scroll-reveal.visible,
+.gemini-work-row.visible,
+.award-row.visible,
+.about-text-col.visible,
+.competencies-box.visible,
+.contact-section.visible,
+.footer-top-row.visible,
+.footer-wordmark.visible {
   opacity: 1;
-  transform: translateY(0) scale(1);
+  filter: blur(0px);
+  transform: translate3d(0, 0, 0) scale(1);
 }
 
-/* Scrolled above viewport: gently positioned so it glides down when scrolling up */
-.fade-in-on-scroll.scrolled-above,
-.scroll-reveal.scrolled-above {
-  opacity: 0;
-  transform: translateY(-24px) scale(0.988);
+/* Once fully transitioned, clear filter & will-change so low-end GPUs don't waste compositor cycles */
+.fade-in-on-scroll.anim-settled,
+.scroll-reveal.anim-settled,
+.gemini-work-row.anim-settled,
+.award-row.anim-settled,
+.about-text-col.anim-settled,
+.competencies-box.anim-settled,
+.contact-section.anim-settled,
+.footer-top-row.anim-settled,
+.footer-wordmark.anim-settled {
+  filter: none !important;
+  will-change: auto !important;
 }
 
 /* Section Header Labels & Titles Animation */
 .section-label,
 .section-headline {
   opacity: 0;
-  transform: translateY(20px);
+  filter: blur(6px);
+  transform: translate3d(0, 24px, 0);
   transition: 
-    opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
+    opacity 1.25s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 1.25s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.25s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, filter, transform;
 }
 
 .work-section.visible .section-label,
 .awards-section.visible .section-label,
 .about-section.visible .section-label {
   opacity: 1;
-  transform: translateY(0);
-  transition-delay: 0.02s;
+  filter: blur(0px);
+  transform: translate3d(0, 0, 0);
+  transition-delay: 0.05s;
 }
 
 .work-section.visible .section-headline,
 .awards-section.visible .section-headline {
   opacity: 1;
-  transform: translateY(0);
-  transition-delay: 0.1s;
+  filter: blur(0px);
+  transform: translate3d(0, 0, 0);
+  transition-delay: 0.14s;
 }
 
-.work-section.scrolled-above .section-label,
-.work-section.scrolled-above .section-headline,
-.awards-section.scrolled-above .section-label,
-.awards-section.scrolled-above .section-headline {
-  opacity: 0;
-  transform: translateY(-16px);
-  transition-delay: 0s;
+.work-section.anim-settled .section-label,
+.work-section.anim-settled .section-headline,
+.awards-section.anim-settled .section-label,
+.awards-section.anim-settled .section-headline {
+  filter: none !important;
+  will-change: auto !important;
 }
 
-/* Staggered Bento Cards Scroll Animation */
-.bento-card {
-  opacity: 0;
-  transform: translateY(28px) scale(0.985);
-  transition: 
-    opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
-    background 0.35s ease,
-    border-color 0.35s ease;
-  will-change: opacity, transform;
-}
+/* Staggered Row Delays for Award Rows */
+.award-row:nth-child(1) { transition-delay: 0.05s; }
+.award-row:nth-child(2) { transition-delay: 0.16s; }
+.award-row:nth-child(3) { transition-delay: 0.27s; }
+.award-row:nth-child(4) { transition-delay: 0.38s; }
 
-.work-section.visible .bento-card {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
+/* Staggered Columns in About */
+.about-text-col { transition-delay: 0.06s; }
+.competencies-box { transition-delay: 0.20s; }
 
-.work-section.visible .bento-card:hover {
-  transform: translateY(-4px);
-}
-
-.work-section.visible .bento-card:nth-child(1) { transition-delay: 0.08s; }
-.work-section.visible .bento-card:nth-child(2) { transition-delay: 0.22s; }
-.work-section.visible .bento-card:nth-child(3) { transition-delay: 0.36s; }
-
-.work-section.scrolled-above .bento-card {
-  opacity: 0;
-  transform: translateY(-22px) scale(0.985);
-  transition-delay: 0s;
-}
-
-/* Staggered Award Rows Scroll Animation */
-.award-row {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: 
-    opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-    background 0.25s ease;
-  will-change: opacity, transform;
-}
-
-.awards-section.visible .award-row {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.awards-section.visible .award-row:nth-child(1) { transition-delay: 0.06s; }
-.awards-section.visible .award-row:nth-child(2) { transition-delay: 0.14s; }
-.awards-section.visible .award-row:nth-child(3) { transition-delay: 0.22s; }
-.awards-section.visible .award-row:nth-child(4) { transition-delay: 0.30s; }
-
-.awards-section.scrolled-above .award-row {
-  opacity: 0;
-  transform: translateY(-16px);
-  transition-delay: 0s;
-}
-
-/* About Section Staggered Columns */
-.about-text-col,
-.competencies-box {
-  opacity: 0;
-  transform: translateY(26px);
-  transition: 
-    opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
-}
-
-.about-section.visible .about-text-col {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: 0.08s;
-}
-
-.about-section.visible .competencies-box {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: 0.22s;
-}
-
-.about-section.scrolled-above .about-text-col,
-.about-section.scrolled-above .competencies-box {
-  opacity: 0;
-  transform: translateY(-18px);
-  transition-delay: 0s;
-}
-
-/* Contact Section Staggered Reveal */
-.contact-headline,
-.contact-sub,
+/* Contact Section Actions Stagger */
 .contact-actions-row > * {
   opacity: 0;
-  transform: translateY(22px);
+  filter: blur(6px);
+  transform: translate3d(0, 20px, 0);
   transition: 
-    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-    background 0.2s ease,
-    border-color 0.2s ease;
-  will-change: opacity, transform;
+    opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.contact-section.visible .contact-headline {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: 0.05s;
+.contact-section.visible .contact-actions-row > *:nth-child(1) { opacity: 1; filter: blur(0px); transform: translate3d(0, 0, 0); transition-delay: 0.1s; }
+.contact-section.visible .contact-actions-row > *:nth-child(2) { opacity: 1; filter: blur(0px); transform: translate3d(0, 0, 0); transition-delay: 0.18s; }
+.contact-section.visible .contact-actions-row > *:nth-child(3) { opacity: 1; filter: blur(0px); transform: translate3d(0, 0, 0); transition-delay: 0.26s; }
+.contact-section.visible .contact-actions-row > *:nth-child(4) { opacity: 1; filter: blur(0px); transform: translate3d(0, 0, 0); transition-delay: 0.34s; }
+
+.contact-section.anim-settled .contact-actions-row > * {
+  filter: none !important;
 }
 
-.contact-section.visible .contact-sub {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: 0.16s;
+/* Mobile Low-End GPU Optimization: Light blur for locked 60 FPS */
+@media (max-width: 768px) {
+  .fade-in-on-scroll,
+  .scroll-reveal,
+  .gemini-work-row,
+  .award-row,
+  .about-text-col,
+  .competencies-box,
+  .contact-section,
+  .footer-top-row,
+  .footer-wordmark {
+    filter: blur(5px);
+    transform: translate3d(0, 22px, 0) scale(0.99);
+    transition: 
+      opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1),
+      filter 1.1s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+  }
 }
 
-.contact-section.visible .contact-actions-row > *:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 0.24s; }
-.contact-section.visible .contact-actions-row > *:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 0.32s; }
-.contact-section.visible .contact-actions-row > *:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 0.40s; }
-.contact-section.visible .contact-actions-row > *:nth-child(4) { opacity: 1; transform: translateY(0); transition-delay: 0.48s; }
-
-.contact-section.scrolled-above .contact-headline,
-.contact-section.scrolled-above .contact-sub,
-.contact-section.scrolled-above .contact-actions-row > * {
-  opacity: 0;
-  transform: translateY(-16px);
-  transition-delay: 0s;
+/* Accessibility: respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .fade-in-on-scroll,
+  .scroll-reveal,
+  .gemini-work-row,
+  .award-row,
+  .about-text-col,
+  .competencies-box,
+  .contact-section,
+  .footer-top-row,
+  .footer-wordmark {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
 @keyframes appleFadeUp {
@@ -2179,12 +2150,7 @@ body.intro-revealed .apple-nav {
 }
 
 /* OFFSCREEN PERFORMANCE BOOST: Low-end devices skip rendering off-screen sections until scroll */
-.awards-section,
-.about-section,
-.contact-section {
-  content-visibility: auto;
-  contain-intrinsic-size: 1px 700px;
-}
+/* content-visibility managed seamlessly without layout jumps */
 
 /* MOBILE LOW-END DEVICE ULTRA-OPTIMIZATION */
 @media (max-width: 768px) {

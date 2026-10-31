@@ -47,36 +47,33 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', onScrollFrame, { passive: true });
   onScrollFrame();
 
-  // 2. APPLE-STYLE BIDIRECTIONAL SCROLL REVEAL (INTERSECTION OBSERVER)
-  const scrollElements = document.querySelectorAll('.fade-in-on-scroll, .scroll-reveal');
+  // 2. SLOW, LOW-BLUR TO CLEAR SCROLL REVEAL ENGINE (60 FPS OPTIMIZED)
+  const scrollElements = document.querySelectorAll(
+    '.fade-in-on-scroll, .scroll-reveal, .gemini-work-row, .award-row, .about-text-col, .competencies-box, .contact-section, .footer-top-row, .footer-wordmark'
+  );
 
   if ('IntersectionObserver' in window) {
     const observerOptions = {
       root: null,
-      rootMargin: '50px 0px -40px 0px',
-      threshold: [0, 0.12]
+      rootMargin: '0px 0px -40px 0px',
+      threshold: 0.08
     };
 
     const scrollObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        const el = entry.target;
-        const rect = entry.boundingClientRect;
-
         if (entry.isIntersecting) {
-          // Entering view: smoothly settle into position
+          const el = entry.target;
           el.classList.add('visible');
-          el.classList.remove('scrolled-above');
-        } else {
-          // Offscreen checks for fluid re-entrance when scrolling up or down
-          if (rect.bottom < 0) {
-            // Passed above the viewport
-            el.classList.remove('visible');
-            el.classList.add('scrolled-above');
-          } else if (rect.top > window.innerHeight) {
-            // Below the viewport
-            el.classList.remove('visible');
-            el.classList.remove('scrolled-above');
-          }
+
+          // Once transition completes, drop filter & will-change to free GPU memory
+          const onSettled = () => {
+            el.classList.add('anim-settled');
+            el.removeEventListener('transitionend', onSettled);
+          };
+          el.addEventListener('transitionend', onSettled, { once: true });
+
+          // Unobserve once revealed for zero scroll overhead on mobile/low-end devices
+          scrollObserver.unobserve(el);
         }
       });
     }, observerOptions);
@@ -84,17 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     scrollElements.forEach(el => scrollObserver.observe(el));
   } else {
     // Fallback for browsers without IntersectionObserver
-    const checkVisibility = () => {
-      const vh = window.innerHeight || document.documentElement.clientHeight;
-      scrollElements.forEach(el => {
-        const rect = el.getBoundingClientRect();
-        if (rect.top <= vh * 0.92) {
-          el.classList.add('visible');
-        }
-      });
-    };
-    checkVisibility();
-    window.addEventListener('scroll', checkVisibility, { passive: true });
+    scrollElements.forEach(el => el.classList.add('visible', 'anim-settled'));
   }
 
   // 3. COPY EMAIL INTERACTION
@@ -353,7 +340,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupGallerySwitcher('ascGalleryStrip', 'ascMediaMain', 'ascMainImg');
   setupGallerySwitcher('inboxGalleryStrip', 'inboxQuestBentoMedia', 'inboxQuestBentoImg');
 
-  // 7. CINEMATIC FULLSCREEN INTRO VIDEO CONTROLLER (CLEAN DISTRACTION-FREE)
+  // 7. CINEMATIC FULLSCREEN INTRO VIDEO CONTROLLER (FULL PLAYTHROUGH & TAP-TO-SKIP)
   const introOverlay = document.getElementById('introVideoOverlay');
   const introVideo = document.getElementById('introVideo');
 
@@ -379,13 +366,15 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 950);
     };
 
-    // When the video ends naturally
+    // Video plays full duration (~10s) and only transitions when completely finished
     introVideo.addEventListener('ended', dismissIntro);
 
-    // Tap/Click anywhere on mobile or desktop to seamlessly transition into portfolio
+    // Skips ONLY on direct user tap, touch, click, or ESC
     introOverlay.addEventListener('click', dismissIntro);
+    introOverlay.addEventListener('touchstart', (e) => {
+      dismissIntro();
+    }, { passive: true });
 
-    // ESC key to dismiss intro
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && !isIntroDismissed) {
         dismissIntro();
@@ -399,16 +388,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.warn('Intro video autoplay requires user interaction or was blocked:', err);
       });
     }
-
-    // Safety fallback: if video stalls or network is slow, never block user after 3.2s
-    let hasPlayedFrame = false;
-    introVideo.addEventListener('playing', () => { hasPlayedFrame = true; });
-    setTimeout(() => {
-      if (!hasPlayedFrame && !isIntroDismissed) {
-        console.info('Auto-revealing portfolio after intro timeout.');
-        dismissIntro();
-      }
-    }, 3200);
   }
 
 });
