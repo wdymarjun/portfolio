@@ -353,11 +353,9 @@ document.addEventListener('DOMContentLoaded', () => {
   setupGallerySwitcher('ascGalleryStrip', 'ascMediaMain', 'ascMainImg');
   setupGallerySwitcher('inboxGalleryStrip', 'inboxQuestBentoMedia', 'inboxQuestBentoImg');
 
-  // 7. CINEMATIC FULLSCREEN INTRO VIDEO CONTROLLER (MOBILE ULTRA-OPTIMIZED)
+  // 7. CINEMATIC FULLSCREEN INTRO VIDEO CONTROLLER (CLEAN DISTRACTION-FREE)
   const introOverlay = document.getElementById('introVideoOverlay');
   const introVideo = document.getElementById('introVideo');
-  const skipBtn = document.getElementById('skipIntroBtn');
-  const progressBarFill = document.getElementById('introVideoProgressBar');
 
   if (introOverlay && introVideo) {
     document.body.classList.add('intro-active');
@@ -384,24 +382,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // When the video ends naturally
     introVideo.addEventListener('ended', dismissIntro);
 
-    // Update bottom progress bar smoothly
-    introVideo.addEventListener('timeupdate', () => {
-      if (introVideo.duration && progressBarFill) {
-        const pct = (introVideo.currentTime / introVideo.duration) * 100;
-        progressBarFill.style.width = `${pct}%`;
-      }
-    });
-
-    // Tap/Click anywhere on mobile or desktop to dismiss instantly!
+    // Tap/Click anywhere on mobile or desktop to seamlessly transition into portfolio
     introOverlay.addEventListener('click', dismissIntro);
-
-    // Skip button click
-    if (skipBtn) {
-      skipBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        dismissIntro();
-      });
-    }
 
     // ESC key to dismiss intro
     window.addEventListener('keydown', (e) => {
