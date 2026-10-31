@@ -288,10 +288,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 5. HIGH-ENGINEERED CURSOR SPOTLIGHT TRACKING ON BENTO CARDS (ZERO-LAG RAF)
+  // 5. HIGH-ENGINEERED CURSOR SPOTLIGHT TRACKING (ZERO-LAG RAF)
   if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    const bentoCards = document.querySelectorAll('.bento-card');
-    bentoCards.forEach(card => {
+    const interactiveCards = document.querySelectorAll('.bento-card, .gemini-work-row');
+    interactiveCards.forEach(card => {
       let rafId = null;
       card.addEventListener('mousemove', (e) => {
         if (rafId) cancelAnimationFrame(rafId);

@@ -105,39 +105,61 @@
       </div>
     </div>
 
-    <!-- SELECTED PRODUCTION WORK (Apple Bento Card Showcase) -->
+    <!-- SELECTED PRODUCTION WORK (Google Gemini-Inspired Executive Showcase) -->
     <section id="work" class="work-section fade-in-on-scroll">
-      <p class="section-label">Selected Work</p>
-      <h2 class="section-headline">Built with systems-level discipline.</h2>
+      <div class="work-section-header">
+        <p class="section-label">Selected Work</p>
+        <h2 class="section-headline">Built with systems-level discipline.</h2>
+        <p class="section-subheadline">
+          Engineered from first principles: low-level C++ memory engines, networked Luau metatables, and context-compressed Gemini AI pipelines.
+        </p>
+      </div>
 
-      <div class="bento-grid">
+      <div class="gemini-work-container">
 
-        <!-- Project 0: Flagship Bento Card - Inbox Quest -->
-        <div class="bento-card full-width">
-          <div class="bento-card-split">
-            <div>
-              <p class="card-eyebrow">Flagship Full-Stack Web App · Gemini 3.8 Flash</p>
-              <h3 class="card-title">Inbox Quest — Gamified Email RPG &amp; Autonomous Triage Assistant</h3>
-              <p class="card-desc">
-                Transformed overwhelming inbox triage into an interactive retro RPG combat experience. Powered by <strong>Google Gemini 3.8 Flash</strong> for instantaneous email thread summarization, smart action item synthesis, and context-aware VIP reply drafting.
-              </p>
-              <p class="card-desc" style="margin-top: 14px;">
-                <strong>Architectural Safety Guarantee:</strong> Unlike traditional email cleaners, Inbox Quest enforces a <strong>zero-destructive-deletion policy</strong>. All user triage actions (Archive, Star, Mark Read) operate through a 100% reversible transaction journal with one-click instant rollbacks, giving users enterprise-grade confidence while achieving Inbox Zero.
-              </p>
-              <div class="tech-pills">
-                <span class="tech-pill">React 18</span>
-                <span class="tech-pill">Node.js + Express</span>
-                <span class="tech-pill">Google Gemini 3.8 Flash</span>
-                <span class="tech-pill">Gmail REST API</span>
-                <span class="tech-pill">Reversible Transactions</span>
-                <span class="tech-pill">Canvas Particle Engine</span>
-                <span class="tech-pill">Vite Production</span>
-                <span class="tech-pill">Vercel Edge</span>
-              </div>
+        <!-- PROJECT 01: INBOX QUEST -->
+        <article class="gemini-work-row">
+          <div class="gemini-work-content">
+            <p class="work-eyebrow">Flagship Full-Stack System · Google Gemini 3.8 Flash AI</p>
+            <h3 class="work-title">Inbox Quest</h3>
+            <p class="work-lead">
+              Gamified Email RPG &amp; Autonomous Triage Assistant
+            </p>
+            <p class="work-desc">
+              Transformed overwhelming email clutter into an engaging retro boss combat loop. Deeply integrated with <strong>Google Gemini 3.8 Flash</strong> for sub-second email summarization, actionable task synthesis, and context-aware VIP reply drafting.
+            </p>
+            <p class="work-desc highlight-box">
+              <strong>100% Reversible Safety Model:</strong> Unlike destructive cleaners, Inbox Quest enforces a zero-data-loss guarantee. All triage actions (Archive, Star, Mark Read) operate through a journaled rollback engine with instant 1-click reversibility.
+            </p>
+            
+            <div class="work-spec-strip">
+              <span class="spec-chip"><span class="spec-dot green"></span> 100% Reversible (0 Deletions)</span>
+              <span class="spec-chip"><span class="spec-dot blue"></span> Gemini 3.8 Flash Intelligence</span>
+              <span class="spec-chip"><span class="spec-dot purple"></span> Locked 60 FPS Render Loop</span>
             </div>
 
-            <!-- Media wrap for Inbox Quest -->
-            <div class="bento-media-container">
+            <div class="tech-pills">
+              <span class="tech-pill">React 18</span>
+              <span class="tech-pill">Node.js + Express</span>
+              <span class="tech-pill">Google Gemini 3.8 Flash</span>
+              <span class="tech-pill">Gmail REST API</span>
+              <span class="tech-pill">Reversible Transactions</span>
+              <span class="tech-pill">Vite Production</span>
+              <span class="tech-pill">Vercel Edge</span>
+            </div>
+
+            <div class="gemini-action-group">
+              <a href="https://indexquest.vercel.app/" target="_blank" rel="noopener noreferrer" class="gemini-arrow-link primary">
+                Play Live Demo <span class="arrow-glyph">&gt;</span>
+              </a>
+              <a href="https://github.com/wdymarjun" target="_blank" rel="noopener noreferrer" class="gemini-arrow-link secondary">
+                Inspect Source Code <span class="arrow-glyph">&gt;</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="gemini-work-visual">
+            <div class="gemini-visual-chassis">
               <div class="bento-media-wrap"
                    id="inboxQuestBentoMedia"
                    data-project-index="0"
@@ -147,179 +169,224 @@
                    data-modal-desc="Enterprise-grade email triage game converting chaotic inbox workloads into boss battle combat encounters. Featuring real-time Gemini 3.8 Flash intelligence and 100% reversible non-destructive archiving."
                    data-modal-repo="https://github.com/wdymarjun"
                    data-modal-specs='[{"label":"Live App","val":"indexquest.vercel.app"},{"label":"Safety Guarantee","val":"0 Deletions / 100% Safe"},{"label":"AI Model","val":"Gemini 3.8 Flash"},{"label":"Engine FPS","val":"60 FPS Canvas"}]'>
-                <img id="inboxQuestBentoImg" src="inbox_quest_preview.jpg" alt="Inbox Quest Dashboard" loading="lazy">
+                <img id="inboxQuestBentoImg" src="inbox_quest_preview.jpg" alt="Inbox Quest Dashboard" loading="lazy" decoding="async">
                 <span class="media-expand-badge">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
                   <span>Expand View</span>
                 </span>
               </div>
 
-              <!-- Interactive Multi-Angle Gallery Strip -->
+              <!-- Multi-angle switcher tabs -->
               <div class="bento-gallery-strip" id="inboxGalleryStrip">
                 <button type="button" class="bento-gallery-thumb active" data-img="inbox_quest_preview.jpg" data-title="Inbox Quest — App Dashboard &amp; Email Roster" data-desc="Complete inbox overview with real-time email health meter, unread email triage cards, and one-click reversible batch actions.">
-                  <img src="inbox_quest_preview.jpg" alt="Inbox Quest Dashboard">
-                  <span>Dashboard</span>
+                  <img src="inbox_quest_preview.jpg" alt="Inbox Quest Dashboard" decoding="async">
+                  <span>Dashboard Overview</span>
                 </button>
                 <button type="button" class="bento-gallery-thumb" data-img="inbox_quest_gameplay.jpg" data-title="Inbox Quest — Retro RPG Boss Battle" data-desc="Canvas-powered retro RPG encounter where unread emails manifest as animated monsters. Clear emails via spell attacks to restore inbox peace.">
-                  <img src="inbox_quest_gameplay.jpg" alt="Inbox Quest Boss Battle">
-                  <span>Boss Battle</span>
+                  <img src="inbox_quest_gameplay.jpg" alt="Inbox Quest Boss Battle" decoding="async">
+                  <span>Boss Battle RPG</span>
                 </button>
               </div>
             </div>
           </div>
+        </article>
 
-          <div class="card-footer">
-            <div class="card-metric-stat">Status: <span>Live on Vercel</span> · Model: <span>Gemini 3.8 Flash</span> · Deletions: <span>0 (100% Reversible)</span></div>
-            <div style="display: flex; gap: 12px; align-items: center;">
-              <a href="https://indexquest.vercel.app/" target="_blank" rel="noopener noreferrer" class="card-link" style="color: var(--accent-blue); font-weight: 600;">Play Live Demo ↗</a>
-              <a href="https://github.com/wdymarjun" target="_blank" rel="noopener noreferrer" class="card-link">View Source ↗</a>
+        <!-- PROJECT 02: ASC (A SATANIC CHURCH) -->
+        <article class="gemini-work-row">
+          <div class="gemini-work-content">
+            <p class="work-eyebrow">Spatial 3D Engine Architecture &amp; Autonomous Backend</p>
+            <h3 class="work-title">ASC (A Satanic Church)</h3>
+            <p class="work-lead">
+              3D Horror Cathedral &amp; 24/7 AI Model Educator Backend
+            </p>
+            <p class="work-desc">
+              Architected a high-fidelity gothic horror cathedral environment featuring custom point-light candelabra volumetric illumination, dynamic shadowcasting, pipe organ acoustics, and decoupled Luau metatable networking running at locked 60 FPS.
+            </p>
+            <p class="work-desc highlight-box">
+              <strong>Autonomous Scale &amp; Zero Human Bottleneck:</strong> In-game theological guidance initially bottlenecked on live human moderators with timezone coverage gaps. Engineered an autonomous 24/7 AI Model Educator NPC that completely bypassed human scheduling, scaling the live world to <strong>1,000+ real-world active users</strong> with sub-second answer latency.
+            </p>
+
+            <div class="work-spec-strip">
+              <span class="spec-chip"><span class="spec-dot green"></span> 1,000+ Active Players Scaled</span>
+              <span class="spec-chip"><span class="spec-dot blue"></span> 24/7 Zero-Human AI Uptime</span>
+              <span class="spec-chip"><span class="spec-dot purple"></span> &lt;45ms Replication Latency</span>
+            </div>
+
+            <div class="tech-pills">
+              <span class="tech-pill">Roblox Studio Engine</span>
+              <span class="tech-pill">Advanced Luau Metatables</span>
+              <span class="tech-pill">AI Model Educator Backend</span>
+              <span class="tech-pill">Autonomous Prompt Pipeline</span>
+              <span class="tech-pill">Volumetric Lighting</span>
+              <span class="tech-pill">Server-Validated RemoteEvents</span>
+            </div>
+
+            <div class="gemini-action-group">
+              <a href="https://github.com/wdymarjun" target="_blank" rel="noopener noreferrer" class="gemini-arrow-link primary">
+                Inspect Engine Architecture <span class="arrow-glyph">&gt;</span>
+              </a>
             </div>
           </div>
-        </div>
-        
-        <!-- Project 1: Full-width Hero Bento Card with Split Media -->
-        <div class="bento-card full-width">
-          <div class="bento-card-split">
-            <div>
-              <p class="card-eyebrow">Atmospheric 3D Horror World &amp; Autonomous AI Backend</p>
-              <h3 class="card-title">ASC (A Satanic Church) — 3D Horror Engine &amp; AI Model Educator Backend</h3>
-              <p class="card-desc">
-                Architected a high-fidelity gothic horror church environment with custom point-light candelabras, dynamic volumetric shadowcasting, gothic organ acoustics, and decoupled Luau metatable networking running at locked 60 FPS.
-              </p>
-              <p class="card-desc" style="margin-top: 14px;">
-                <strong>Engineering Problem-Solving &amp; Scale:</strong> In-game theological guidance and community education initially relied on live human educators. This created critical operational bottlenecks—scheduling conflicts, timezone coverage gaps, human fatigue, and zero 24/7 concurrency—leaving international players unassisted. To solve this, I engineered a dedicated <strong>AI Model Educator backend</strong> that completely bypassed human dependency—delivering 24/7 intelligent, grounded responses with sub-second latency and scaling the live game to <strong>1,000+ real-world active users</strong>.
-              </p>
-              <div class="tech-pills">
-                <span class="tech-pill">Roblox Studio Engine</span>
-                <span class="tech-pill">Advanced Luau Metatables</span>
-                <span class="tech-pill">AI Model Educator Backend</span>
-                <span class="tech-pill">Autonomous Prompt Pipeline</span>
-                <span class="tech-pill">24/7 Zero-Human Uptime</span>
-                <span class="tech-pill">1,000+ Active Users Scaled</span>
-                <span class="tech-pill">Gothic Volumetric Lighting</span>
-                <span class="tech-pill">Server-Validated RemoteEvents</span>
-                <span class="tech-pill">Part-Caching &amp; Streaming</span>
-              </div>
-            </div>
 
-            <!-- Interactive Clickable Image for Modal Pop-up + Multi-angle Switcher -->
-            <div class="bento-media-container">
+          <div class="gemini-work-visual">
+            <div class="gemini-visual-chassis">
               <div class="bento-media-wrap" 
                    id="ascMediaMain"
-                   data-project-index="0"
+                   data-project-index="1"
                    data-modal-img="asc_main_preview.jpg"
                    data-modal-title="ASC (A Satanic Church) — Atmospheric 3D Horror Cathedral"
                    data-modal-subtitle="Roblox Studio Engine · Advanced Luau Metatables · 24/7 AI Model Educator Backend"
                    data-modal-desc="Gothic horror cathedral nave with custom candle volumetric illumination, organ pipe acoustics, and decoupled server-client networking. Backed by an autonomous 24/7 AI Model Educator pipeline that permanently bypassed human moderator bottlenecks to scale to 1,000+ real-world players."
                    data-modal-repo="https://github.com/wdymarjun"
                    data-modal-specs='[{"label":"Active Community","val":"1,000+ Users"},{"label":"Educator Availability","val":"24/7 Autonomous AI"},{"label":"Human Bottleneck","val":"100% Bypassed"},{"label":"Replication Latency","val":"<45ms"}]'>
-                <img id="ascMainImg" src="asc_main_preview.jpg" alt="ASC (A Satanic Church) Gothic Horror Cathedral" loading="lazy">
+                <img id="ascMainImg" src="asc_main_preview.jpg" alt="ASC Gothic Horror Cathedral" loading="lazy" decoding="async">
                 <span class="media-expand-badge">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-                  <span id="ascBadgeText">Expand View</span>
+                  <span>Expand View</span>
                 </span>
               </div>
 
-              <!-- Interactive Multi-Angle Gallery Strip -->
+              <!-- Multi-angle switcher tabs -->
               <div class="bento-gallery-strip" id="ascGalleryStrip">
-                <button type="button" class="bento-gallery-thumb active" data-img="asc_main_preview.jpg" data-title="ASC (A Satanic Church) — Atmospheric 3D Horror Cathedral" data-desc="Gothic horror cathedral nave with custom candle volumetric illumination, organ pipe acoustics, and decoupled server-client networking. Backed by an autonomous 24/7 AI Model Educator pipeline that permanently bypassed human moderator bottlenecks to scale to 1,000+ real-world players.">
-                  <img src="asc_main_preview.jpg" alt="Gothic Cathedral Nave">
+                <button type="button" class="bento-gallery-thumb active" data-img="asc_main_preview.jpg" data-title="ASC (A Satanic Church) — Atmospheric 3D Horror Cathedral" data-desc="Gothic horror cathedral nave with custom candle volumetric illumination, organ pipe acoustics, and decoupled server-client networking.">
+                  <img src="asc_main_preview.jpg" alt="Gothic Cathedral Nave" decoding="async">
                   <span>Cathedral Nave</span>
                 </button>
                 <button type="button" class="bento-gallery-thumb" data-img="asc_ai_educator.jpg" data-title="ASC: 24/7 AI Model Educator NPC" data-desc="In-game AI Educator NPC positioned within an illuminated candle ritual circle. Bypassed human moderator scheduling to provide continuous, 24/7 real-time answers for over 1,000+ active players.">
-                  <img src="asc_ai_educator.jpg" alt="AI Model Educator NPC">
+                  <img src="asc_ai_educator.jpg" alt="AI Model Educator NPC" decoding="async">
                   <span>AI Educator NPC</span>
                 </button>
                 <button type="button" class="bento-gallery-thumb" data-img="asc_ai_dialog.jpg" data-title="ASC: Interactive AI Archive Dialog Pipeline" data-desc="In-game custom UI dialog interface allowing players to consult the grand archives. Context-optimized prompt pipeline with strict moderation guardrails and sub-second answer latency.">
-                  <img src="asc_ai_dialog.jpg" alt="Archive Dialog UI">
+                  <img src="asc_ai_dialog.jpg" alt="Archive Dialog UI" decoding="async">
                   <span>Archive Dialog UI</span>
                 </button>
               </div>
             </div>
           </div>
+        </article>
 
-          <div class="card-footer">
-            <div class="card-metric-stat">Scale: <span>1,000+ Active Users</span> · AI Uptime: <span>24/7 Continuous</span> · Latency: <span>&lt;45ms</span></div>
-            <a href="https://github.com/wdymarjun" target="_blank" rel="noopener noreferrer" class="card-link">View Architecture ↗</a>
-          </div>
-        </div>
-
-        <!-- Project 2 -->
-        <div class="bento-card">
-          <div>
-            <p class="card-eyebrow">Systems &amp; Memory Management</p>
-            <h3 class="card-title">Algorithmic Systems &amp; Data Structures</h3>
-            <p class="card-desc">
-              Implemented core data structures (self-balancing trees, dynamic arrays, graph algorithms, and custom contiguous allocators) from scratch in modern C++ with explicit pointer management and Big-O computational bounds.
+        <!-- PROJECT 03: C++20 SYSTEMS & ARENA ALLOCATORS -->
+        <article class="gemini-work-row">
+          <div class="gemini-work-content">
+            <p class="work-eyebrow">Hardware-Level Systems Engineering &amp; Memory Management</p>
+            <h3 class="work-title">C++20 Systems Architecture</h3>
+            <p class="work-lead">
+              Contiguous Arena Allocators &amp; Algorithmic Memory Profiling
             </p>
-            
-            <div class="bento-media-wrap" style="margin-top: 20px;"
-                 data-project-index="1"
-                 data-modal-img="cpp_preview.jpg"
-                 data-modal-title="C++ Systems &amp; Memory Allocation Architecture"
-                 data-modal-subtitle="Modern C++ · Memory Profiling · Algorithmic Complexity"
-                 data-modal-desc="Hardware-level memory visualization displaying contiguous pool block allocations, binary search tree balancing logic, and cache hit/miss analytics. Designed to eliminate heap fragmentation and enforce strict O(n log n) operational bounds."
-                 data-modal-repo="https://github.com/wdymarjun"
-                 data-modal-specs='[{"label":"Time Complexity","val":"O(n log n)"},{"label":"Heap Fragmentation","val":"0%"},{"label":"Memory Pool","val":"Custom Arena"},{"label":"Language","val":"C++20"}]'>
-              <img src="cpp_preview.jpg" alt="C++ Systems Architecture Visualization" loading="lazy">
-              <span class="media-expand-badge">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-                <span>Expand</span>
-              </span>
+            <p class="work-desc">
+              Implemented core memory allocators and spatial data structures from scratch in modern C++20. Designed contiguous arena pool allocators and self-balancing binary search trees with explicit pointer management, eliminating heap fragmentation and enforcing strict asymptotic bounds.
+            </p>
+            <p class="work-desc highlight-box">
+              <strong>Cache-Line Optimization &amp; Asymptotic Bounds:</strong> Memory layouts are 64-byte cache line aligned to maximize L1/L2 cache hit ratios. Custom arena pool eliminates runtime malloc/free system call churn, achieving 0.0% heap fragmentation and guaranteed strict O(n log n) operational ceilings.
+            </p>
+
+            <div class="work-spec-strip">
+              <span class="spec-chip"><span class="spec-dot green"></span> 0.0% Heap Churn / Fragmentation</span>
+              <span class="spec-chip"><span class="spec-dot blue"></span> O(n log n) Strict Asymptotic Bound</span>
+              <span class="spec-chip"><span class="spec-dot purple"></span> Modern C++20 Concepts &amp; RAII</span>
             </div>
 
             <div class="tech-pills">
-              <span class="tech-pill">Modern C++</span>
-              <span class="tech-pill">STL</span>
+              <span class="tech-pill">Modern C++20</span>
+              <span class="tech-pill">Contiguous Arena Allocators</span>
               <span class="tech-pill">Pointers &amp; Memory</span>
+              <span class="tech-pill">Self-Balancing Trees</span>
               <span class="tech-pill">Algorithmic Analysis</span>
               <span class="tech-pill">Discrete Mathematics</span>
             </div>
+
+            <div class="gemini-action-group">
+              <a href="https://github.com/wdymarjun" target="_blank" rel="noopener noreferrer" class="gemini-arrow-link primary">
+                Inspect C++ Implementation <span class="arrow-glyph">&gt;</span>
+              </a>
+            </div>
           </div>
 
-          <div class="card-footer">
-            <div class="card-metric-stat">Peak Complexity: <span>O(n log n)</span></div>
-            <a href="https://github.com/wdymarjun" target="_blank" rel="noopener noreferrer" class="card-link">View Source ↗</a>
-          </div>
-        </div>
+          <div class="gemini-work-visual">
+            <div class="gemini-visual-chassis">
+              <div class="bento-media-wrap"
+                   data-project-index="2"
+                   data-modal-img="cpp_preview.jpg"
+                   data-modal-title="C++ Systems &amp; Memory Allocation Architecture"
+                   data-modal-subtitle="Modern C++ · Memory Profiling · Algorithmic Complexity"
+                   data-modal-desc="Hardware-level memory visualization displaying contiguous pool block allocations, binary search tree balancing logic, and cache hit/miss analytics. Designed to eliminate heap fragmentation and enforce strict O(n log n) operational bounds."
+                   data-modal-repo="https://github.com/wdymarjun"
+                   data-modal-specs='[{"label":"Time Complexity","val":"O(n log n)"},{"label":"Heap Fragmentation","val":"0%"},{"label":"Memory Pool","val":"Custom Arena"},{"label":"Language","val":"C++20"}]'>
+                <img src="cpp_preview.jpg" alt="C++ Systems Architecture Visualization" loading="lazy" decoding="async">
+                <span class="media-expand-badge">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                  <span>Expand View</span>
+                </span>
+              </div>
 
-        <!-- Project 3 -->
-        <div class="bento-card">
-          <div>
-            <p class="card-eyebrow">AI Integration &amp; Rapid Product</p>
-            <h3 class="card-title">Hackathon Production Build &amp; AI Pipeline</h3>
-            <p class="card-desc">
-              Directed architecture sprints to deliver an end-to-end technical prototype addressing operational challenges under tight 36-hour hackathon deadlines, integrated with context-optimized LLM prompt pipelines.
+              <div class="visual-meta-bar">
+                <span class="meta-tag">● HARDWARE TELEMETRY</span>
+                <span class="meta-spec">O(n log n) BOUNDS · 0% FRAGMENTATION</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- PROJECT 04: HACKATHON CIRCUIT & PROMPT PIPELINES -->
+        <article class="gemini-work-row">
+          <div class="gemini-work-content">
+            <p class="work-eyebrow">LLM Orchestration &amp; Rapid Hackathon Sprint Delivery</p>
+            <h3 class="work-title">Autonomous Prompt Pipelines</h3>
+            <p class="work-lead">
+              Context-Window Pruning &amp; 36h Production Prototype
+            </p>
+            <p class="work-desc">
+              Directed architecture sprints across 3 hackathons (Smart India Hackathon Top 5, HackPulse 4th Place, Pitchathon Runner-Up). Engineered deterministic LLM prompt pipelines with token budget compression, achieving 4.8M tokens saved and a 65% intake speedup under strict 36-hour delivery deadlines.
+            </p>
+            <p class="work-desc highlight-box">
+              <strong>High-Throughput Intake Acceleration:</strong> Implemented vectorized intake preprocessing and deterministic JSON schema validation, eliminating hallucination risks under high-concurrency loads while defending technical viability before jury panels.
             </p>
 
-            <div class="bento-media-wrap" style="margin-top: 20px;"
-                 data-project-index="2"
-                 data-modal-img="ai_preview.jpg"
-                 data-modal-title="Production AI Prompt Pipeline &amp; Optimization"
-                 data-modal-subtitle="Context Window Pruning · Structured Schema Output · Chain-of-Thought"
-                 data-modal-desc="Context-optimized LLM orchestration pipeline dashboard with real-time token compression, semantic vectorization, and deterministic JSON schema validation for rapid intake processing."
-                 data-modal-repo="https://github.com/wdymarjun"
-                 data-modal-specs='[{"label":"Intake Acceleration","val":"+65%"},{"label":"Token Savings","val":"4.8M Saved"},{"label":"Turnaround","val":"36 Hours"},{"label":"Schema Validity","val":"100%"}]'>
-              <img src="ai_preview.jpg" alt="AI Pipeline Architecture Dashboard" loading="lazy">
-              <span class="media-expand-badge">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-                <span>Expand</span>
-              </span>
+            <div class="work-spec-strip">
+              <span class="spec-chip"><span class="spec-dot green"></span> 4.8M Context Tokens Saved</span>
+              <span class="spec-chip"><span class="spec-dot blue"></span> +65% Intake Acceleration</span>
+              <span class="spec-chip"><span class="spec-dot purple"></span> 3x Hackathon Team Lead</span>
             </div>
 
             <div class="tech-pills">
               <span class="tech-pill">Prompt Architecture</span>
-              <span class="tech-pill">Context Optimization</span>
-              <span class="tech-pill">LLM Automation</span>
+              <span class="tech-pill">Context Window Tuning</span>
+              <span class="tech-pill">Structured Schema Output</span>
+              <span class="tech-pill">Vectorized Intake</span>
               <span class="tech-pill">Agile Sprint Delivery</span>
+            </div>
+
+            <div class="gemini-action-group">
+              <a href="https://github.com/wdymarjun" target="_blank" rel="noopener noreferrer" class="gemini-arrow-link primary">
+                Inspect Pipeline Prototype <span class="arrow-glyph">&gt;</span>
+              </a>
             </div>
           </div>
 
-          <div class="card-footer">
-            <div class="card-metric-stat">Intake Speed: <span>+65%</span> · Turnaround: <span>36 Hours</span></div>
-            <a href="https://github.com/wdymarjun" target="_blank" rel="noopener noreferrer" class="card-link">View Prototype ↗</a>
+          <div class="gemini-work-visual">
+            <div class="gemini-visual-chassis">
+              <div class="bento-media-wrap"
+                   data-project-index="3"
+                   data-modal-img="ai_preview.jpg"
+                   data-modal-title="Production AI Prompt Pipeline &amp; Optimization"
+                   data-modal-subtitle="Context Window Pruning · Structured Schema Output · Chain-of-Thought"
+                   data-modal-desc="Context-optimized LLM orchestration pipeline dashboard with real-time token compression, semantic vectorization, and deterministic JSON schema validation for rapid intake processing."
+                   data-modal-repo="https://github.com/wdymarjun"
+                   data-modal-specs='[{"label":"Intake Acceleration","val":"+65%"},{"label":"Token Savings","val":"4.8M Saved"},{"label":"Turnaround","val":"36 Hours"},{"label":"Schema Validity","val":"100%"}]'>
+                <img src="ai_preview.jpg" alt="AI Pipeline Architecture Dashboard" loading="lazy" decoding="async">
+                <span class="media-expand-badge">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                  <span>Expand View</span>
+                </span>
+              </div>
+
+              <div class="visual-meta-bar">
+                <span class="meta-tag">● PRODUCTION PIPELINE</span>
+                <span class="meta-spec">4.8M TOKENS SAVED · 36H SPRINT</span>
+              </div>
+            </div>
           </div>
-        </div>
+        </article>
 
       </div>
     </section>
