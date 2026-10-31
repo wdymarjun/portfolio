@@ -318,7 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainImg = document.getElementById(mainImgId);
     if (!strip || !mainWrap || !mainImg) return;
 
-    const thumbs = strip.querySelectorAll('.bento-gallery-thumb');
+    const thumbs = strip.querySelectorAll('.bento-gallery-thumb, .gemini-thumb-pill');
     thumbs.forEach(thumb => {
       thumb.addEventListener('click', (e) => {
         e.stopPropagation();
