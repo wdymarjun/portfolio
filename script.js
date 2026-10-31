@@ -129,13 +129,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const zoomBadge = document.getElementById('zoomBadge');
 
   const triggerElements = Array.from(document.querySelectorAll('[data-modal-img]'));
-  
+
   // Build project registry
   const projectsData = triggerElements.map((trigger, idx) => {
     let parsedSpecs = [];
     try {
       parsedSpecs = JSON.parse(trigger.getAttribute('data-modal-specs') || '[]');
-    } catch (err) {}
+    } catch (err) { }
 
     return {
       index: idx,
@@ -348,70 +348,4 @@ document.addEventListener('DOMContentLoaded', () => {
   setupGallerySwitcher('ascGalleryStrip', 'ascMediaMain', 'ascMainImg');
   setupGallerySwitcher('inboxGalleryStrip', 'inboxQuestBentoMedia', 'inboxQuestBentoImg');
 
-  // 7. GOOGLE GEMINI-INSPIRED "LOOK WHAT YOU CAN DO" INTERACTIVE STAGE CONTROLLER
-  const geminiTabs = document.querySelectorAll('.gemini-tab');
-  const geminiPanels = document.querySelectorAll('.gemini-panel');
-  const stageAura = document.getElementById('stageAura');
-
-  const auraThemes = {
-    'inbox-quest': 'radial-gradient(circle, rgba(66, 133, 244, 0.24) 0%, rgba(0, 229, 255, 0.15) 45%, transparent 70%)',
-    'asc-engine': 'radial-gradient(circle, rgba(234, 67, 53, 0.22) 0%, rgba(155, 81, 224, 0.16) 45%, transparent 70%)',
-    'cpp-systems': 'radial-gradient(circle, rgba(52, 211, 153, 0.22) 0%, rgba(66, 133, 244, 0.16) 45%, transparent 70%)',
-    'prompt-pipeline': 'radial-gradient(circle, rgba(155, 81, 224, 0.24) 0%, rgba(251, 188, 4, 0.14) 45%, transparent 70%)'
-  };
-
-  geminiTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const targetTabKey = tab.getAttribute('data-tab');
-      if (!targetTabKey) return;
-
-      // Update active tab button
-      geminiTabs.forEach(t => {
-        t.classList.remove('active');
-        t.setAttribute('aria-selected', 'false');
-      });
-      tab.classList.add('active');
-      tab.setAttribute('aria-selected', 'true');
-
-      // Update active panel
-      geminiPanels.forEach(panel => {
-        if (panel.id === `panel-${targetTabKey}`) {
-          panel.classList.add('active');
-        } else {
-          panel.classList.remove('active');
-        }
-      });
-
-      // Shift dynamic ambient backdrop aura
-      if (stageAura && auraThemes[targetTabKey]) {
-        stageAura.style.background = auraThemes[targetTabKey];
-      }
-    });
-  });
-
-  // Angle switcher inside Gemini Inbox Quest showcase
-  const angleButtons = document.querySelectorAll('.gemini-angle-switcher .angle-btn');
-  angleButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      angleButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      const targetImgId = btn.getAttribute('data-target');
-      const newSrc = btn.getAttribute('data-img');
-      const targetImg = document.getElementById(targetImgId);
-
-      if (targetImg && newSrc) {
-        targetImg.style.opacity = '0.3';
-        setTimeout(() => {
-          targetImg.src = newSrc;
-          targetImg.style.opacity = '1';
-        }, 140);
-
-        const parentFrame = targetImg.closest('.gemini-screen-frame');
-        if (parentFrame) {
-          parentFrame.setAttribute('data-modal-img', newSrc);
-        }
-      }
-    });
-  });
 });
