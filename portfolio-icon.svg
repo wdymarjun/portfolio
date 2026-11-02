@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="sky" cx="52%" cy="36%" r="80%">
+      <stop offset="0" stop-color="#20232c"/>
+      <stop offset=".62" stop-color="#101116"/>
+      <stop offset="1" stop-color="#07080b"/>
+    </radialGradient>
+    <radialGradient id="moon" cx="38%" cy="31%" r="72%">
+      <stop offset="0" stop-color="#fffef8"/>
+      <stop offset=".68" stop-color="#e4e3df"/>
+      <stop offset="1" stop-color="#a8abb2"/>
+    </radialGradient>
+    <radialGradient id="halo">
+      <stop offset=".56" stop-color="#e9e9e5" stop-opacity=".2"/>
+      <stop offset="1" stop-color="#dce0eb" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cloud" x1="0" y1="0" x2=".15" y2="1">
+      <stop offset="0" stop-color="#181a20"/>
+      <stop offset=".42" stop-color="#0b0c10"/>
+      <stop offset="1" stop-color="#030405"/>
+    </linearGradient>
+    <linearGradient id="cloud-edge" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#30313a" stop-opacity="0"/>
+      <stop offset=".48" stop-color="#454650" stop-opacity=".58"/>
+      <stop offset="1" stop-color="#30313a" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="soft-glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="17"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" fill="url(#sky)"/>
+  <circle cx="269" cy="213" r="189" fill="url(#halo)"/>
+  <circle cx="269" cy="213" r="132" fill="#ecebe4" opacity=".23" filter="url(#soft-glow)"/>
+  <circle cx="269" cy="213" r="111" fill="url(#moon)"/>
+  <g fill="#868990" opacity=".13">
+    <circle cx="228" cy="164" r="15"/>
+    <circle cx="303" cy="139" r="8"/>
+    <circle cx="324" cy="208" r="19"/>
+    <circle cx="250" cy="250" r="12"/>
+    <circle cx="286" cy="278" r="6"/>
+  </g>
+  <g fill="#f3f1e9" opacity=".26">
+    <circle cx="105" cy="121" r="2"/>
+    <circle cx="396" cy="104" r="2"/>
+    <circle cx="423" cy="221" r="1.8"/>
+    <circle cx="77" cy="243" r="1.6"/>
+    <circle cx="359" cy="62" r="1.5"/>
+    <circle cx="158" cy="77" r="1.4"/>
+  </g>
+  <path d="M0 369c23-19 38-25 57-23 8-34 34-56 68-56 29 0 52 16 63 42 13-13 30-20 49-20 30 0 53 19 61 46 12-10 27-16 44-16 27 0 48 15 57 38 16-9 36-14 56-10 24 4 43 20 57 39v103H0z" fill="url(#cloud)"/>
+  <path d="M0 369c23-19 38-25 57-23 8-34 34-56 68-56 29 0 52 16 63 42 13-13 30-20 49-20 30 0 53 19 61 46 12-10 27-16 44-16 27 0 48 15 57 38 16-9 36-14 56-10 24 4 43 20 57 39" fill="none" stroke="url(#cloud-edge)" stroke-width="3"/>
+  <path d="M0 426c27-21 52-27 79-19 5-30 30-51 63-51 27 0 48 14 60 36 14-17 33-27 55-27 28 0 50 17 61 41 13-14 31-22 52-22 28 0 51 18 59 44 31-17 62-13 83 2v82H0z" fill="#08090c"/>
+  <path d="M0 426c27-21 52-27 79-19 5-30 30-51 63-51 27 0 48 14 60 36 14-17 33-27 55-27 28 0 50 17 61 41 13-14 31-22 52-22 28 0 51 18 59 44 31-17 62-13 83 2" fill="none" stroke="url(#cloud-edge)" stroke-width="2.5"/>
+  <path d="M0 477c31-17 60-19 89-8 15-20 35-30 59-30 24 0 44 11 57 30 17-11 36-16 56-14 25 3 44 15 57 35 15-11 32-16 51-15 28 1 50 14 64 37H0z" fill="#030405"/>
+</svg>
