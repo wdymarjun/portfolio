@@ -1,10 +1,14 @@
 // ==========================================================================
-// ARJUN SINGH — APPLE KEYNOTE FLAGSHIP INTERACTION SCRIPT
-// High-Engineered Pop-up Lightbox, Spring Physics, Spatial Depth & Telemetry
+// ARJUN SINGH — EXECUTIVE TECHNICAL PORTFOLIO INTERACTION ENGINE
+// Accessible Section Browser, Coordinated Scroll Reveals, Titanium Parallax & Modal
 // ==========================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. TOP PROGRESS BAR & PARALLAX ENGINE (SCROLLING DOWN & UP - 60FPS RAF DEBOUNCED)
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // --------------------------------------------------------------------------
+  // 1. TOP PROGRESS BAR & PARALLAX ENGINE (SCROLLING DOWN & UP - 60FPS RAF)
+  // --------------------------------------------------------------------------
   const progressBar = document.getElementById('scrollProgress');
   const ambientGlow = document.querySelector('.ambient-glow');
   const appleNav = document.querySelector('.apple-nav');
@@ -23,21 +27,21 @@ document.addEventListener('DOMContentLoaded', () => {
         progressBar.style.width = `${progress}%`;
       }
 
-      // Parallax spatial depth on ambient glow (disabled on small screens for performance)
-      if (ambientGlow && window.innerWidth > 768) {
-        ambientGlow.style.transform = `translateX(-50%) translateY(${scrollY * 0.12}px)`;
+      // Parallax spatial depth on ambient glow (disabled on mobile or reduced-motion)
+      if (ambientGlow && window.innerWidth > 768 && !prefersReducedMotion) {
+        ambientGlow.style.transform = `translateX(-50%) translateY(${scrollY * 0.1}px)`;
       }
 
-      // Navbar blur & scroll elevation
+      // Navbar elevation styling on scroll
       if (appleNav) {
         if (scrollY > 25) {
-          appleNav.style.background = 'rgba(18, 18, 19, 0.92)';
+          appleNav.style.background = 'rgba(18, 18, 20, 0.92)';
           appleNav.style.borderColor = 'rgba(255, 255, 255, 0.16)';
-          appleNav.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.65)';
+          appleNav.style.boxShadow = '0 12px 36px rgba(0, 0, 0, 0.72)';
         } else {
-          appleNav.style.background = 'rgba(22, 22, 23, 0.75)';
-          appleNav.style.borderColor = 'rgba(255, 255, 255, 0.08)';
-          appleNav.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.6)';
+          appleNav.style.background = 'rgba(18, 18, 20, 0.78)';
+          appleNav.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+          appleNav.style.boxShadow = '0 10px 36px rgba(0, 0, 0, 0.65)';
         }
       }
     });
@@ -47,12 +51,234 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', onScrollFrame, { passive: true });
   onScrollFrame();
 
-  // 2. SLOW, LOW-BLUR TO CLEAR SCROLL REVEAL ENGINE (60 FPS OPTIMIZED)
+  // --------------------------------------------------------------------------
+  // 2. ACCESSIBLE SECTION BROWSER & SCROLLSPY ENGINE
+  // (Home, Work, Podium, About, Contact)
+  // --------------------------------------------------------------------------
+  const sectionIds = ['hero', 'work', 'awards', 'about', 'contact'];
+  const desktopLinks = Array.from(document.querySelectorAll('.nav-link[data-section]'));
+  const mobileLinks = Array.from(document.querySelectorAll('.mobile-nav-link[data-section]'));
+  const railDots = Array.from(document.querySelectorAll('.section-rail-dot[data-section]'));
+  const pillIndicator = document.getElementById('navPillIndicator');
+  const navBrowser = document.getElementById('navBrowser');
+
+  let currentActiveSection = 'hero';
+
+  // Animate the titanium sliding indicator behind desktop nav items
+  function positionPill(targetLink, isImmediate = false) {
+    if (!pillIndicator || !targetLink || !navBrowser) return;
+    const linkRect = targetLink.getBoundingClientRect();
+    const browserRect = navBrowser.getBoundingClientRect();
+
+    const left = linkRect.left - browserRect.left;
+    const width = linkRect.width;
+
+    if (isImmediate || prefersReducedMotion) {
+      pillIndicator.style.transition = 'none';
+    } else {
+      pillIndicator.style.transition = 'transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), width 0.38s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease';
+    }
+
+    pillIndicator.style.transform = `translateX(${left}px)`;
+    pillIndicator.style.width = `${width}px`;
+    pillIndicator.style.opacity = '1';
+  }
+
+  function setActiveSection(sectionId, updatePill = true) {
+    if (!sectionId) return;
+    currentActiveSection = sectionId;
+
+    // 1. Update Desktop Navigation
+    let activeDesktopLink = null;
+    desktopLinks.forEach(link => {
+      const match = link.getAttribute('data-section') === sectionId;
+      link.classList.toggle('active', match);
+      if (match) {
+        link.setAttribute('aria-current', 'page');
+        activeDesktopLink = link;
+      } else {
+        link.removeAttribute('aria-current');
+      }
+    });
+
+    if (updatePill && activeDesktopLink && window.innerWidth > 880) {
+      positionPill(activeDesktopLink);
+    }
+
+    // 2. Update Mobile Menu
+    mobileLinks.forEach(link => {
+      const match = link.getAttribute('data-section') === sectionId;
+      link.classList.toggle('active', match);
+      if (match) {
+        link.setAttribute('aria-current', 'page');
+      } else {
+        link.removeAttribute('aria-current');
+      }
+    });
+
+    // 3. Update Side Rail
+    railDots.forEach(dot => {
+      const match = dot.getAttribute('data-section') === sectionId;
+      dot.classList.toggle('active', match);
+      if (match) {
+        dot.setAttribute('aria-current', 'true');
+      } else {
+        dot.removeAttribute('aria-current');
+      }
+    });
+  }
+
+  // Initial pill placement
+  const initialActiveLink = desktopLinks.find(l => l.getAttribute('data-section') === 'hero') || desktopLinks[0];
+  if (initialActiveLink && window.innerWidth > 880) {
+    setTimeout(() => positionPill(initialActiveLink, true), 80);
+  }
+
+  window.addEventListener('resize', () => {
+    const activeLink = desktopLinks.find(l => l.getAttribute('data-section') === currentActiveSection);
+    if (activeLink && window.innerWidth > 880) {
+      positionPill(activeLink, true);
+    } else if (pillIndicator && window.innerWidth <= 880) {
+      pillIndicator.style.opacity = '0';
+    }
+  }, { passive: true });
+
+  // Direct section jump handler
+  function handleSectionJump(e, link) {
+    e.preventDefault();
+    const sectionId = link.getAttribute('data-section');
+    const target = document.getElementById(sectionId);
+    if (!target) return;
+
+    // Immediately update active indicators
+    setActiveSection(sectionId, true);
+
+    // Close mobile menu if currently open
+    closeMobileMenu();
+
+    // Natural smooth scrolling to section
+    target.scrollIntoView({
+      behavior: prefersReducedMotion ? 'auto' : 'smooth',
+      block: 'start'
+    });
+
+    // Update URL hash cleanly without jump
+    if (history.pushState) {
+      history.pushState(null, '', `#${sectionId}`);
+    }
+  }
+
+  desktopLinks.forEach(link => {
+    link.addEventListener('click', (e) => handleSectionJump(e, link));
+  });
+
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', (e) => handleSectionJump(e, link));
+  });
+
+  railDots.forEach(dot => {
+    dot.addEventListener('click', (e) => handleSectionJump(e, dot));
+  });
+
+  // Keyboard navigation inside section browser (Left / Right arrow keys)
+  if (navBrowser) {
+    navBrowser.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        const currentIndex = desktopLinks.findIndex(l => l === document.activeElement);
+        if (currentIndex !== -1) {
+          e.preventDefault();
+          const nextIndex = e.key === 'ArrowRight'
+            ? (currentIndex + 1) % desktopLinks.length
+            : (currentIndex - 1 + desktopLinks.length) % desktopLinks.length;
+          desktopLinks[nextIndex].focus();
+        }
+      }
+    });
+  }
+
+  // IntersectionObserver ScrollSpy
+  const observedSections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+
+  if ('IntersectionObserver' in window) {
+    const spyOptions = {
+      root: null,
+      // Focus on active reading zone (top 20% to mid 65% of screen)
+      rootMargin: '-18% 0px -55% 0px',
+      threshold: 0
+    };
+
+    const spyObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          setActiveSection(id, true);
+        }
+      });
+    }, spyOptions);
+
+    observedSections.forEach(sec => spyObserver.observe(sec));
+
+    // Edge check for top and bottom of page
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY || document.documentElement.scrollTop;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight - 20;
+
+      if (scrollY < 120 && currentActiveSection !== 'hero') {
+        setActiveSection('hero', true);
+      } else if (scrollY >= maxScroll && currentActiveSection !== 'contact') {
+        setActiveSection('contact', true);
+      }
+    }, { passive: true });
+  }
+
+  // --------------------------------------------------------------------------
+  // 3. MOBILE SECTION DRAWER / SHEET CONTROLLER
+  // --------------------------------------------------------------------------
+  const mobileToggle = document.getElementById('navMobileToggle');
+  const mobileMenu = document.getElementById('mobileSectionMenu');
+  const mobileClose = document.getElementById('mobileMenuClose');
+  const mobileBackdrop = document.getElementById('mobileMenuBackdrop');
+
+  function openMobileMenu() {
+    if (!mobileMenu || !mobileToggle) return;
+    mobileMenu.classList.add('active');
+    mobileMenu.setAttribute('aria-hidden', 'false');
+    mobileToggle.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    if (mobileClose) mobileClose.focus();
+  }
+
+  function closeMobileMenu() {
+    if (!mobileMenu || !mobileToggle) return;
+    if (!mobileMenu.classList.contains('active')) return;
+    mobileMenu.classList.remove('active');
+    mobileMenu.setAttribute('aria-hidden', 'true');
+    mobileToggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  if (mobileToggle) {
+    mobileToggle.addEventListener('click', () => {
+      const isOpen = mobileMenu && mobileMenu.classList.contains('active');
+      if (isOpen) {
+        closeMobileMenu();
+      } else {
+        openMobileMenu();
+      }
+    });
+  }
+
+  if (mobileClose) mobileClose.addEventListener('click', closeMobileMenu);
+  if (mobileBackdrop) mobileBackdrop.addEventListener('click', closeMobileMenu);
+
+  // --------------------------------------------------------------------------
+  // 4. COORDINATED SCROLL REVEAL ENGINE
+  // --------------------------------------------------------------------------
   const scrollElements = document.querySelectorAll(
     '.fade-in-on-scroll, .scroll-reveal, .gemini-work-row, .award-row, .about-text-col, .competencies-box, .contact-section, .footer-top-row, .footer-wordmark'
   );
 
-  if ('IntersectionObserver' in window) {
+  if ('IntersectionObserver' in window && !prefersReducedMotion) {
     const observerOptions = {
       root: null,
       rootMargin: '0px 0px -40px 0px',
@@ -65,14 +291,12 @@ document.addEventListener('DOMContentLoaded', () => {
           const el = entry.target;
           el.classList.add('visible');
 
-          // Once transition completes, drop filter & will-change to free GPU memory
           const onSettled = () => {
             el.classList.add('anim-settled');
             el.removeEventListener('transitionend', onSettled);
           };
           el.addEventListener('transitionend', onSettled, { once: true });
 
-          // Unobserve once revealed for zero scroll overhead on mobile/low-end devices
           scrollObserver.unobserve(el);
         }
       });
@@ -80,11 +304,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     scrollElements.forEach(el => scrollObserver.observe(el));
   } else {
-    // Fallback for browsers without IntersectionObserver
+    // Immediate reveal for reduced-motion or fallback browsers
     scrollElements.forEach(el => el.classList.add('visible', 'anim-settled'));
   }
 
-  // 3. COPY EMAIL INTERACTION
+  // --------------------------------------------------------------------------
+  // 5. COPY EMAIL INTERACTION
+  // --------------------------------------------------------------------------
   const copyBtn = document.getElementById('copyEmailBtn');
   const copyText = document.getElementById('copyEmailText');
   if (copyBtn) {
@@ -102,7 +328,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 4. HIGH-ENGINEERED APPLE-GRADE LIGHTBOX ENGINE
+  // --------------------------------------------------------------------------
+  // 6. HIGH-ENGINEERED APPLE-GRADE LIGHTBOX ENGINE
+  // --------------------------------------------------------------------------
   const modalOverlay = document.getElementById('imageModal');
   const modalChassis = document.getElementById('modalChassis');
   const modalImg = document.getElementById('modalImage');
@@ -148,7 +376,6 @@ document.addEventListener('DOMContentLoaded', () => {
     currentProjectIndex = idx;
     const data = projectsData[idx];
 
-    // Reset zoom state on project transition
     if (isZoomed) {
       toggleZoom(false);
     }
@@ -166,7 +393,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (modalDesc) modalDesc.textContent = data.desc;
     if (modalRepoBtn) modalRepoBtn.href = data.repo;
 
-    // Render telemetry specs
     if (modalSpecs && data.specs) {
       modalSpecs.innerHTML = data.specs.map(item => `
         <div class="modal-spec-item">
@@ -228,19 +454,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Navigation button bindings
   if (modalNextBtn) modalNextBtn.addEventListener('click', nextProject);
   if (modalPrevBtn) modalPrevBtn.addEventListener('click', prevProject);
   if (modalFooterNextBtn) modalFooterNextBtn.addEventListener('click', nextProject);
   if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeModal);
   if (modalZoomBtn) modalZoomBtn.addEventListener('click', () => toggleZoom());
 
-  // Image Frame zoom click
   if (modalImageFrame) {
     modalImageFrame.addEventListener('click', () => toggleZoom());
   }
 
-  // Backdrop click to close
   if (modalOverlay) {
     modalOverlay.addEventListener('click', (e) => {
       if (e.target === modalOverlay) {
@@ -249,22 +472,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Keyboard navigation
+  // Keyboard navigation for modal & mobile menu
   window.addEventListener('keydown', (e) => {
-    if (!modalOverlay || !modalOverlay.classList.contains('active')) return;
+    // 1. Lightbox active
+    if (modalOverlay && modalOverlay.classList.contains('active')) {
+      if (e.key === 'Escape') {
+        closeModal();
+      } else if (e.key === 'ArrowRight') {
+        nextProject();
+      } else if (e.key === 'ArrowLeft') {
+        prevProject();
+      } else if (e.key === 'z' || e.key === 'Z') {
+        toggleZoom();
+      }
+      return;
+    }
 
-    if (e.key === 'Escape') {
-      closeModal();
-    } else if (e.key === 'ArrowRight') {
-      nextProject();
-    } else if (e.key === 'ArrowLeft') {
-      prevProject();
-    } else if (e.key === 'z' || e.key === 'Z') {
-      toggleZoom();
+    // 2. Mobile Section Menu active
+    if (mobileMenu && mobileMenu.classList.contains('active')) {
+      if (e.key === 'Escape') {
+        closeMobileMenu();
+      }
     }
   });
 
-  // Dynamic Specular Cursor Spotlight tracker on Modal Chassis
+  // Spotlight tracker on Modal Chassis
   if (modalChassis) {
     modalChassis.addEventListener('mousemove', (e) => {
       const rect = modalChassis.getBoundingClientRect();
@@ -275,37 +507,57 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 5. HIGH-ENGINEERED CURSOR SPOTLIGHT TRACKING (ZERO-LAG RAF)
-  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    const interactiveCards = document.querySelectorAll('.bento-card, .gemini-work-row');
-    interactiveCards.forEach(card => {
-      let rafId = null;
+  // --------------------------------------------------------------------------
+  // 7. RESTRAINED 3D CARD DEPTH & SPOTLIGHT ENGINE (ZERO-LAG RAF)
+  // --------------------------------------------------------------------------
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches && !prefersReducedMotion) {
+    const visualCards = document.querySelectorAll('.gemini-visual-card');
+
+    visualCards.forEach(card => {
+      let tiltRaf = null;
+
       card.addEventListener('mousemove', (e) => {
-        if (rafId) cancelAnimationFrame(rafId);
-        rafId = requestAnimationFrame(() => {
+        if (tiltRaf) cancelAnimationFrame(tiltRaf);
+        tiltRaf = requestAnimationFrame(() => {
           const rect = card.getBoundingClientRect();
           const x = e.clientX - rect.left;
           const y = e.clientY - rect.top;
+
+          // Normalized mouse offset (-1 to 1)
+          const normX = (x / rect.width) * 2 - 1;
+          const normY = (y / rect.height) * 2 - 1;
+
+          // Subtle, restrained rotation (max 2.2 degrees)
+          const rotX = -normY * 2.2;
+          const rotY = normX * 2.2;
+
+          card.style.setProperty('--card-rot-x', `${rotX.toFixed(2)}deg`);
+          card.style.setProperty('--card-rot-y', `${rotY.toFixed(2)}deg`);
           card.style.setProperty('--mouse-x', `${x}px`);
           card.style.setProperty('--mouse-y', `${y}px`);
         });
       }, { passive: true });
 
       card.addEventListener('mouseleave', () => {
+        if (tiltRaf) cancelAnimationFrame(tiltRaf);
+        card.style.setProperty('--card-rot-x', '0deg');
+        card.style.setProperty('--card-rot-y', '0deg');
         card.style.removeProperty('--mouse-x');
         card.style.removeProperty('--mouse-y');
       });
     });
   }
 
-  // 6. MULTI-ANGLE GALLERY SWITCHERS FOR BENTO CARDS
+  // --------------------------------------------------------------------------
+  // 8. MULTI-ANGLE GALLERY SWITCHERS FOR VISUAL CARDS
+  // --------------------------------------------------------------------------
   function setupGallerySwitcher(stripId, mainWrapId, mainImgId) {
     const strip = document.getElementById(stripId);
     const mainWrap = document.getElementById(mainWrapId);
     const mainImg = document.getElementById(mainImgId);
     if (!strip || !mainWrap || !mainImg) return;
 
-    const thumbs = strip.querySelectorAll('.bento-gallery-thumb, .gemini-thumb-pill');
+    const thumbs = strip.querySelectorAll('.gemini-thumb-pill');
     thumbs.forEach(thumb => {
       thumb.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -326,7 +578,6 @@ document.addEventListener('DOMContentLoaded', () => {
         mainWrap.setAttribute('data-modal-title', newTitle);
         mainWrap.setAttribute('data-modal-desc', newDesc);
 
-        // Synchronize modal data registry dynamically
         const foundIdx = triggerElements.indexOf(mainWrap);
         if (foundIdx !== -1 && projectsData && projectsData[foundIdx]) {
           projectsData[foundIdx].img = newImg;
@@ -340,7 +591,9 @@ document.addEventListener('DOMContentLoaded', () => {
   setupGallerySwitcher('ascGalleryStrip', 'ascMediaMain', 'ascMainImg');
   setupGallerySwitcher('inboxGalleryStrip', 'inboxQuestBentoMedia', 'inboxQuestBentoImg');
 
-  // 7. CINEMATIC FULLSCREEN INTRO VIDEO CONTROLLER (FULL PLAYTHROUGH & TAP-TO-SKIP)
+  // --------------------------------------------------------------------------
+  // 9. CINEMATIC FULLSCREEN INTRO VIDEO CONTROLLER
+  // --------------------------------------------------------------------------
   const introOverlay = document.getElementById('introVideoOverlay');
   const introVideo = document.getElementById('introVideo');
 
@@ -353,27 +606,28 @@ document.addEventListener('DOMContentLoaded', () => {
       if (isIntroDismissed) return;
       isIntroDismissed = true;
 
-      // Smooth hardware-accelerated fade-down transition
       introOverlay.classList.add('fading-out');
       document.body.classList.remove('intro-active');
       document.body.classList.add('intro-revealed');
       document.body.style.overflow = '';
 
-      // Safely pause video after transition finishes
+      // Re-position desktop nav pill after intro reveal animation settles
+      setTimeout(() => {
+        const activeLink = desktopLinks.find(l => l.getAttribute('data-section') === currentActiveSection);
+        if (activeLink && window.innerWidth > 880) {
+          positionPill(activeLink);
+        }
+      }, 400);
+
       setTimeout(() => {
         try { introVideo.pause(); } catch (e) {}
         introOverlay.style.display = 'none';
       }, 950);
     };
 
-    // Video plays full duration (~10s) and only transitions when completely finished
     introVideo.addEventListener('ended', dismissIntro);
-
-    // Skips ONLY on direct user tap, touch, click, or ESC
     introOverlay.addEventListener('click', dismissIntro);
-    introOverlay.addEventListener('touchstart', (e) => {
-      dismissIntro();
-    }, { passive: true });
+    introOverlay.addEventListener('touchstart', dismissIntro, { passive: true });
 
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && !isIntroDismissed) {
@@ -381,7 +635,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Start video playback (muted autoplay)
     const playPromise = introVideo.play();
     if (playPromise !== undefined) {
       playPromise.catch((err) => {
@@ -389,5 +642,4 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   }
-
 });

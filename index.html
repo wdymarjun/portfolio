@@ -30,27 +30,129 @@
   <!-- Ambient Titanium Glow (Pure monochromatic) -->
   <div class="ambient-glow" aria-hidden="true"></div>
 
-  <!-- FLOATING FROSTED GLASS NAVBAR (Apple Style) -->
-  <div class="nav-wrapper">
-    <nav class="apple-nav">
-      <a href="#" class="nav-brand">Arjun Singh <span>/ Systems</span></a>
+  <!-- FLOATING FROSTED GLASS NAVBAR & SECTION BROWSER -->
+  <header class="nav-wrapper" role="banner">
+    <nav class="apple-nav" aria-label="Portfolio sections">
+      <a href="#hero" class="nav-brand" aria-label="Arjun Singh - Back to top">
+        Arjun Singh <span class="nav-brand-sub">/ Systems</span>
+      </a>
 
-      <ul class="nav-links">
-        <li><a href="#work">Work</a></li>
-        <li><a href="#awards">Podium</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
+      <!-- Desktop Section Browser -->
+      <div class="nav-browser" id="navBrowser">
+        <div class="nav-pill-indicator" id="navPillIndicator" aria-hidden="true"></div>
+        <ul class="nav-links" id="desktopNavLinks" role="list">
+          <li><a href="#hero" class="nav-link active" data-section="hero" aria-current="page"><span class="nav-num">01</span><span>Home</span></a></li>
+          <li><a href="#work" class="nav-link" data-section="work"><span class="nav-num">02</span><span>Work</span></a></li>
+          <li><a href="#awards" class="nav-link" data-section="awards"><span class="nav-num">03</span><span>Podium</span></a></li>
+          <li><a href="#about" class="nav-link" data-section="about"><span class="nav-num">04</span><span>About</span></a></li>
+          <li><a href="#contact" class="nav-link" data-section="contact"><span class="nav-num">05</span><span>Contact</span></a></li>
+        </ul>
+      </div>
 
-      <a href="Arjun_Singh_Resume.pdf" download="Arjun_Singh_Resume.pdf" class="nav-cta">Resume ↗</a>
+      <div class="nav-actions">
+        <a href="Arjun_Singh_Resume.pdf" download="Arjun_Singh_Resume.pdf" class="nav-cta" aria-label="Download Official Resume">
+          <span>Resume</span> <span class="nav-cta-arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <!-- Mobile Section Browser Toggle Button -->
+        <button type="button" class="nav-mobile-toggle" id="navMobileToggle" aria-label="Open section browser" aria-expanded="false" aria-controls="mobileSectionMenu">
+          <span class="nav-toggle-text">Sections</span>
+          <span class="nav-toggle-icon" aria-hidden="true">
+            <span class="toggle-bar"></span>
+            <span class="toggle-bar"></span>
+          </span>
+        </button>
+      </div>
     </nav>
-  </div>
+
+    <!-- Mobile Accessible Section Menu Panel -->
+    <div class="mobile-section-menu" id="mobileSectionMenu" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Section Navigation">
+      <div class="mobile-menu-backdrop" id="mobileMenuBackdrop" tabindex="-1"></div>
+      <div class="mobile-menu-sheet">
+        <div class="mobile-menu-top">
+          <div class="mobile-menu-label">SECTION BROWSER</div>
+          <button type="button" class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="mobile-nav-list" role="list">
+          <li>
+            <a href="#hero" class="mobile-nav-link active" data-section="hero" aria-current="page">
+              <span class="mobile-nav-index">01</span>
+              <span class="mobile-nav-title">Home</span>
+              <span class="mobile-nav-tag">Overview</span>
+            </a>
+          </li>
+          <li>
+            <a href="#work" class="mobile-nav-link" data-section="work">
+              <span class="mobile-nav-index">02</span>
+              <span class="mobile-nav-title">Work</span>
+              <span class="mobile-nav-tag">4 Projects</span>
+            </a>
+          </li>
+          <li>
+            <a href="#awards" class="mobile-nav-link" data-section="awards">
+              <span class="mobile-nav-index">03</span>
+              <span class="mobile-nav-title">Podium</span>
+              <span class="mobile-nav-tag">Hackathons</span>
+            </a>
+          </li>
+          <li>
+            <a href="#about" class="mobile-nav-link" data-section="about">
+              <span class="mobile-nav-index">04</span>
+              <span class="mobile-nav-title">About</span>
+              <span class="mobile-nav-tag">Philosophy</span>
+            </a>
+          </li>
+          <li>
+            <a href="#contact" class="mobile-nav-link" data-section="contact">
+              <span class="mobile-nav-index">05</span>
+              <span class="mobile-nav-title">Contact</span>
+              <span class="mobile-nav-tag">Connect</span>
+            </a>
+          </li>
+        </ul>
+        <div class="mobile-menu-bottom">
+          <a href="Arjun_Singh_Resume.pdf" download="Arjun_Singh_Resume.pdf" class="btn-primary mobile-menu-cta">Download Official Resume ↗</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Side Section Telemetry Rail (Keynote Architecture Index for Large Screens) -->
+  <aside class="section-rail" aria-label="Section Quick Jump" aria-hidden="true">
+    <div class="section-rail-track">
+      <a href="#hero" class="section-rail-dot active" data-section="hero" tabindex="-1" title="01 Home">
+        <span class="rail-pill">01 Home</span>
+        <span class="rail-pip"></span>
+      </a>
+      <a href="#work" class="section-rail-dot" data-section="work" tabindex="-1" title="02 Work">
+        <span class="rail-pill">02 Work</span>
+        <span class="rail-pip"></span>
+      </a>
+      <a href="#awards" class="section-rail-dot" data-section="awards" tabindex="-1" title="03 Podium">
+        <span class="rail-pill">03 Podium</span>
+        <span class="rail-pip"></span>
+      </a>
+      <a href="#about" class="section-rail-dot" data-section="about" tabindex="-1" title="04 About">
+        <span class="rail-pill">04 About</span>
+        <span class="rail-pip"></span>
+      </a>
+      <a href="#contact" class="section-rail-dot" data-section="contact" tabindex="-1" title="05 Contact">
+        <span class="rail-pill">05 Contact</span>
+        <span class="rail-pip"></span>
+      </a>
+    </div>
+  </aside>
 
   <main class="page-container">
 
     <!-- HERO SECTION (Apple Product Keynote Style) -->
-    <section id="hero">
-      <p class="hero-eyebrow">B.Tech Computer Science &amp; Engineering · Class of 2030</p>
+    <section id="hero" data-section-name="Home">
+      <div class="hero-tag-row">
+        <span class="section-badge">01 // OVERVIEW</span>
+        <p class="hero-eyebrow">B.Tech Computer Science &amp; Engineering · Class of 2030</p>
+      </div>
       
       <h1 class="hero-title">
         Arjun Singh.
@@ -106,9 +208,12 @@
     </div>
 
     <!-- SELECTED PRODUCTION WORK (Google Gemini Flagship Editorial Showcase) -->
-    <section id="work" class="work-section fade-in-on-scroll">
+    <section id="work" class="work-section fade-in-on-scroll" data-section-name="Work">
       <div class="work-section-header">
-        <p class="section-label">Selected Work</p>
+        <div class="section-tag-row">
+          <span class="section-badge">02 // ARCHITECTURE</span>
+          <p class="section-label">Selected Work</p>
+        </div>
         <h2 class="section-headline">Built with systems-level discipline.</h2>
       </div>
 
@@ -286,8 +391,11 @@
     </section>
 
     <!-- HACKATHON CIRCUIT & PODIUM PLACEMENTS (Keynote Awards Table) -->
-    <section id="awards" class="awards-section fade-in-on-scroll">
-      <p class="section-label">Track Record &amp; Leadership</p>
+    <section id="awards" class="awards-section fade-in-on-scroll" data-section-name="Podium">
+      <div class="section-tag-row">
+        <span class="section-badge">03 // COMPETITION</span>
+        <p class="section-label">Track Record &amp; Leadership</p>
+      </div>
       <h2 class="section-headline">Competitive execution under pressure.</h2>
 
       <div class="awards-table">
@@ -342,10 +450,13 @@
     </section>
 
     <!-- ABOUT SECTION (Apple Editorial Style) -->
-    <section id="about" class="about-section fade-in-on-scroll">
+    <section id="about" class="about-section fade-in-on-scroll" data-section-name="About">
       <div class="about-grid">
         <div class="about-text-col">
-          <p class="section-label">Background &amp; Philosophy</p>
+          <div class="section-tag-row">
+            <span class="section-badge">04 // FOUNDATIONS</span>
+            <p class="section-label">Background &amp; Philosophy</p>
+          </div>
           <p class="about-lead">
             The deepest understanding of software comes from building systems from scratch.
           </p>
@@ -388,7 +499,10 @@
     </section>
 
     <!-- CONTACT CTA -->
-    <section id="contact" class="contact-section fade-in-on-scroll">
+    <section id="contact" class="contact-section fade-in-on-scroll" data-section-name="Contact">
+      <div class="section-tag-row center">
+        <span class="section-badge">05 // CONNECT</span>
+      </div>
       <h2 class="contact-headline">
         Let's build something<br>
         <span>extraordinary.</span>
