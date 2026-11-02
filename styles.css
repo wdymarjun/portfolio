@@ -579,47 +579,6 @@ body {
   }
 }
 
-/* Architectural Telemetry Badges & Tag Rows */
-.section-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 4px 12px;
-  border-radius: 999px;
-  margin-bottom: 10px;
-  width: fit-content;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-.section-tag-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 8px;
-}
-
-.section-tag-row.center {
-  justify-content: center;
-}
-
-.hero-tag-row {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 8px;
-}
-
 /* Enhanced Focus Ring Accessibility (WCAG AAA) */
 .nav-link:focus-visible,
 .nav-brand:focus-visible,
@@ -1992,22 +1951,12 @@ footer:hover .footer-wordmark.visible {
   will-change: auto !important;
 }
 
-/* Section Badges, Labels & Headlines Animation */
-.section-badge,
+/* Section Labels & Headlines Animation */
 .section-label,
 .section-headline {
   opacity: 0;
   transform: translate3d(0, 16px, 0);
   transition: opacity 480ms var(--ease-apple), transform 480ms var(--ease-apple);
-}
-
-.work-section.visible .section-badge,
-.awards-section.visible .section-badge,
-.about-section.visible .section-badge,
-.contact-section.visible .section-badge {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
-  transition-delay: 0.02s;
 }
 
 .work-section.visible .section-label,
@@ -2084,7 +2033,6 @@ footer:hover .footer-wordmark.visible {
   .competencies-box,
   .contact-section,
   .footer-top-row,
-  .section-badge,
   .section-label,
   .section-headline,
   .contact-headline,
