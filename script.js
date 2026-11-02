@@ -21,10 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const scrollY = window.scrollY || document.documentElement.scrollTop;
       const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
 
-      // Fluid progress bar width
+      // Scale the indicator without triggering layout.
       if (progressBar && docHeight > 0) {
         const progress = Math.min(100, Math.max(0, (scrollY / docHeight) * 100));
-        progressBar.style.width = `${progress}%`;
+        progressBar.style.transform = `scaleX(${progress / 100})`;
       }
 
       // Parallax spatial depth on ambient glow (disabled on mobile or reduced-motion)
@@ -33,17 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       // Navbar elevation styling on scroll
-      if (appleNav) {
-        if (scrollY > 25) {
-          appleNav.style.background = 'rgba(18, 18, 20, 0.92)';
-          appleNav.style.borderColor = 'rgba(255, 255, 255, 0.16)';
-          appleNav.style.boxShadow = '0 12px 36px rgba(0, 0, 0, 0.72)';
-        } else {
-          appleNav.style.background = 'rgba(18, 18, 20, 0.78)';
-          appleNav.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-          appleNav.style.boxShadow = '0 10px 36px rgba(0, 0, 0, 0.65)';
-        }
-      }
+      appleNav?.classList.toggle('is-scrolled', scrollY > 25);
     });
   };
 
@@ -61,8 +51,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const railDots = Array.from(document.querySelectorAll('.section-rail-dot[data-section]'));
   const pillIndicator = document.getElementById('navPillIndicator');
   const navBrowser = document.getElementById('navBrowser');
+  const mobileToggle = document.getElementById('navMobileToggle');
+  const mobileToggleLabel = mobileToggle?.querySelector('.nav-toggle-text');
+  const mobileMenu = document.getElementById('mobileSectionMenu');
+  const mobileClose = document.getElementById('mobileMenuClose');
+  const mobileBackdrop = document.getElementById('mobileMenuBackdrop');
 
-  let currentActiveSection = 'hero';
+  const initialSection = location.hash.slice(1);
+  let currentActiveSection = sectionIds.includes(initialSection) ? initialSection : 'hero';
+  let previousBodyOverflow = '';
 
   // Animate the titanium sliding indicator behind desktop nav items
   function positionPill(targetLink, isImmediate = false) {
@@ -76,12 +73,26 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isImmediate || prefersReducedMotion) {
       pillIndicator.style.transition = 'none';
     } else {
-      pillIndicator.style.transition = 'transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), width 0.38s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease';
+      pillIndicator.style.transition = 'transform 240ms cubic-bezier(0.16, 1, 0.3, 1), width 240ms cubic-bezier(0.16, 1, 0.3, 1), opacity 160ms ease';
     }
 
     pillIndicator.style.transform = `translateX(${left}px)`;
     pillIndicator.style.width = `${width}px`;
     pillIndicator.style.opacity = '1';
+  }
+
+  function updateMobileToggleLabel(isOpen = false) {
+    if (!mobileToggle) return;
+    const activeLink = mobileLinks.find(link => link.getAttribute('data-section') === currentActiveSection);
+    const title = activeLink?.querySelector('.mobile-nav-title')?.textContent.trim() || 'Home';
+    const index = Math.max(1, sectionIds.indexOf(currentActiveSection) + 1);
+    if (mobileToggleLabel) {
+      mobileToggleLabel.textContent = `${String(index).padStart(2, '0')} / ${title}`;
+    }
+    mobileToggle.setAttribute(
+      'aria-label',
+      `${isOpen ? 'Close' : 'Open'} section browser, current section ${title}`
+    );
   }
 
   function setActiveSection(sectionId, updatePill = true) {
@@ -94,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const match = link.getAttribute('data-section') === sectionId;
       link.classList.toggle('active', match);
       if (match) {
-        link.setAttribute('aria-current', 'page');
+        link.setAttribute('aria-current', 'location');
         activeDesktopLink = link;
       } else {
         link.removeAttribute('aria-current');
@@ -110,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const match = link.getAttribute('data-section') === sectionId;
       link.classList.toggle('active', match);
       if (match) {
-        link.setAttribute('aria-current', 'page');
+        link.setAttribute('aria-current', 'location');
       } else {
         link.removeAttribute('aria-current');
       }
@@ -121,20 +132,33 @@ document.addEventListener('DOMContentLoaded', () => {
       const match = dot.getAttribute('data-section') === sectionId;
       dot.classList.toggle('active', match);
       if (match) {
-        dot.setAttribute('aria-current', 'true');
+        dot.setAttribute('aria-current', 'location');
       } else {
         dot.removeAttribute('aria-current');
       }
     });
+
+    updateMobileToggleLabel(mobileMenu?.classList.contains('active'));
   }
 
+  setActiveSection(currentActiveSection, false);
+
   // Initial pill placement
-  const initialActiveLink = desktopLinks.find(l => l.getAttribute('data-section') === 'hero') || desktopLinks[0];
+  const initialActiveLink = desktopLinks.find(l => l.getAttribute('data-section') === currentActiveSection) || desktopLinks[0];
   if (initialActiveLink && window.innerWidth > 880) {
     setTimeout(() => positionPill(initialActiveLink, true), 80);
   }
 
   window.addEventListener('resize', () => {
+    if (window.innerWidth > 880 && mobileMenu?.classList.contains('active')) {
+      const shouldMoveFocus = mobileMenu.contains(document.activeElement) || document.activeElement === mobileToggle;
+      closeMobileMenu({ restoreFocus: false });
+      if (shouldMoveFocus) {
+        desktopLinks.find(link => link.getAttribute('data-section') === currentActiveSection)
+          ?.focus({ preventScroll: true });
+      }
+    }
+
     const activeLink = desktopLinks.find(l => l.getAttribute('data-section') === currentActiveSection);
     if (activeLink && window.innerWidth > 880) {
       positionPill(activeLink, true);
@@ -153,17 +177,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Immediately update active indicators
     setActiveSection(sectionId, true);
 
-    // Close mobile menu if currently open
-    closeMobileMenu();
+    closeMobileMenu({ restoreFocus: false });
 
-    // Natural smooth scrolling to section
+    target.focus({ preventScroll: true });
     target.scrollIntoView({
       behavior: prefersReducedMotion ? 'auto' : 'smooth',
       block: 'start'
     });
 
-    // Update URL hash cleanly without jump
-    if (history.pushState) {
+    if (history.pushState && location.hash !== `#${sectionId}`) {
       history.pushState(null, '', `#${sectionId}`);
     }
   }
@@ -178,6 +200,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   railDots.forEach(dot => {
     dot.addEventListener('click', (e) => handleSectionJump(e, dot));
+  });
+
+  window.addEventListener('popstate', () => {
+    const sectionId = sectionIds.includes(location.hash.slice(1))
+      ? location.hash.slice(1)
+      : 'hero';
+    const target = document.getElementById(sectionId);
+    setActiveSection(sectionId);
+    requestAnimationFrame(() => {
+      target?.scrollIntoView({
+        behavior: prefersReducedMotion ? 'auto' : 'smooth',
+        block: 'start'
+      });
+    });
   });
 
   // Keyboard navigation inside section browser (Left / Right arrow keys)
@@ -234,27 +270,34 @@ document.addEventListener('DOMContentLoaded', () => {
   // --------------------------------------------------------------------------
   // 3. MOBILE SECTION DRAWER / SHEET CONTROLLER
   // --------------------------------------------------------------------------
-  const mobileToggle = document.getElementById('navMobileToggle');
-  const mobileMenu = document.getElementById('mobileSectionMenu');
-  const mobileClose = document.getElementById('mobileMenuClose');
-  const mobileBackdrop = document.getElementById('mobileMenuBackdrop');
-
   function openMobileMenu() {
     if (!mobileMenu || !mobileToggle) return;
+    previousBodyOverflow = document.body.style.overflow;
     mobileMenu.classList.add('active');
     mobileMenu.setAttribute('aria-hidden', 'false');
+    mobileMenu.inert = false;
     mobileToggle.setAttribute('aria-expanded', 'true');
+    updateMobileToggleLabel(true);
     document.body.style.overflow = 'hidden';
-    if (mobileClose) mobileClose.focus();
+    requestAnimationFrame(() => {
+      if (mobileMenu.classList.contains('active')) {
+        mobileClose?.focus({ preventScroll: true });
+      }
+    });
   }
 
-  function closeMobileMenu() {
+  function closeMobileMenu({ restoreFocus = true } = {}) {
     if (!mobileMenu || !mobileToggle) return;
     if (!mobileMenu.classList.contains('active')) return;
     mobileMenu.classList.remove('active');
     mobileMenu.setAttribute('aria-hidden', 'true');
+    mobileMenu.inert = true;
     mobileToggle.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
+    document.body.style.overflow = previousBodyOverflow;
+    updateMobileToggleLabel(false);
+    if (restoreFocus) {
+      mobileToggle.focus({ preventScroll: true });
+    }
   }
 
   if (mobileToggle) {
@@ -492,6 +535,27 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mobileMenu && mobileMenu.classList.contains('active')) {
       if (e.key === 'Escape') {
         closeMobileMenu();
+        e.preventDefault();
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        const focusable = Array.from(mobileMenu.querySelectorAll(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )).filter(element => element.getClientRects().length > 0);
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (!first || !last) {
+          e.preventDefault();
+          mobileClose?.focus({ preventScroll: true });
+        } else if (e.shiftKey && (document.activeElement === first || !mobileMenu.contains(document.activeElement))) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && (document.activeElement === last || !mobileMenu.contains(document.activeElement))) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     }
   });
@@ -598,8 +662,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const introVideo = document.getElementById('introVideo');
 
   if (introOverlay && introVideo) {
-    document.body.classList.add('intro-active');
-
     let isIntroDismissed = false;
 
     const dismissIntro = () => {
@@ -622,7 +684,7 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         try { introVideo.pause(); } catch (e) {}
         introOverlay.style.display = 'none';
-      }, 950);
+      }, 700);
     };
 
     introVideo.addEventListener('ended', dismissIntro);
@@ -635,6 +697,14 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    if (prefersReducedMotion) {
+      introVideo.pause();
+      introOverlay.style.display = 'none';
+      document.body.classList.add('intro-revealed');
+      return;
+    }
+
+    document.body.classList.add('intro-active');
     const playPromise = introVideo.play();
     if (playPromise !== undefined) {
       playPromise.catch((err) => {

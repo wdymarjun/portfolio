@@ -21,6 +21,10 @@
   --radius-md: 16px;
   --radius-sm: 8px;
   --ease-apple: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-fast: 160ms;
+  --motion-ui: 240ms;
+  --motion-reveal: 560ms;
+  --ease-standard: cubic-bezier(0.2, 0.7, 0.25, 1);
   --transition: all 0.4s var(--ease-apple);
 }
 
@@ -135,9 +139,15 @@ body {
   padding: 6px 10px 6px 20px;
   border-radius: 999px;
   box-shadow: 0 10px 36px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
+  transition: background var(--motion-ui) var(--ease-standard), border-color var(--motion-ui) var(--ease-standard), box-shadow var(--motion-ui) var(--ease-standard), transform var(--motion-ui) var(--ease-standard);
   position: relative;
   max-width: 900px;
+}
+
+.apple-nav.is-scrolled {
+  background: rgba(18, 18, 20, 0.92);
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.72);
 }
 
 .nav-brand {
@@ -176,7 +186,7 @@ body {
   border-radius: 999px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15);
   pointer-events: none;
-  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), width 0.38s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+  transition: transform var(--motion-ui) var(--ease-apple), width var(--motion-ui) var(--ease-apple), opacity var(--motion-fast) ease;
   opacity: 0;
   z-index: 1;
 }
@@ -319,11 +329,12 @@ body {
   inset: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   z-index: 1000;
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s var(--ease-apple), visibility 0.3s;
+  transition: opacity var(--motion-ui) var(--ease-apple), visibility var(--motion-ui);
 }
 
 .mobile-section-menu.active {
@@ -346,6 +357,9 @@ body {
   z-index: 2;
   width: calc(100% - 32px);
   max-width: 440px;
+  max-height: calc(100vh - 84px);
+  max-height: calc(100dvh - 84px - env(safe-area-inset-bottom));
+  overflow-y: auto;
   margin: 64px auto 20px;
   background: rgba(18, 18, 20, 0.94);
   backdrop-filter: blur(32px);
@@ -355,7 +369,7 @@ body {
   padding: 20px;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
   transform: translate3d(0, -18px, 0) scale(0.98);
-  transition: transform 0.35s var(--ease-apple);
+  transition: transform 280ms var(--ease-apple);
 }
 
 .mobile-section-menu.active .mobile-menu-sheet {
@@ -547,6 +561,16 @@ body {
 .section-rail-dot:hover .rail-pill {
   opacity: 1;
   transform: translateX(0);
+}
+
+.section-rail-dot:focus-visible .rail-pill {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.section-rail-dot:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
 }
 
 @media (max-width: 1200px) {
@@ -1878,12 +1902,13 @@ footer:hover .footer-wordmark {
   top: 0;
   left: 0;
   height: 2.5px;
-  width: 0%;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.25) 0%, #ffffff 50%, rgba(200, 200, 205, 0.85) 100%);
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.45);
   z-index: 10000;
   pointer-events: none;
-  transition: width 0.08s ease-out;
 }
 
 /* ==========================================================================
@@ -1900,13 +1925,8 @@ footer:hover .footer-wordmark {
 .contact-section,
 .footer-top-row {
   opacity: 0;
-  filter: blur(3px);
-  transform: translate3d(0, 22px, 0);
-  transition: 
-    opacity 0.78s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.78s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.78s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
+  transform: translate3d(0, 16px, 0);
+  transition: opacity var(--motion-reveal) var(--ease-apple), transform var(--motion-reveal) var(--ease-apple);
 }
 
 .fade-in-on-scroll.visible,
@@ -1918,7 +1938,6 @@ footer:hover .footer-wordmark {
 .contact-section.visible,
 .footer-top-row.visible {
   opacity: 1;
-  filter: blur(0px);
   transform: translate3d(0, 0, 0);
 }
 
@@ -1926,13 +1945,13 @@ footer:hover .footer-wordmark {
 .gemini-work-row .gemini-work-content {
   opacity: 0;
   transform: translate3d(0, 16px, 0);
-  transition: opacity 0.75s var(--ease-apple), transform 0.75s var(--ease-apple);
+  transition: opacity var(--motion-reveal) var(--ease-apple), transform var(--motion-reveal) var(--ease-apple);
 }
 
 .gemini-work-row .gemini-work-visual {
   opacity: 0;
   transform: translate3d(0, 22px, 0);
-  transition: opacity 0.75s var(--ease-apple) 0.09s, transform 0.75s var(--ease-apple) 0.09s;
+  transition: opacity var(--motion-reveal) var(--ease-apple) 60ms, transform var(--motion-reveal) var(--ease-apple) 60ms;
 }
 
 .gemini-work-row.visible .gemini-work-content,
@@ -1944,18 +1963,12 @@ footer:hover .footer-wordmark {
 /* Subtle Architectural Titanium Wordmark (Preserving Faint 7% Watermark Opacity) */
 .footer-wordmark {
   opacity: 0;
-  filter: blur(4px);
-  transform: translate3d(0, 18px, 0);
-  transition: 
-    opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.85s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
+  transform: translate3d(0, 14px, 0);
+  transition: opacity var(--motion-reveal) var(--ease-apple), transform var(--motion-reveal) var(--ease-apple);
 }
 
 .footer-wordmark.visible {
   opacity: 0.07;
-  filter: blur(0px);
   transform: translate3d(0, 0, 0);
 }
 
@@ -1985,9 +1998,7 @@ footer:hover .footer-wordmark.visible {
 .section-headline {
   opacity: 0;
   transform: translate3d(0, 16px, 0);
-  transition: 
-    opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 480ms var(--ease-apple), transform 480ms var(--ease-apple);
 }
 
 .work-section.visible .section-badge,
@@ -2029,15 +2040,13 @@ footer:hover .footer-wordmark.visible {
 .contact-actions-row > * {
   opacity: 0;
   transform: translate3d(0, 16px, 0);
-  transition: 
-    opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 480ms var(--ease-apple), transform 480ms var(--ease-apple);
 }
 
-.contact-section.visible .contact-actions-row > *:nth-child(1) { opacity: 1; transform: translate3d(0, 0, 0); transition-delay: 0.06s; }
-.contact-section.visible .contact-actions-row > *:nth-child(2) { opacity: 1; transform: translate3d(0, 0, 0); transition-delay: 0.12s; }
-.contact-section.visible .contact-actions-row > *:nth-child(3) { opacity: 1; transform: translate3d(0, 0, 0); transition-delay: 0.18s; }
-.contact-section.visible .contact-actions-row > *:nth-child(4) { opacity: 1; transform: translate3d(0, 0, 0); transition-delay: 0.24s; }
+.contact-section.visible .contact-actions-row > *:nth-child(1) { opacity: 1; transform: translate3d(0, 0, 0); transition-delay: 40ms; }
+.contact-section.visible .contact-actions-row > *:nth-child(2) { opacity: 1; transform: translate3d(0, 0, 0); transition-delay: 80ms; }
+.contact-section.visible .contact-actions-row > *:nth-child(3) { opacity: 1; transform: translate3d(0, 0, 0); transition-delay: 120ms; }
+.contact-section.visible .contact-actions-row > *:nth-child(4) { opacity: 1; transform: translate3d(0, 0, 0); transition-delay: 160ms; }
 
 /* Mobile Low-End GPU Optimization: Pure opacity and minimal transform for 60fps */
 @media (max-width: 768px) {
@@ -2051,17 +2060,22 @@ footer:hover .footer-wordmark.visible {
   .footer-top-row,
   .footer-wordmark {
     filter: none !important;
-    transform: translate3d(0, 16px, 0);
-    transition: 
-      opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translate3d(0, 12px, 0);
+    transition: opacity 480ms var(--ease-apple), transform 480ms var(--ease-apple);
   }
 }
 
 /* Accessibility: respect user preference for reduced motion */
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
   .fade-in-on-scroll,
   .scroll-reveal,
+  .bento-card,
+  .gemini-visual-card,
+  .gemini-visual-card img,
   .gemini-work-row,
   .gemini-work-row .gemini-work-content,
   .gemini-work-row .gemini-work-visual,
@@ -2073,6 +2087,8 @@ footer:hover .footer-wordmark.visible {
   .section-badge,
   .section-label,
   .section-headline,
+  .contact-headline,
+  .contact-sub,
   .contact-actions-row > *,
   .hero-eyebrow,
   .hero-title,
@@ -2094,6 +2110,21 @@ footer:hover .footer-wordmark.visible {
   .spec-ticker-track {
     animation: none !important;
   }
+
+  .mobile-section-menu,
+  .mobile-menu-sheet,
+  .nav-pill-indicator,
+  .apple-nav,
+  .page-container,
+  .section-rail,
+  .intro-video-overlay {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .gemini-visual-card img {
+    transform: none !important;
+  }
 }
 
 @keyframes appleFadeUp {
@@ -2104,25 +2135,6 @@ footer:hover .footer-wordmark.visible {
   100% {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-/* Accessibility: respect user preference for reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .fade-in-on-scroll,
-  .scroll-reveal,
-  .bento-card,
-  .award-row,
-  .about-text-col,
-  .competencies-box,
-  .section-label,
-  .section-headline,
-  .contact-headline,
-  .contact-sub,
-  .contact-actions-row > * {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
   }
 }
 
@@ -2574,6 +2586,33 @@ footer:hover .footer-wordmark.visible {
   }
 }
 
+@media (max-width: 380px) {
+  .apple-nav {
+    gap: 6px;
+    padding-right: 10px;
+    padding-left: 12px;
+  }
+
+  .nav-brand-sub {
+    display: none;
+  }
+
+  .nav-actions {
+    gap: 6px;
+  }
+
+  .nav-cta {
+    padding-right: 9px;
+    padding-left: 9px;
+  }
+
+  .nav-mobile-toggle {
+    gap: 6px;
+    padding-right: 9px;
+    padding-left: 9px;
+  }
+}
+
 
 /* ==========================================================================
    CINEMATIC FULLSCREEN INTRO VIDEO OVERLAY (HIGH-PERFORMANCE & MOBILE OPTIMIZED)
@@ -2594,10 +2633,9 @@ footer:hover .footer-wordmark.visible {
   opacity: 1;
   visibility: visible;
   transform: translate3d(0, 0, 0) scale(1);
-  will-change: opacity, transform;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.85s;
+  transition: opacity 640ms var(--ease-apple), transform 640ms var(--ease-apple), visibility 640ms;
 }
 
 .intro-video-overlay.fading-out {
@@ -2605,6 +2643,7 @@ footer:hover .footer-wordmark.visible {
   transform: translate3d(0, 0, 0) scale(1.025);
   pointer-events: none;
   visibility: hidden;
+  will-change: opacity, transform;
 }
 
 .intro-video-element {
@@ -2635,8 +2674,7 @@ body.intro-active .section-rail {
 .page-container,
 .apple-nav,
 .section-rail {
-  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
+  transition: opacity 480ms var(--ease-apple), transform 480ms var(--ease-apple);
 }
 
 body.intro-revealed .page-container,
@@ -2800,7 +2838,6 @@ body.intro-revealed .section-rail {
   cursor: pointer;
   transition: transform 0.45s var(--ease-apple), border-color 0.35s ease, box-shadow 0.45s ease;
   transform-style: preserve-3d;
-  will-change: transform;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -2808,12 +2845,6 @@ body.intro-revealed .section-rail {
     transform: perspective(1200px) rotateX(var(--card-rot-x, 0deg)) rotateY(var(--card-rot-y, 0deg)) translateY(-4px) scale(1.015);
     border-color: rgba(255, 255, 255, 0.28);
     box-shadow: 0 28px 75px rgba(0, 0, 0, 0.85);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .gemini-visual-card:hover {
-    transform: none !important;
   }
 }
 
