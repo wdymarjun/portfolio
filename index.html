@@ -41,7 +41,7 @@
       <div class="nav-browser" id="navBrowser">
         <div class="nav-pill-indicator" id="navPillIndicator" aria-hidden="true"></div>
         <ul class="nav-links" id="desktopNavLinks" role="list">
-          <li><a href="#hero" class="nav-link active" data-section="hero" aria-current="page"><span class="nav-num">01</span><span>Home</span></a></li>
+          <li><a href="#hero" class="nav-link active" data-section="hero" aria-current="location"><span class="nav-num">01</span><span>Home</span></a></li>
           <li><a href="#work" class="nav-link" data-section="work"><span class="nav-num">02</span><span>Work</span></a></li>
           <li><a href="#awards" class="nav-link" data-section="awards"><span class="nav-num">03</span><span>Podium</span></a></li>
           <li><a href="#about" class="nav-link" data-section="about"><span class="nav-num">04</span><span>About</span></a></li>
@@ -55,8 +55,8 @@
         </a>
 
         <!-- Mobile Section Browser Toggle Button -->
-        <button type="button" class="nav-mobile-toggle" id="navMobileToggle" aria-label="Open section browser" aria-expanded="false" aria-controls="mobileSectionMenu">
-          <span class="nav-toggle-text">Sections</span>
+        <button type="button" class="nav-mobile-toggle" id="navMobileToggle" aria-label="Open section browser, current section Home" aria-expanded="false" aria-controls="mobileSectionMenu">
+          <span class="nav-toggle-text">01 / Home</span>
           <span class="nav-toggle-icon" aria-hidden="true">
             <span class="toggle-bar"></span>
             <span class="toggle-bar"></span>
@@ -66,7 +66,7 @@
     </nav>
 
     <!-- Mobile Accessible Section Menu Panel -->
-    <div class="mobile-section-menu" id="mobileSectionMenu" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Section Navigation">
+    <div class="mobile-section-menu" id="mobileSectionMenu" aria-hidden="true" inert role="dialog" aria-modal="true" aria-label="Section Navigation">
       <div class="mobile-menu-backdrop" id="mobileMenuBackdrop" tabindex="-1"></div>
       <div class="mobile-menu-sheet">
         <div class="mobile-menu-top">
@@ -77,7 +77,7 @@
         </div>
         <ul class="mobile-nav-list" role="list">
           <li>
-            <a href="#hero" class="mobile-nav-link active" data-section="hero" aria-current="page">
+            <a href="#hero" class="mobile-nav-link active" data-section="hero" aria-current="location">
               <span class="mobile-nav-index">01</span>
               <span class="mobile-nav-title">Home</span>
               <span class="mobile-nav-tag">Overview</span>
@@ -120,39 +120,36 @@
   </header>
 
   <!-- Side Section Telemetry Rail (Keynote Architecture Index for Large Screens) -->
-  <aside class="section-rail" aria-label="Section Quick Jump" aria-hidden="true">
+  <nav class="section-rail" aria-label="Quick section navigation">
     <div class="section-rail-track">
-      <a href="#hero" class="section-rail-dot active" data-section="hero" tabindex="-1" title="01 Home">
+      <a href="#hero" class="section-rail-dot active" data-section="hero" aria-current="location" title="01 Home">
         <span class="rail-pill">01 Home</span>
         <span class="rail-pip"></span>
       </a>
-      <a href="#work" class="section-rail-dot" data-section="work" tabindex="-1" title="02 Work">
+      <a href="#work" class="section-rail-dot" data-section="work" title="02 Work">
         <span class="rail-pill">02 Work</span>
         <span class="rail-pip"></span>
       </a>
-      <a href="#awards" class="section-rail-dot" data-section="awards" tabindex="-1" title="03 Podium">
+      <a href="#awards" class="section-rail-dot" data-section="awards" title="03 Podium">
         <span class="rail-pill">03 Podium</span>
         <span class="rail-pip"></span>
       </a>
-      <a href="#about" class="section-rail-dot" data-section="about" tabindex="-1" title="04 About">
+      <a href="#about" class="section-rail-dot" data-section="about" title="04 About">
         <span class="rail-pill">04 About</span>
         <span class="rail-pip"></span>
       </a>
-      <a href="#contact" class="section-rail-dot" data-section="contact" tabindex="-1" title="05 Contact">
+      <a href="#contact" class="section-rail-dot" data-section="contact" title="05 Contact">
         <span class="rail-pill">05 Contact</span>
         <span class="rail-pip"></span>
       </a>
     </div>
-  </aside>
+  </nav>
 
   <main class="page-container">
 
     <!-- HERO SECTION (Apple Product Keynote Style) -->
-    <section id="hero" data-section-name="Home">
-      <div class="hero-tag-row">
-        <span class="section-badge">01 // OVERVIEW</span>
-        <p class="hero-eyebrow">B.Tech Computer Science &amp; Engineering · Class of 2030</p>
-      </div>
+    <section id="hero" data-section-name="Home" aria-label="Home" tabindex="-1">
+      <p class="hero-eyebrow">B.Tech Computer Science &amp; Engineering · Class of 2030</p>
       
       <h1 class="hero-title">
         Arjun Singh.
@@ -208,12 +205,9 @@
     </div>
 
     <!-- SELECTED PRODUCTION WORK (Google Gemini Flagship Editorial Showcase) -->
-    <section id="work" class="work-section fade-in-on-scroll" data-section-name="Work">
+    <section id="work" class="work-section fade-in-on-scroll" data-section-name="Work" aria-label="Work" tabindex="-1">
       <div class="work-section-header">
-        <div class="section-tag-row">
-          <span class="section-badge">02 // ARCHITECTURE</span>
-          <p class="section-label">Selected Work</p>
-        </div>
+        <p class="section-label">Selected Work</p>
         <h2 class="section-headline">Built with systems-level discipline.</h2>
       </div>
 
@@ -391,11 +385,8 @@
     </section>
 
     <!-- HACKATHON CIRCUIT & PODIUM PLACEMENTS (Keynote Awards Table) -->
-    <section id="awards" class="awards-section fade-in-on-scroll" data-section-name="Podium">
-      <div class="section-tag-row">
-        <span class="section-badge">03 // COMPETITION</span>
-        <p class="section-label">Track Record &amp; Leadership</p>
-      </div>
+    <section id="awards" class="awards-section fade-in-on-scroll" data-section-name="Podium" aria-label="Podium" tabindex="-1">
+      <p class="section-label">Track Record &amp; Leadership</p>
       <h2 class="section-headline">Competitive execution under pressure.</h2>
 
       <div class="awards-table">
@@ -450,13 +441,10 @@
     </section>
 
     <!-- ABOUT SECTION (Apple Editorial Style) -->
-    <section id="about" class="about-section fade-in-on-scroll" data-section-name="About">
+    <section id="about" class="about-section fade-in-on-scroll" data-section-name="About" aria-label="About" tabindex="-1">
       <div class="about-grid">
         <div class="about-text-col">
-          <div class="section-tag-row">
-            <span class="section-badge">04 // FOUNDATIONS</span>
-            <p class="section-label">Background &amp; Philosophy</p>
-          </div>
+          <p class="section-label">Background &amp; Philosophy</p>
           <p class="about-lead">
             The deepest understanding of software comes from building systems from scratch.
           </p>
@@ -499,10 +487,7 @@
     </section>
 
     <!-- CONTACT CTA -->
-    <section id="contact" class="contact-section fade-in-on-scroll" data-section-name="Contact">
-      <div class="section-tag-row center">
-        <span class="section-badge">05 // CONNECT</span>
-      </div>
+    <section id="contact" class="contact-section fade-in-on-scroll" data-section-name="Contact" aria-label="Contact" tabindex="-1">
       <h2 class="contact-headline">
         Let's build something<br>
         <span>extraordinary.</span>
