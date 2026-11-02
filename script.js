@@ -635,6 +635,7 @@ document.addEventListener('DOMContentLoaded', () => {
         mainImg.style.opacity = '0.35';
         setTimeout(() => {
           mainImg.src = newImg;
+          mainImg.alt = newTitle || mainImg.alt;
           mainImg.style.opacity = '1';
         }, 140);
 
