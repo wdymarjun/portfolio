@@ -23,7 +23,7 @@
   --ease-apple: cubic-bezier(0.16, 1, 0.3, 1);
   --motion-fast: 160ms;
   --motion-ui: 240ms;
-  --motion-reveal: 560ms;
+  --motion-reveal: 760ms;
   --ease-standard: cubic-bezier(0.2, 0.7, 0.25, 1);
   --transition: all 0.4s var(--ease-apple);
 }
@@ -1884,8 +1884,9 @@ footer:hover .footer-wordmark {
 .contact-section,
 .footer-top-row {
   opacity: 0;
+  filter: blur(2px);
   transform: translate3d(0, 16px, 0);
-  transition: opacity var(--motion-reveal) var(--ease-apple), transform var(--motion-reveal) var(--ease-apple);
+  transition: opacity var(--motion-reveal) var(--ease-apple), filter var(--motion-reveal) var(--ease-apple), transform var(--motion-reveal) var(--ease-apple);
 }
 
 .fade-in-on-scroll.visible,
@@ -1897,37 +1898,43 @@ footer:hover .footer-wordmark {
 .contact-section.visible,
 .footer-top-row.visible {
   opacity: 1;
+  filter: blur(0);
   transform: translate3d(0, 0, 0);
 }
 
 /* Coordinated Work Section Stagger (Text Content then Visual Card) */
 .gemini-work-row .gemini-work-content {
   opacity: 0;
+  filter: blur(2px);
   transform: translate3d(0, 16px, 0);
-  transition: opacity var(--motion-reveal) var(--ease-apple), transform var(--motion-reveal) var(--ease-apple);
+  transition: opacity var(--motion-reveal) var(--ease-apple), filter var(--motion-reveal) var(--ease-apple), transform var(--motion-reveal) var(--ease-apple);
 }
 
 .gemini-work-row .gemini-work-visual {
   opacity: 0;
+  filter: blur(2px);
   transform: translate3d(0, 22px, 0);
-  transition: opacity var(--motion-reveal) var(--ease-apple) 60ms, transform var(--motion-reveal) var(--ease-apple) 60ms;
+  transition: opacity var(--motion-reveal) var(--ease-apple) 60ms, filter var(--motion-reveal) var(--ease-apple) 60ms, transform var(--motion-reveal) var(--ease-apple) 60ms;
 }
 
 .gemini-work-row.visible .gemini-work-content,
 .gemini-work-row.visible .gemini-work-visual {
   opacity: 1;
+  filter: blur(0);
   transform: translate3d(0, 0, 0);
 }
 
 /* Subtle Architectural Titanium Wordmark (Preserving Faint 7% Watermark Opacity) */
 .footer-wordmark {
   opacity: 0;
+  filter: blur(2px);
   transform: translate3d(0, 14px, 0);
-  transition: opacity var(--motion-reveal) var(--ease-apple), transform var(--motion-reveal) var(--ease-apple);
+  transition: opacity var(--motion-reveal) var(--ease-apple), filter var(--motion-reveal) var(--ease-apple), transform var(--motion-reveal) var(--ease-apple);
 }
 
 .footer-wordmark.visible {
   opacity: 0.07;
+  filter: blur(0);
   transform: translate3d(0, 0, 0);
 }
 
@@ -1955,14 +1962,16 @@ footer:hover .footer-wordmark.visible {
 .section-label,
 .section-headline {
   opacity: 0;
+  filter: blur(2px);
   transform: translate3d(0, 16px, 0);
-  transition: opacity 480ms var(--ease-apple), transform 480ms var(--ease-apple);
+  transition: opacity var(--motion-reveal) var(--ease-apple), filter var(--motion-reveal) var(--ease-apple), transform var(--motion-reveal) var(--ease-apple);
 }
 
 .work-section.visible .section-label,
 .awards-section.visible .section-label,
 .about-section.visible .section-label {
   opacity: 1;
+  filter: blur(0);
   transform: translate3d(0, 0, 0);
   transition-delay: 0.06s;
 }
@@ -1971,6 +1980,7 @@ footer:hover .footer-wordmark.visible {
 .awards-section.visible .section-headline,
 .contact-section.visible .contact-headline {
   opacity: 1;
+  filter: blur(0);
   transform: translate3d(0, 0, 0);
   transition-delay: 0.12s;
 }
@@ -1988,14 +1998,15 @@ footer:hover .footer-wordmark.visible {
 /* Contact Section Actions Stagger */
 .contact-actions-row > * {
   opacity: 0;
+  filter: blur(2px);
   transform: translate3d(0, 16px, 0);
-  transition: opacity 480ms var(--ease-apple), transform 480ms var(--ease-apple);
+  transition: opacity var(--motion-reveal) var(--ease-apple), filter var(--motion-reveal) var(--ease-apple), transform var(--motion-reveal) var(--ease-apple);
 }
 
-.contact-section.visible .contact-actions-row > *:nth-child(1) { opacity: 1; transform: translate3d(0, 0, 0); transition-delay: 40ms; }
-.contact-section.visible .contact-actions-row > *:nth-child(2) { opacity: 1; transform: translate3d(0, 0, 0); transition-delay: 80ms; }
-.contact-section.visible .contact-actions-row > *:nth-child(3) { opacity: 1; transform: translate3d(0, 0, 0); transition-delay: 120ms; }
-.contact-section.visible .contact-actions-row > *:nth-child(4) { opacity: 1; transform: translate3d(0, 0, 0); transition-delay: 160ms; }
+.contact-section.visible .contact-actions-row > *:nth-child(1) { opacity: 1; filter: blur(0); transform: translate3d(0, 0, 0); transition-delay: 40ms; }
+.contact-section.visible .contact-actions-row > *:nth-child(2) { opacity: 1; filter: blur(0); transform: translate3d(0, 0, 0); transition-delay: 80ms; }
+.contact-section.visible .contact-actions-row > *:nth-child(3) { opacity: 1; filter: blur(0); transform: translate3d(0, 0, 0); transition-delay: 120ms; }
+.contact-section.visible .contact-actions-row > *:nth-child(4) { opacity: 1; filter: blur(0); transform: translate3d(0, 0, 0); transition-delay: 160ms; }
 
 /* Mobile Low-End GPU Optimization: Pure opacity and minimal transform for 60fps */
 @media (max-width: 768px) {
@@ -2010,7 +2021,7 @@ footer:hover .footer-wordmark.visible {
   .footer-wordmark {
     filter: none !important;
     transform: translate3d(0, 12px, 0);
-    transition: opacity 480ms var(--ease-apple), transform 480ms var(--ease-apple);
+    transition: opacity var(--motion-reveal) var(--ease-apple), transform var(--motion-reveal) var(--ease-apple);
   }
 }
 
