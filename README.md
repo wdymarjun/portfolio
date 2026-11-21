@@ -1,6 +1,6 @@
 # Arjun Singh — Systems Engineering & Technical Product Portfolio
 
-> **High-Engineered Personal Portfolio** inspired by Apple Keynote & Xiaomi hardware design languages. Pure pitch-black (`#000000`), monochromatic titanium silver typography, zero neon colors, and a spring-physics inspection lightbox modal.
+> **High-Engineered Personal Portfolio.** Strict black & white (`#000` / `#fff` + neutral greys), hairline plain-box layout, mono labels, and scroll-driven motion: word-mask headline reveals, a scroll-scrubbed statement, stacked project cards, a velocity-reactive ticker, count-up metrics, and an inspection lightbox. Vanilla HTML/CSS/JS, no dependencies, respects `prefers-reduced-motion`.
 
 ---
 
@@ -35,5 +35,14 @@ To run locally:
 npx serve .
 ```
 
+### Structure
+- `index.html` — markup and content
+- `styles.css` — design system (tokens, boxes, motion states)
+- `script.js` — one rAF loop for all scroll-linked effects, plus nav, lightbox, intro
+- `grain.png`, `og-card.png` — generated assets (film grain overlay, social preview card)
+
 ---
 © 2026 Arjun Singh. Built with systems-level discipline.
+
+
+See `DESIGN.md` for the Render-reference analysis (tokens, animation specs, changes).

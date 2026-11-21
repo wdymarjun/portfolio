@@ -3,8 +3,8 @@
   "short_name": "Arjun Singh",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#08090d",
-  "theme_color": "#08090d",
+  "background_color": "#000000",
+  "theme_color": "#000000",
   "icons": [
     {
       "src": "portfolio-icon.png",

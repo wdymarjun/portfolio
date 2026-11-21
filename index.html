@@ -1,24 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="can-stack">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script>
+    (function () {
+      var d = document.documentElement;
+      d.classList.add('js');
+      try {
+        // Intro cinematic plays once per browser session, never for reduced-motion users.
+        if (!sessionStorage.getItem('introSeen') && !matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('intro-on');
+      } catch (e) { }
+    })();
+  </script>
+
   <title>Arjun Singh — Systems Engineer & Technical Product Builder</title>
-  <meta name="description" content="Portfolio of Arjun Singh (@wdymarjun). Systems-oriented Software Engineer & Technical Product Builder bridging low-level Lua game engine architecture, C++ algorithms, applied mathematical intuition, and AI prompt engineering." />
+  <meta name="description"
+    content="Portfolio of Arjun Singh (@wdymarjun). Systems-oriented Software Engineer & Technical Product Builder bridging low-level Lua game engine architecture, C++ algorithms, applied mathematical intuition, and AI prompt engineering." />
   <meta name="author" content="Arjun Singh" />
-  <meta name="theme-color" content="#08090d" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="color-scheme" content="dark" />
   <meta property="og:title" content="Arjun Singh — Systems Engineer & Technical Product Builder" />
-  <meta property="og:description" content="Explore the portfolio and work of Arjun Singh, systems-oriented software engineer and technical product builder." />
+  <meta property="og:description"
+    content="Explore the portfolio and work of Arjun Singh, systems-oriented software engineer and technical product builder." />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="portfolio-icon.png" />
+  <meta property="og:image" content="og-card.png" />
   <meta property="og:image:type" content="image/png" />
-  <meta property="og:image:width" content="512" />
-  <meta property="og:image:height" content="512" />
-  <meta name="twitter:card" content="summary" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Arjun Singh — Systems Engineer & Technical Product Builder" />
   <meta name="twitter:description" content="Explore the portfolio and work of Arjun Singh." />
-  <meta name="twitter:image" content="portfolio-icon.png" />
+  <meta name="twitter:image" content="og-card.png" />
 
   <link rel="icon" type="image/svg+xml" href="portfolio-icon.svg" />
   <link rel="icon" type="image/png" sizes="512x512" href="portfolio-icon.png" />
@@ -26,481 +40,596 @@
   <link rel="manifest" href="site.webmanifest" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap"
+    rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=stack-blur-1.6">
 </head>
+
 <body>
 
-  <!-- CINEMATIC FULLSCREEN INTRO VIDEO OVERLAY -->
-  <div id="introVideoOverlay" class="intro-video-overlay" role="dialog" aria-label="Intro Cinematic Video">
-    <video id="introVideo" class="intro-video-element" src="intro_cinematic.mp4" muted playsinline autoplay preload="auto"></video>
+  <!-- Accessible skip link for keyboard & screen reader navigation -->
+  <a href="#hero" class="skip-link mono">Skip to content ↵</a>
+
+  <!-- INTRO CINEMATIC (plays once per session, skippable) -->
+  <div id="introVideoOverlay" class="intro" role="dialog" aria-label="Intro cinematic">
+    <video id="introVideo" class="intro-video" src="intro_cinematic.mp4" muted playsinline autoplay
+      preload="auto"></video>
+    <button type="button" class="intro-skip mono" id="introSkip">Skip intro <span aria-hidden="true">↵</span></button>
   </div>
 
-  <!-- Apple-Grade Titanium Scroll Progress Bar (Responsive to scroll up & down) -->
-  <div class="scroll-progress-bar" id="scrollProgress" aria-hidden="true"></div>
+  <!-- Fixed chrome: progress line, film grain, column frame -->
+  <div class="progress" id="scrollProgress" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="frame-lines" aria-hidden="true"></div>
 
-  <!-- Subtle Architectural Blueprint Grid (Hardware CAD Inspired) -->
-  <div class="blueprint-grid" aria-hidden="true"></div>
-
-  <!-- Ambient Titanium Glow (Pure monochromatic) -->
-  <div class="ambient-glow" aria-hidden="true"></div>
-
-  <!-- FLOATING FROSTED GLASS NAVBAR & SECTION BROWSER -->
-  <header class="nav-wrapper" role="banner">
-    <nav class="apple-nav" aria-label="Portfolio sections">
+  <!-- NAV -->
+  <header class="nav-wrap" role="banner">
+    <nav class="nav" aria-label="Portfolio sections">
       <a href="#hero" class="nav-brand" aria-label="Arjun Singh - Back to top">
-        Arjun Singh <span class="nav-brand-sub">/ Systems</span>
+        <span class="nav-mark" aria-hidden="true"></span>
+        <span>Arjun Singh</span>
+        <span class="nav-brand-sub mono">/ Systems</span>
       </a>
 
-      <!-- Desktop Section Browser -->
       <div class="nav-browser" id="navBrowser">
-        <div class="nav-pill-indicator" id="navPillIndicator" aria-hidden="true"></div>
         <ul class="nav-links" id="desktopNavLinks" role="list">
-          <li><a href="#hero" class="nav-link active" data-section="hero" aria-current="location"><span class="nav-num">01</span><span>Home</span></a></li>
-          <li><a href="#work" class="nav-link" data-section="work"><span class="nav-num">02</span><span>Work</span></a></li>
-          <li><a href="#awards" class="nav-link" data-section="awards"><span class="nav-num">03</span><span>Podium</span></a></li>
-          <li><a href="#about" class="nav-link" data-section="about"><span class="nav-num">04</span><span>About</span></a></li>
-          <li><a href="#contact" class="nav-link" data-section="contact"><span class="nav-num">05</span><span>Contact</span></a></li>
+          <li><a href="#hero" class="nav-link active" data-section="hero" aria-current="location"><span
+                class="nav-num mono">01</span><span>Home</span></a></li>
+          <li><a href="#work" class="nav-link" data-section="work"><span
+                class="nav-num mono">02</span><span>Work</span></a></li>
+          <li><a href="#awards" class="nav-link" data-section="awards"><span
+                class="nav-num mono">03</span><span>Podium</span></a></li>
+          <li><a href="#about" class="nav-link" data-section="about"><span
+                class="nav-num mono">04</span><span>About</span></a></li>
+          <li><a href="#contact" class="nav-link" data-section="contact"><span
+                class="nav-num mono">05</span><span>Contact</span></a></li>
         </ul>
+        <span class="nav-indicator" id="navPillIndicator" aria-hidden="true"></span>
       </div>
 
       <div class="nav-actions">
-        <a href="Arjun_Singh_Resume.pdf" download="Arjun_Singh_Resume.pdf" class="nav-cta" aria-label="Download Official Resume">
-          <span>Resume</span> <span class="nav-cta-arrow" aria-hidden="true">↗</span>
+        <a href="Arjun_Singh_Resume.pdf" download="Arjun_Singh_Resume.pdf" class="nav-cta mono"
+          aria-label="Download Official Resume">
+          Resume <span aria-hidden="true">↗</span>
         </a>
-
-        <!-- Mobile Section Browser Toggle Button -->
-        <button type="button" class="nav-mobile-toggle" id="navMobileToggle" aria-label="Open section browser, current section Home" aria-expanded="false" aria-controls="mobileSectionMenu">
+        <button type="button" class="nav-toggle mono" id="navMobileToggle"
+          aria-label="Open section browser, current section Home" aria-expanded="false"
+          aria-controls="mobileSectionMenu">
           <span class="nav-toggle-text">01 / Home</span>
-          <span class="nav-toggle-icon" aria-hidden="true">
-            <span class="toggle-bar"></span>
-            <span class="toggle-bar"></span>
-          </span>
+          <span class="nav-toggle-icon" aria-hidden="true"><span></span><span></span></span>
         </button>
       </div>
     </nav>
 
-    <!-- Mobile Accessible Section Menu Panel -->
-    <div class="mobile-section-menu" id="mobileSectionMenu" aria-hidden="true" inert role="dialog" aria-modal="true" aria-label="Section Navigation">
-      <div class="mobile-menu-backdrop" id="mobileMenuBackdrop" tabindex="-1"></div>
-      <div class="mobile-menu-sheet">
-        <div class="mobile-menu-top">
-          <div class="mobile-menu-label">SECTION BROWSER</div>
-          <button type="button" class="mobile-menu-close" id="mobileMenuClose" aria-label="Close navigation">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    <div class="mobile-menu" id="mobileSectionMenu" aria-hidden="true" inert role="dialog" aria-modal="true"
+      aria-label="Section Navigation">
+      <div class="mobile-backdrop" id="mobileMenuBackdrop" tabindex="-1"></div>
+      <div class="mobile-sheet">
+        <div class="mobile-top">
+          <span class="mono mobile-label">Sections</span>
+          <button type="button" class="mobile-close" id="mobileMenuClose" aria-label="Close navigation">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
           </button>
         </div>
-        <ul class="mobile-nav-list" role="list">
-          <li>
-            <a href="#hero" class="mobile-nav-link active" data-section="hero" aria-current="location">
-              <span class="mobile-nav-index">01</span>
-              <span class="mobile-nav-title">Home</span>
-              <span class="mobile-nav-tag">Overview</span>
-            </a>
-          </li>
-          <li>
-            <a href="#work" class="mobile-nav-link" data-section="work">
-              <span class="mobile-nav-index">02</span>
-              <span class="mobile-nav-title">Work</span>
-              <span class="mobile-nav-tag">4 Projects</span>
-            </a>
-          </li>
-          <li>
-            <a href="#awards" class="mobile-nav-link" data-section="awards">
-              <span class="mobile-nav-index">03</span>
-              <span class="mobile-nav-title">Podium</span>
-              <span class="mobile-nav-tag">Hackathons</span>
-            </a>
-          </li>
-          <li>
-            <a href="#about" class="mobile-nav-link" data-section="about">
-              <span class="mobile-nav-index">04</span>
-              <span class="mobile-nav-title">About</span>
-              <span class="mobile-nav-tag">Philosophy</span>
-            </a>
-          </li>
-          <li>
-            <a href="#contact" class="mobile-nav-link" data-section="contact">
-              <span class="mobile-nav-index">05</span>
-              <span class="mobile-nav-title">Contact</span>
-              <span class="mobile-nav-tag">Connect</span>
-            </a>
-          </li>
+        <ul class="mobile-list" role="list">
+          <li><a href="#hero" class="mobile-link active" data-section="hero" aria-current="location"><span
+                class="mono">01</span><span class="mobile-title">Home</span><span
+                class="mono mobile-tag">Overview</span></a></li>
+          <li><a href="#work" class="mobile-link" data-section="work"><span class="mono">02</span><span
+                class="mobile-title">Work</span><span class="mono mobile-tag">4 Projects</span></a></li>
+          <li><a href="#awards" class="mobile-link" data-section="awards"><span class="mono">03</span><span
+                class="mobile-title">Podium</span><span class="mono mobile-tag">Hackathons</span></a></li>
+          <li><a href="#about" class="mobile-link" data-section="about"><span class="mono">04</span><span
+                class="mobile-title">About</span><span class="mono mobile-tag">Philosophy</span></a></li>
+          <li><a href="#contact" class="mobile-link" data-section="contact"><span class="mono">05</span><span
+                class="mobile-title">Contact</span><span class="mono mobile-tag">Connect</span></a></li>
         </ul>
-        <div class="mobile-menu-bottom">
-          <a href="Arjun_Singh_Resume.pdf" download="Arjun_Singh_Resume.pdf" class="btn-primary mobile-menu-cta">Download Official Resume ↗</a>
-        </div>
+        <a href="Arjun_Singh_Resume.pdf" download="Arjun_Singh_Resume.pdf"
+          class="btn btn-primary mobile-cta"><span>Download Official Resume</span><span class="btn-arrow"
+            aria-hidden="true">↗</span></a>
       </div>
     </div>
   </header>
 
-  <!-- Side Section Telemetry Rail (Keynote Architecture Index for Large Screens) -->
-  <nav class="section-rail" aria-label="Quick section navigation">
-    <div class="section-rail-track">
-      <a href="#hero" class="section-rail-dot active" data-section="hero" aria-current="location" title="01 Home">
-        <span class="rail-pill">01 Home</span>
-        <span class="rail-pip"></span>
-      </a>
-      <a href="#work" class="section-rail-dot" data-section="work" title="02 Work">
-        <span class="rail-pill">02 Work</span>
-        <span class="rail-pip"></span>
-      </a>
-      <a href="#awards" class="section-rail-dot" data-section="awards" title="03 Podium">
-        <span class="rail-pill">03 Podium</span>
-        <span class="rail-pip"></span>
-      </a>
-      <a href="#about" class="section-rail-dot" data-section="about" title="04 About">
-        <span class="rail-pill">04 About</span>
-        <span class="rail-pip"></span>
-      </a>
-      <a href="#contact" class="section-rail-dot" data-section="contact" title="05 Contact">
-        <span class="rail-pill">05 Contact</span>
-        <span class="rail-pip"></span>
-      </a>
-    </div>
-  </nav>
+  <main class="page">
 
-  <main class="page-container">
+    <!-- ============ HERO ============ -->
+    <section id="hero" class="hero" data-section-name="Home" aria-label="Home" tabindex="-1">
+      <canvas id="heroCanvas" class="hero-canvas" aria-hidden="true"></canvas>
 
-    <!-- HERO SECTION (Apple Product Keynote Style) -->
-    <section id="hero" data-section-name="Home" aria-label="Home" tabindex="-1">
-      <p class="hero-eyebrow">B.Tech Computer Science &amp; Engineering · Class of 2030</p>
-      
-      <h1 class="hero-title">
-        Arjun Singh.
-        <span class="silver-gradient">Engineered for performance.</span>
-      </h1>
+      <div class="container hero-grid">
+        <div class="hero-main" id="heroMain">
+          <p class="eyebrow mono" data-reveal style="--d:0ms">B.Tech Computer Science &amp; Engineering · Class of 2030
+          </p>
 
-      <p class="hero-subtitle">
-        Systems-oriented software engineer and 3-time Hackathon Team Lead bridging <strong>low-level Lua game engine architecture</strong>, <strong>C++ algorithms</strong>, applied mathematical intuition, and <strong>AI prompt pipelines</strong>.
-      </p>
+          <h1 class="hero-title" aria-label="Arjun Singh. Engineered for performance.">
+            <span class="hero-line" data-split style="--d:150ms">Arjun Singh.</span>
+            <span class="hero-line dim" data-split style="--d:420ms">Engineered for performance.</span>
+          </h1>
 
-      <div class="hero-actions">
-        <a href="#work" class="btn-primary">View Featured Work</a>
-        <a href="Arjun_Singh_Resume.pdf" download="Arjun_Singh_Resume.pdf" class="btn-secondary">Download Resume ↗</a>
-        <a href="https://www.linkedin.com/in/arjun-singh-682453378/" target="_blank" rel="noopener noreferrer" class="btn-secondary btn-icon-link" title="LinkedIn Profile">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-          <span>LinkedIn</span>
-        </a>
-        <a href="https://unstop.com/u/arjunsin14938" target="_blank" rel="noopener noreferrer" class="btn-secondary btn-icon-link" title="Unstop Profile">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path><path d="M7 12h2"></path><path d="M15 12h2"></path></svg>
-          <span>Unstop</span>
-        </a>
+          <p class="hero-sub" data-reveal style="--d:900ms">
+            Systems-oriented software engineer and 3-time Hackathon Team Lead bridging <strong>low-level Lua game engine
+              architecture</strong>, <strong>C++ algorithms</strong>, applied mathematical intuition, and <strong>AI
+              prompt pipelines</strong>.
+          </p>
+
+          <div class="hero-actions" data-reveal style="--d:1050ms">
+            <a href="#work" class="btn btn-primary"><span>View Featured Work</span><span class="btn-arrow"
+                aria-hidden="true">↓</span></a>
+            <a href="Arjun_Singh_Resume.pdf" download="Arjun_Singh_Resume.pdf" class="btn btn-ghost"><span>Download
+                Resume</span><span class="btn-arrow" aria-hidden="true">↗</span></a>
+            <a href="https://www.linkedin.com/in/arjun-singh-682453378/" target="_blank" rel="noopener noreferrer"
+              class="btn btn-ghost btn-icon" title="LinkedIn Profile" aria-label="LinkedIn profile"><svg width="15"
+                height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path
+                  d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+              </svg></a>
+            <a href="https://unstop.com/u/arjunsin14938" target="_blank" rel="noopener noreferrer"
+              class="btn btn-ghost btn-icon" title="Unstop Profile" aria-label="Unstop profile"><svg width="15"
+                height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="9"></circle>
+                <path d="M12 7v5l3 3"></path>
+                <path d="M7 12h2"></path>
+                <path d="M15 12h2"></path>
+              </svg></a>
+          </div>
+        </div>
+
+        <!-- Profile card. Every line restates facts already on this page. -->
+        <aside class="idcard-wrap" id="heroCard" aria-label="Profile summary" data-reveal style="--d:1100ms">
+          <div class="idcard-stage" id="idcardStage">
+            <span class="ghost g2" aria-hidden="true"></span>
+            <span class="ghost g1" aria-hidden="true"></span>
+            <div class="idcard cut">
+              <div class="cut-in">
+                <div class="ic-head">
+                  <span class="ic-monogram serif" aria-hidden="true">AS</span>
+                  <div class="ic-who">
+                    <strong class="serif">Arjun Singh</strong>
+                    <span class="mono">Systems Engineer · RIET Jaipur</span>
+                  </div>
+                </div>
+
+                <p class="ic-label mono"><span>Core disciplines</span><span>04</span></p>
+                <ul class="ic-list">
+                  <li style="--i:0"><a class="ic-row" href="#work"><span class="ic-n mono">01</span><span
+                        class="ic-t"><b>Luau</b><em class="mono">Metatables · remote events</em></span><span
+                        class="ic-go" aria-hidden="true">↗</span></a></li>
+                  <li style="--i:1"><a class="ic-row" href="#work"><span class="ic-n mono">02</span><span
+                        class="ic-t"><b>C++20</b><em class="mono">Arena allocators · BST</em></span><span class="ic-go"
+                        aria-hidden="true">↗</span></a></li>
+                  <li style="--i:2"><a class="ic-row" href="#work"><span class="ic-n mono">03</span><span
+                        class="ic-t"><b>LLM pipelines</b><em class="mono">Context compression · schemas</em></span><span
+                        class="ic-go" aria-hidden="true">↗</span></a></li>
+                  <li style="--i:3"><a class="ic-row" href="#awards"><span class="ic-n mono">04</span><span
+                        class="ic-t"><b>Competitive</b><em class="mono">SIH internal · Top 5 of 40+</em></span><span
+                        class="ic-go" aria-hidden="true">↗</span></a></li>
+                </ul>
+
+                <p class="chip"><i aria-hidden="true"></i>Open to hackathon teams &amp; early-career roles</p>
+              </div>
+            </div>
+          </div>
+        </aside>
       </div>
 
-      <div class="hero-status-strip">
-        <span class="status-tag"><span class="status-dot"></span> 3x Hackathon Team Lead</span>
-        <span class="status-tag"><span class="status-dot"></span> Smart India Hackathon Top 5</span>
-        <a href="https://unstop.com/u/arjunsin14938" target="_blank" rel="noopener noreferrer" class="status-tag active-link"><span class="status-dot active"></span> Unstop: arjunsin14938 ↗</a>
-        <a href="https://www.linkedin.com/in/arjun-singh-682453378/" target="_blank" rel="noopener noreferrer" class="status-tag active-link"><span class="status-dot active"></span> LinkedIn: arjun-singh ↗</a>
+      <!-- Status strip: plain bordered cells -->
+      <div class="container hero-foot">
+        <div class="cells cells-4" data-reveal style="--d:1350ms">
+          <div class="cell"><span class="cell-k mono">Role</span><span class="cell-v"><span class="status-dot"></span>
+              3x Hackathon Team Lead</span></div>
+          <div class="cell"><span class="cell-k mono">Result</span><span class="cell-v"><span class="status-dot"></span>
+              Smart India Hackathon Top 5</span></div>
+          <a class="cell cell-link" href="https://unstop.com/u/arjunsin14938" target="_blank"
+            rel="noopener noreferrer"><span class="cell-k mono">Profile</span><span class="cell-v">Unstop: arjunsin14938
+              <span class="cell-arrow" aria-hidden="true">↗</span></span></a>
+          <a class="cell cell-link" href="https://www.linkedin.com/in/arjun-singh-682453378/" target="_blank"
+            rel="noopener noreferrer"><span class="cell-k mono">Profile</span><span class="cell-v">LinkedIn: arjun-singh
+              <span class="cell-arrow" aria-hidden="true">↗</span></span></a>
+        </div>
+        <div class="scroll-cue mono" aria-hidden="true"><span>Scroll</span><i></i></div>
       </div>
     </section>
 
-    <!-- ARCHITECTURAL TECH SPEC TICKER (Infinite Hardware & Systems Marquee) -->
-    <div class="spec-ticker-wrap fade-in-on-scroll" aria-label="Core Engineering Disciplines">
-      <div class="spec-ticker-track">
-        <div class="spec-ticker-item"><span class="ticker-dot"></span>Advanced Luau Metatables</div>
-        <div class="spec-ticker-item"><span class="ticker-dot"></span>C++20 Arena Allocators</div>
-        <div class="spec-ticker-item"><span class="ticker-dot"></span>Client-Server RemoteEvents</div>
-        <div class="spec-ticker-item"><span class="ticker-dot"></span>O(n log n) Complexity Bounds</div>
-        <div class="spec-ticker-item"><span class="ticker-dot"></span>Spatial 3D Engine Architecture</div>
-        <div class="spec-ticker-item"><span class="ticker-dot"></span>Context-Window Compression</div>
-        <div class="spec-ticker-item"><span class="ticker-dot"></span>Discrete Math &amp; Graph Theory</div>
-        <div class="spec-ticker-item"><span class="ticker-dot"></span>Strict Server State Validation</div>
-        <!-- Continuous loop duplicate -->
-        <div class="spec-ticker-item" aria-hidden="true"><span class="ticker-dot"></span>Advanced Luau Metatables</div>
-        <div class="spec-ticker-item" aria-hidden="true"><span class="ticker-dot"></span>C++20 Arena Allocators</div>
-        <div class="spec-ticker-item" aria-hidden="true"><span class="ticker-dot"></span>Client-Server RemoteEvents</div>
-        <div class="spec-ticker-item" aria-hidden="true"><span class="ticker-dot"></span>O(n log n) Complexity Bounds</div>
-        <div class="spec-ticker-item" aria-hidden="true"><span class="ticker-dot"></span>Spatial 3D Engine Architecture</div>
-        <div class="spec-ticker-item" aria-hidden="true"><span class="ticker-dot"></span>Context-Window Compression</div>
-        <div class="spec-ticker-item" aria-hidden="true"><span class="ticker-dot"></span>Discrete Math &amp; Graph Theory</div>
-        <div class="spec-ticker-item" aria-hidden="true"><span class="ticker-dot"></span>Strict Server State Validation</div>
-      </div>
-    </div>
-
-    <!-- SELECTED PRODUCTION WORK (Google Gemini Flagship Editorial Showcase) -->
-    <section id="work" class="work-section fade-in-on-scroll" data-section-name="Work" aria-label="Work" tabindex="-1">
-      <div class="work-section-header">
-        <p class="section-label">Selected Work</p>
-        <h2 class="section-headline">Built with systems-level discipline.</h2>
-      </div>
-
-      <div class="gemini-work-container">
-
-        <!-- PROJECT 01: INBOX QUEST -->
-        <article class="gemini-work-row">
-          <div class="gemini-work-content">
-            <h3 class="work-title">
-              Inbox Quest.
-              <span class="work-title-sub">Gamified email triage &amp; AI assistant.</span>
-            </h3>
-            <p class="work-desc">
-              An end-to-end full-stack platform transforming chaotic inbox workloads into a turn-based retro boss combat. Integrated with Gemini 3.8 Flash for sub-second thread summarization and smart VIP draft generation, backed by a 100% reversible transaction journal with zero permanent deletions.
-            </p>
-            <div class="gemini-action-group">
-              <a href="https://indexquest.vercel.app/" target="_blank" rel="noopener noreferrer" class="gemini-pure-link">
-                Play live demo <span class="arrow-glyph">&gt;</span>
-              </a>
-              <a href="https://github.com/wdymarjun" target="_blank" rel="noopener noreferrer" class="gemini-pure-link secondary">
-                Inspect source code <span class="arrow-glyph">&gt;</span>
-              </a>
-            </div>
-          </div>
-
-          <div class="gemini-work-visual">
-            <div class="gemini-visual-card"
-                 id="inboxQuestBentoMedia"
-                 data-project-index="0"
-                 data-modal-img="inbox_quest_preview.jpg"
-                 data-modal-title="Inbox Quest — Gamified Email RPG &amp; Autonomous Assistant"
-                 data-modal-subtitle="React 18 · Express · Gemini 3.8 Flash · Reversible Journal"
-                 data-modal-desc="Enterprise-grade email triage game converting chaotic inbox workloads into boss battle combat encounters. Featuring real-time Gemini 3.8 Flash intelligence and 100% reversible non-destructive archiving."
-                 data-modal-repo="https://github.com/wdymarjun"
-                 data-modal-specs='[{"label":"Live App","val":"indexquest.vercel.app"},{"label":"Safety Guarantee","val":"0 Deletions / 100% Safe"},{"label":"AI Model","val":"Gemini 3.8 Flash"},{"label":"Engine FPS","val":"60 FPS Canvas"}]'>
-              <img id="inboxQuestBentoImg" src="inbox_quest_preview.jpg" alt="Inbox Quest Dashboard" loading="lazy" decoding="async">
-              <span class="media-expand-badge">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-                <span>Expand</span>
-              </span>
-            </div>
-
-            <!-- Sleek minimal angle switcher -->
-            <div class="gemini-thumb-strip" id="inboxGalleryStrip">
-              <button type="button" class="gemini-thumb-pill active" data-img="inbox_quest_preview.jpg" data-title="Inbox Quest — App Dashboard &amp; Email Roster" data-desc="Complete inbox overview with real-time email health meter, unread email triage cards, and one-click reversible batch actions.">
-                <span>Dashboard</span>
-              </button>
-              <button type="button" class="gemini-thumb-pill" data-img="inbox_quest_gameplay.jpg" data-title="Inbox Quest — Retro RPG Boss Battle" data-desc="Canvas-powered retro RPG encounter where unread emails manifest as animated monsters. Clear emails via spell attacks to restore inbox peace.">
-                <span>Boss Battle</span>
-              </button>
-            </div>
-          </div>
-        </article>
-
-        <!-- PROJECT 02: ASC (A SATANIC CHURCH) -->
-        <article class="gemini-work-row asc-work-row">
-          <div class="gemini-work-content">
-            <div class="asc-project-brand">
-              <img src="asc-icon.png" alt="ASC emblem" loading="lazy" decoding="async">
-              <span>
-                <span class="asc-project-overline">Featured Roblox world</span>
-                <span class="asc-project-name">ASC · A Satanic Church</span>
-              </span>
-            </div>
-            <h3 class="work-title">
-              ASC (A Satanic Church).
-              <span class="work-title-sub">A Gothic world built to explore.</span>
-            </h3>
-            <p class="work-desc">
-              Explore a torch-lit cathedral, ASC&apos;s Education Hall, the Grand Library, and an old cemetery. The experience also features the Archivist, an AI educator presented in-game as available 24/7.
-            </p>
-            <p class="asc-project-details">Cathedral · Education Hall · Grand Library · Old Cemetery · AI educator</p>
-            <div class="gemini-action-group">
-              <a href="https://www.roblox.com/games/91131584470075/ASC-A-Satanic-Church" target="_blank" rel="noopener noreferrer" class="gemini-pure-link">
-                Play ASC on Roblox <span class="arrow-glyph">&gt;</span>
-              </a>
-              <a href="https://asc-a-satanic-church.vercel.app/" target="_blank" rel="noopener noreferrer" class="gemini-pure-link">
-                Visit the live website <span class="arrow-glyph">&gt;</span>
-              </a>
-            </div>
-          </div>
-
-          <div class="gemini-work-visual">
-            <div class="gemini-visual-card"
-                 id="ascMediaMain"
-                 data-project-index="1"
-                 data-modal-img="asc_main_preview.jpg"
-                 data-modal-title="ASC — A Satanic Church"
-                 data-modal-subtitle="Roblox experience · Gothic environments · In-game AI educator"
-                 data-modal-desc="Explore the cathedral, ASC's Education Hall, the Grand Library, and the old cemetery. Meet the Archivist, an AI educator described in-game as available 24/7."
-                 data-modal-repo="https://github.com/wdymarjun"
-                 data-modal-specs='[{"label":"Platform","val":"Roblox"},{"label":"World","val":"Gothic cathedral"},{"label":"Explore","val":"Education Hall &amp; Grand Library"},{"label":"Featured character","val":"The Archivist"}]'>
-              <img id="ascMainImg" src="asc_main_preview.jpg" alt="ASC Gothic Horror Cathedral" loading="lazy" decoding="async">
-              <span class="media-expand-badge">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-                <span>Expand</span>
-              </span>
-            </div>
-
-            <!-- Sleek minimal angle switcher -->
-            <div class="gemini-thumb-strip" id="ascGalleryStrip">
-              <button type="button" class="gemini-thumb-pill active" data-img="asc_main_preview.jpg" data-title="ASC — A Satanic Church" data-desc="A view across the candlelit cathedral nave toward the organ and sanctuary.">
-                <span>Cathedral Nave</span>
-              </button>
-              <button type="button" class="gemini-thumb-pill" data-img="asc_ai_educator.jpg" data-title="The Archivist · AI educator" data-desc="The Archivist stands in the cathedral as an AI educator, described in-game as available 24/7.">
-                <span>AI Educator NPC</span>
-              </button>
-              <button type="button" class="gemini-thumb-pill" data-img="asc_ai_dialog.jpg" data-title="ASC · Archive dialog" data-desc="An in-game dialogue interface for asking the Archivist about the archive and its contents.">
-                <span>Archive Dialog</span>
-              </button>
-              <button type="button" class="gemini-thumb-pill" data-img="asc-baphomet.jpg" data-title="Baphomet in the cathedral" data-desc="The winged Baphomet figure at the center of the candlelit cathedral.">
-                <span>Baphomet</span>
-              </button>
-              <button type="button" class="gemini-thumb-pill" data-img="asc-education-hall.webp" data-title="ASC's Education Hall" data-desc="The vaulted Education Hall, with a rose window, Gothic arches, and deep-red sanctuary.">
-                <span>Education Hall</span>
-              </button>
-              <button type="button" class="gemini-thumb-pill" data-img="asc-old-cemetery.webp" data-title="The old cemetery" data-desc="Headstones and a winged statue among the rain-dark woodland grounds.">
-                <span>Old Cemetery</span>
-              </button>
-            </div>
-          </div>
-        </article>
-
-        <!-- PROJECT 03: C++20 SYSTEMS ARCHITECTURE -->
-        <article class="gemini-work-row">
-          <div class="gemini-work-content">
-            <h3 class="work-title">
-              C++20 Systems Architecture.
-              <span class="work-title-sub">Memory allocators &amp; algorithmic bounds.</span>
-            </h3>
-            <p class="work-desc">
-              Core data structures and memory subsystems engineered from scratch in modern C++20. Designed contiguous arena pool allocators and self-balancing binary search trees with explicit pointer management, eliminating heap fragmentation and enforcing strict O(n log n) asymptotic bounds.
-            </p>
-            <div class="gemini-action-group">
-              <a href="https://github.com/wdymarjun" target="_blank" rel="noopener noreferrer" class="gemini-pure-link">
-                Inspect C++ implementation <span class="arrow-glyph">&gt;</span>
-              </a>
-            </div>
-          </div>
-
-          <div class="gemini-work-visual">
-            <div class="gemini-visual-card"
-                 data-project-index="2"
-                 data-modal-img="cpp_preview.jpg"
-                 data-modal-title="C++ Systems &amp; Memory Allocation Architecture"
-                 data-modal-subtitle="Modern C++ · Memory Profiling · Algorithmic Complexity"
-                 data-modal-desc="Hardware-level memory visualization displaying contiguous pool block allocations, binary search tree balancing logic, and cache hit/miss analytics. Designed to eliminate heap fragmentation and enforce strict O(n log n) operational bounds."
-                 data-modal-repo="https://github.com/wdymarjun"
-                 data-modal-specs='[{"label":"Time Complexity","val":"O(n log n)"},{"label":"Heap Fragmentation","val":"0%"},{"label":"Memory Pool","val":"Custom Arena"},{"label":"Language","val":"C++20"}]'>
-              <img src="cpp_preview.jpg" alt="C++ Systems Architecture Visualization" loading="lazy" decoding="async">
-              <span class="media-expand-badge">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-                <span>Expand</span>
-              </span>
-            </div>
-          </div>
-        </article>
-
-        <!-- PROJECT 04: AUTONOMOUS PROMPT PIPELINES -->
-        <article class="gemini-work-row">
-          <div class="gemini-work-content">
-            <h3 class="work-title">
-              Autonomous Prompt Pipelines.
-              <span class="work-title-sub">Context pruning &amp; 36h production sprints.</span>
-            </h3>
-            <p class="work-desc">
-              Directed engineering sprints across 3 hackathons (Smart India Hackathon Top 5, HackPulse 4th, Pitchathon Runner-Up). Engineered deterministic LLM prompt pipelines with token budget compression, achieving 4.8M tokens saved and a 65% intake speedup under strict 36-hour deadlines.
-            </p>
-            <div class="gemini-action-group">
-              <a href="https://github.com/wdymarjun" target="_blank" rel="noopener noreferrer" class="gemini-pure-link">
-                Inspect pipeline prototype <span class="arrow-glyph">&gt;</span>
-              </a>
-            </div>
-          </div>
-
-          <div class="gemini-work-visual">
-            <div class="gemini-visual-card"
-                 data-project-index="3"
-                 data-modal-img="ai_preview.jpg"
-                 data-modal-title="Production AI Prompt Pipeline &amp; Optimization"
-                 data-modal-subtitle="Context Window Pruning · Structured Schema Output · Chain-of-Thought"
-                 data-modal-desc="Context-optimized LLM orchestration pipeline dashboard with real-time token compression, semantic vectorization, and deterministic JSON schema validation for rapid intake processing."
-                 data-modal-repo="https://github.com/wdymarjun"
-                 data-modal-specs='[{"label":"Intake Acceleration","val":"+65%"},{"label":"Token Savings","val":"4.8M Saved"},{"label":"Turnaround","val":"36 Hours"},{"label":"Schema Validity","val":"100%"}]'>
-              <img src="ai_preview.jpg" alt="AI Pipeline Architecture Dashboard" loading="lazy" decoding="async">
-              <span class="media-expand-badge">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-                <span>Expand</span>
-              </span>
-            </div>
-          </div>
-        </article>
-
-      </div>
-    </section>
-
-    <!-- HACKATHON CIRCUIT & PODIUM PLACEMENTS (Keynote Awards Table) -->
-    <section id="awards" class="awards-section fade-in-on-scroll" data-section-name="Podium" aria-label="Podium" tabindex="-1">
-      <p class="section-label">Track Record &amp; Leadership</p>
-      <h2 class="section-headline">Competitive execution under pressure.</h2>
-
-      <div class="awards-table">
-        <div class="award-row">
-          <div class="award-placement">Top 5</div>
-          <div class="award-name">
-            Smart India Hackathon (SIH)
-            <span>RIET Jaipur · Internal Round</span>
-          </div>
-          <div class="award-detail">
-            Ranked 5th position out of 40+ participating college engineering teams for system feasibility, architectural rigor, and live jury defense.
-          </div>
-          <div class="award-year">2026</div>
+    <!-- ============ STACK BANNER ============ -->
+    <section class="stack" id="ticker" aria-label="Core Engineering Disciplines">
+      <div class="stack-bg" aria-hidden="true"></div>
+      <div class="container stack-in">
+        <div class="stack-copy">
+          <h2 class="stack-title" data-split aria-label="Whatever the stack, it ships engineered.">Whatever the stack,
+            it ships engineered.</h2>
+          <a href="#work" class="btn btn-ghost-w stack-btn" data-reveal><span>View work</span><span class="btn-arrow"
+              aria-hidden="true">↓</span></a>
         </div>
-
-        <div class="award-row">
-          <div class="award-placement">4th Place</div>
-          <div class="award-name">
-            HackPulse Hackathon
-            <span>UEM Jaipur</span>
+        <div class="stack-rows" role="list">
+          <div class="st-row st-left">
+            <div class="st-track">
+              <div class="st-set"><span class="st-item"><i class="st-tile mono" aria-hidden="true">Lu</i><span
+                    class="st-cap mono">Advanced Luau Metatables</span></span><span class="st-item"><i
+                    class="st-tile mono" aria-hidden="true">RE</i><span class="st-cap mono">Client-Server
+                    RemoteEvents</span></span><span class="st-item"><i class="st-tile mono"
+                    aria-hidden="true">3D</i><span class="st-cap mono">Spatial 3D Engine Architecture</span></span><span
+                  class="st-item"><i class="st-tile mono" aria-hidden="true">∑</i><span class="st-cap mono">Discrete
+                    Math &amp; Graph Theory</span></span></div>
+            </div>
           </div>
-          <div class="award-detail">
-            Delivered a functional production prototype within 36 hours; successfully defended decoupled client-server architecture before industry judges.
+          <div class="st-row st-right">
+            <div class="st-track">
+              <div class="st-set"><span class="st-item"><i class="st-tile mono" aria-hidden="true">C++</i><span
+                    class="st-cap mono">C++20 Arena Allocators</span></span><span class="st-item"><i
+                    class="st-tile mono" aria-hidden="true">O(n)</i><span class="st-cap mono">O(n log n) Complexity
+                    Bounds</span></span><span class="st-item"><i class="st-tile mono" aria-hidden="true">CW</i><span
+                    class="st-cap mono">Context-Window Compression</span></span><span class="st-item"><i
+                    class="st-tile mono" aria-hidden="true">SV</i><span class="st-cap mono">Strict Server State
+                    Validation</span></span></div>
+            </div>
           </div>
-          <div class="award-year">2026</div>
-        </div>
-
-        <div class="award-row">
-          <div class="award-placement">2nd Runner-Up</div>
-          <div class="award-name">
-            Pitchathon by Kalshinax
-            <span>RIET Jaipur</span>
-          </div>
-          <div class="award-detail">
-            Recognized for technical viability, go-to-market execution, and architectural clarity for an innovative enterprise solution.
-          </div>
-          <div class="award-year">2026</div>
-        </div>
-
-        <div class="award-row">
-          <div class="award-placement">3x Lead</div>
-          <div class="award-name">
-            Technical Team Lead
-            <span>Hackathon Circuit</span>
-          </div>
-          <div class="award-detail">
-            Directed cross-functional engineering teams across 3 hackathons; owned sprint backlogs, task delegation, and final presentations.
-          </div>
-          <div class="award-year">2026</div>
         </div>
       </div>
     </section>
 
-    <!-- ABOUT SECTION (Apple Editorial Style) -->
-    <section id="about" class="about-section fade-in-on-scroll" data-section-name="About" aria-label="About" tabindex="-1">
-      <div class="about-grid">
-        <div class="about-text-col">
-          <p class="section-label">Background &amp; Philosophy</p>
-          <p class="about-lead">
-            The deepest understanding of software comes from building systems from scratch.
-          </p>
-          <p class="about-p">
-            I am a 1st-year Computer Science engineer at RIET Jaipur. Rather than relying on superficial abstractions, I focus on fundamental mechanics: explicit memory profiling in <strong>C++</strong>, networked replication metatables in <strong>Luau</strong>, and token-compressed inference chains in <strong>LLM workflows</strong>.
-          </p>
-          <p class="about-p">
-            As a 3-time Hackathon Team Lead, I treat hackathons as high-stakes engineering sprints—translating architectural decisions into production-ready software within strict 24- to 48-hour windows.
-          </p>
-          <p class="about-p">
-            Everything is grounded in mathematical intuition: algorithmic asymptotic bounds (Big-O), discrete structures, spatial geometry, and matrix transformations.
-          </p>
-          <div>
-            <a href="Arjun_Singh_Resume.pdf" download="Arjun_Singh_Resume.pdf" class="btn-primary">Download Official Resume ↗</a>
+    <!-- ============ METRICS ============ -->
+    <section class="metrics" aria-label="Highlights">
+      <div class="container">
+        <div class="cells cells-4">
+          <div class="cell cell-metric" data-reveal style="--d:0ms">
+            <span class="metric-num"><span data-count="3">3</span><em>×</em></span>
+            <span class="metric-label mono">Hackathons led as technical team lead</span>
+          </div>
+          <div class="cell cell-metric" data-reveal style="--d:90ms">
+            <span class="metric-num"><em>Top </em><span data-count="5">5</span></span>
+            <span class="metric-label mono">Smart India Hackathon, internal round (40+ teams)</span>
+          </div>
+          <div class="cell cell-metric" data-reveal style="--d:180ms">
+            <span class="metric-num"><span data-count="36">36</span><em>h</em></span>
+            <span class="metric-label mono">Production sprints under hard deadlines</span>
+          </div>
+          <div class="cell cell-metric" data-reveal style="--d:270ms">
+            <span class="metric-num"><span data-count="65">65</span><em>%</em></span>
+            <span class="metric-label mono">Intake speedup from the prompt pipeline</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WORK ============ -->
+    <section id="work" class="section work" data-section-name="Work" aria-label="Work" tabindex="-1">
+      <div class="container">
+        <header class="section-head">
+          <p class="section-label mono" data-reveal><span>02</span> Selected Work</p>
+          <h2 class="section-title" data-split aria-label="Built with systems-level discipline.">Built with
+            systems-level discipline.</h2>
+        </header>
+
+        <div class="projects" id="projects">
+
+          <!-- PROJECT 01: INBOX QUEST -->
+          <article class="project" style="--k:0">
+            <div class="project-box">
+              <div class="project-bar mono">
+                <span class="project-idx">01 / 04</span>
+                <span class="project-kind">React 18 · Express · Gemini 3.8 Flash · Reversible Journal</span>
+              </div>
+              <div class="project-body">
+                <div class="project-copy">
+                  <h3 class="work-title">Inbox Quest.<span class="work-sub">Gamified email triage &amp; AI
+                      assistant.</span></h3>
+                  <p class="work-desc">
+                    An end-to-end full-stack platform transforming chaotic inbox workloads into a turn-based retro boss
+                    combat. Integrated with Gemini 3.8 Flash for sub-second thread summarization and smart VIP draft
+                    generation, backed by a 100% reversible transaction journal with zero permanent deletions.
+                  </p>
+                  <div class="link-stack">
+                    <a href="https://indexquest.vercel.app/" target="_blank" rel="noopener noreferrer"
+                      class="text-link"><span>Play live demo</span><i aria-hidden="true">↗</i></a>
+                    <a href="https://github.com/wdymarjun" target="_blank" rel="noopener noreferrer"
+                      class="text-link"><span>Inspect source code</span><i aria-hidden="true">↗</i></a>
+                  </div>
+                </div>
+
+                <div class="project-visual">
+                  <div class="visual-card" id="inboxQuestBentoMedia" role="button" tabindex="0"
+                    aria-label="Expand image: Inbox Quest" data-project-index="0"
+                    data-modal-img="inbox_quest_preview.jpg"
+                    data-modal-title="Inbox Quest — Gamified Email RPG &amp; Autonomous Assistant"
+                    data-modal-subtitle="React 18 · Express · Gemini 3.8 Flash · Reversible Journal"
+                    data-modal-desc="Enterprise-grade email triage game converting chaotic inbox workloads into boss battle combat encounters. Featuring real-time Gemini 3.8 Flash intelligence and 100% reversible non-destructive archiving."
+                    data-modal-repo="https://github.com/wdymarjun"
+                    data-modal-specs='[{"label":"Live App","val":"indexquest.vercel.app"},{"label":"Safety Guarantee","val":"0 Deletions / 100% Safe"},{"label":"AI Model","val":"Gemini 3.8 Flash"},{"label":"Engine FPS","val":"60 FPS Canvas"}]'>
+                    <div class="visual-frame">
+                      <img id="inboxQuestBentoImg" src="inbox_quest_preview.jpg" alt="Inbox Quest Dashboard"
+                        loading="lazy" decoding="async">
+                    </div>
+                    <span class="expand-badge mono"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <polyline points="9 21 3 21 3 15"></polyline>
+                        <line x1="21" y1="3" x2="14" y2="10"></line>
+                        <line x1="3" y1="21" x2="10" y2="14"></line>
+                      </svg>Expand</span>
+                  </div>
+                  <div class="thumbs" id="inboxGalleryStrip">
+                    <button type="button" class="thumb active" data-img="inbox_quest_preview.jpg"
+                      data-title="Inbox Quest — App Dashboard &amp; Email Roster"
+                      data-desc="Complete inbox overview with real-time email health meter, unread email triage cards, and one-click reversible batch actions."><span
+                        class="mono">Dashboard</span></button>
+                    <button type="button" class="thumb" data-img="inbox_quest_gameplay.jpg"
+                      data-title="Inbox Quest — Retro RPG Boss Battle"
+                      data-desc="Canvas-powered retro RPG encounter where unread emails manifest as animated monsters. Clear emails via spell attacks to restore inbox peace."><span
+                        class="mono">Boss Battle</span></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- PROJECT 02: ASC (A SATANIC CHURCH) -->
+          <article class="project" style="--k:1">
+            <div class="project-box">
+              <div class="project-bar mono">
+                <span class="project-idx">02 / 04</span>
+                <span class="project-kind">Roblox experience · Gothic environments · In-game AI educator</span>
+              </div>
+              <div class="project-body">
+                <div class="project-copy">
+                  <div class="asc-brand">
+                    <img src="asc-icon.png" alt="ASC emblem" loading="lazy" decoding="async">
+                    <span>
+                      <span class="asc-over mono">Featured Roblox world</span>
+                      <span class="asc-name">ASC · A Satanic Church</span>
+                    </span>
+                  </div>
+                  <h3 class="work-title">ASC (A Satanic Church).<span class="work-sub">A Gothic world built to
+                      explore.</span></h3>
+                  <p class="work-desc">
+                    Explore a torch-lit cathedral, ASC&apos;s Education Hall, the Grand Library, and an old cemetery.
+                    The experience also features the Archivist, an AI educator presented in-game as available 24/7.
+                  </p>
+                  <p class="work-meta mono">Cathedral · Education Hall · Grand Library · Old Cemetery · AI educator</p>
+                  <div class="link-stack">
+                    <a href="https://www.roblox.com/games/91131584470075/ASC-A-Satanic-Church" target="_blank"
+                      rel="noopener noreferrer" class="text-link"><span>Play ASC on Roblox</span><i
+                        aria-hidden="true">↗</i></a>
+                    <a href="https://asc-a-satanic-church.vercel.app/" target="_blank" rel="noopener noreferrer"
+                      class="text-link"><span>Visit the live website</span><i aria-hidden="true">↗</i></a>
+                  </div>
+                </div>
+
+                <div class="project-visual">
+                  <div class="visual-card" id="ascMediaMain" role="button" tabindex="0" aria-label="Expand image: ASC"
+                    data-project-index="1" data-modal-img="asc_main_preview.jpg"
+                    data-modal-title="ASC — A Satanic Church"
+                    data-modal-subtitle="Roblox experience · Gothic environments · In-game AI educator"
+                    data-modal-desc="Explore the cathedral, ASC's Education Hall, the Grand Library, and the old cemetery. Meet the Archivist, an AI educator described in-game as available 24/7."
+                    data-modal-repo="https://github.com/wdymarjun"
+                    data-modal-specs='[{"label":"Platform","val":"Roblox"},{"label":"World","val":"Gothic cathedral"},{"label":"Explore","val":"Education Hall &amp; Grand Library"},{"label":"Featured character","val":"The Archivist"}]'>
+                    <div class="visual-frame">
+                      <img id="ascMainImg" src="asc_main_preview.jpg" alt="ASC Gothic Horror Cathedral" loading="lazy"
+                        decoding="async">
+                    </div>
+                    <span class="expand-badge mono"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <polyline points="9 21 3 21 3 15"></polyline>
+                        <line x1="21" y1="3" x2="14" y2="10"></line>
+                        <line x1="3" y1="21" x2="10" y2="14"></line>
+                      </svg>Expand</span>
+                  </div>
+                  <div class="thumbs" id="ascGalleryStrip">
+                    <button type="button" class="thumb active" data-img="asc_main_preview.jpg"
+                      data-title="ASC — A Satanic Church"
+                      data-desc="A view across the candlelit cathedral nave toward the organ and sanctuary."><span
+                        class="mono">Cathedral Nave</span></button>
+                    <button type="button" class="thumb" data-img="asc_ai_educator.jpg"
+                      data-title="The Archivist · AI educator"
+                      data-desc="The Archivist stands in the cathedral as an AI educator, described in-game as available 24/7."><span
+                        class="mono">AI Educator NPC</span></button>
+                    <button type="button" class="thumb" data-img="asc_ai_dialog.jpg" data-title="ASC · Archive dialog"
+                      data-desc="An in-game dialogue interface for asking the Archivist about the archive and its contents."><span
+                        class="mono">Archive Dialog</span></button>
+                    <button type="button" class="thumb" data-img="asc-baphomet.jpg"
+                      data-title="Baphomet in the cathedral"
+                      data-desc="The winged Baphomet figure at the center of the candlelit cathedral."><span
+                        class="mono">Baphomet</span></button>
+                    <button type="button" class="thumb" data-img="asc-education-hall.webp"
+                      data-title="ASC's Education Hall"
+                      data-desc="The vaulted Education Hall, with a rose window, Gothic arches, and deep-red sanctuary."><span
+                        class="mono">Education Hall</span></button>
+                    <button type="button" class="thumb" data-img="asc-old-cemetery.webp" data-title="The old cemetery"
+                      data-desc="Headstones and a winged statue among the rain-dark woodland grounds."><span
+                        class="mono">Old Cemetery</span></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- PROJECT 03: C++20 SYSTEMS ARCHITECTURE -->
+          <article class="project" style="--k:2">
+            <div class="project-box">
+              <div class="project-bar mono">
+                <span class="project-idx">03 / 04</span>
+                <span class="project-kind">Modern C++ · Memory Profiling · Algorithmic Complexity</span>
+              </div>
+              <div class="project-body">
+                <div class="project-copy">
+                  <h3 class="work-title">C++20 Systems Architecture.<span class="work-sub">Memory allocators &amp;
+                      algorithmic bounds.</span></h3>
+                  <p class="work-desc">
+                    Core data structures and memory subsystems engineered from scratch in modern C++20. Designed
+                    contiguous arena pool allocators and self-balancing binary search trees with explicit pointer
+                    management, eliminating heap fragmentation and enforcing strict O(n log n) asymptotic bounds.
+                  </p>
+                  <div class="link-stack">
+                    <a href="https://github.com/wdymarjun" target="_blank" rel="noopener noreferrer"
+                      class="text-link"><span>Inspect C++ implementation</span><i aria-hidden="true">↗</i></a>
+                  </div>
+                </div>
+
+                <div class="project-visual">
+                  <div class="visual-card" role="button" tabindex="0"
+                    aria-label="Expand image: C++ Systems Architecture" data-project-index="2"
+                    data-modal-img="cpp_preview.jpg" data-modal-title="C++ Systems &amp; Memory Allocation Architecture"
+                    data-modal-subtitle="Modern C++ · Memory Profiling · Algorithmic Complexity"
+                    data-modal-desc="Hardware-level memory visualization displaying contiguous pool block allocations, binary search tree balancing logic, and cache hit/miss analytics. Designed to eliminate heap fragmentation and enforce strict O(n log n) operational bounds."
+                    data-modal-repo="https://github.com/wdymarjun"
+                    data-modal-specs='[{"label":"Time Complexity","val":"O(n log n)"},{"label":"Heap Fragmentation","val":"0%"},{"label":"Memory Pool","val":"Custom Arena"},{"label":"Language","val":"C++20"}]'>
+                    <div class="visual-frame">
+                      <img src="cpp_preview.jpg" alt="C++ Systems Architecture Visualization" loading="lazy"
+                        decoding="async">
+                    </div>
+                    <span class="expand-badge mono"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <polyline points="9 21 3 21 3 15"></polyline>
+                        <line x1="21" y1="3" x2="14" y2="10"></line>
+                        <line x1="3" y1="21" x2="10" y2="14"></line>
+                      </svg>Expand</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- PROJECT 04: AUTONOMOUS PROMPT PIPELINES -->
+          <article class="project" style="--k:3">
+            <div class="project-box">
+              <div class="project-bar mono">
+                <span class="project-idx">04 / 04</span>
+                <span class="project-kind">Context Window Pruning · Structured Schema Output · Chain-of-Thought</span>
+              </div>
+              <div class="project-body">
+                <div class="project-copy">
+                  <h3 class="work-title">Autonomous Prompt Pipelines.<span class="work-sub">Context pruning &amp; 36h
+                      production sprints.</span></h3>
+                  <p class="work-desc">
+                    Directed engineering sprints across 3 hackathons (Smart India Hackathon Top 5, HackPulse 4th,
+                    Pitchathon Runner-Up). Engineered deterministic LLM prompt pipelines with token budget compression,
+                    achieving 4.8M tokens saved and a 65% intake speedup under strict 36-hour deadlines.
+                  </p>
+                  <div class="link-stack">
+                    <a href="https://github.com/wdymarjun" target="_blank" rel="noopener noreferrer"
+                      class="text-link"><span>Inspect pipeline prototype</span><i aria-hidden="true">↗</i></a>
+                  </div>
+                </div>
+
+                <div class="project-visual">
+                  <div class="visual-card" role="button" tabindex="0"
+                    aria-label="Expand image: AI Pipeline Architecture" data-project-index="3"
+                    data-modal-img="ai_preview.jpg" data-modal-title="Production AI Prompt Pipeline &amp; Optimization"
+                    data-modal-subtitle="Context Window Pruning · Structured Schema Output · Chain-of-Thought"
+                    data-modal-desc="Context-optimized LLM orchestration pipeline dashboard with real-time token compression, semantic vectorization, and deterministic JSON schema validation for rapid intake processing."
+                    data-modal-repo="https://github.com/wdymarjun"
+                    data-modal-specs='[{"label":"Intake Acceleration","val":"+65%"},{"label":"Token Savings","val":"4.8M Saved"},{"label":"Turnaround","val":"36 Hours"},{"label":"Schema Validity","val":"100%"}]'>
+                    <div class="visual-frame">
+                      <img src="ai_preview.jpg" alt="AI Pipeline Architecture Dashboard" loading="lazy"
+                        decoding="async">
+                    </div>
+                    <span class="expand-badge mono"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <polyline points="9 21 3 21 3 15"></polyline>
+                        <line x1="21" y1="3" x2="14" y2="10"></line>
+                        <line x1="3" y1="21" x2="10" y2="14"></line>
+                      </svg>Expand</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ AWARDS ============ -->
+    <section id="awards" class="section awards" data-section-name="Podium" aria-label="Podium" tabindex="-1">
+      <div class="container">
+        <header class="section-head">
+          <p class="section-label mono" data-reveal><span>03</span> Track Record &amp; Leadership</p>
+          <h2 class="section-title" data-split aria-label="Competitive execution under pressure.">Competitive execution
+            under pressure.</h2>
+        </header>
+
+        <div class="awards-table">
+          <div class="award-head mono" aria-hidden="true">
+            <span>Placement</span><span>Event</span><span>Detail</span><span>Year</span>
+          </div>
+
+          <div class="award-row" data-reveal="row">
+            <div class="award-place">Top 5</div>
+            <div class="award-name">Smart India Hackathon (SIH)<span class="mono">RIET Jaipur · Internal Round</span>
+            </div>
+            <div class="award-detail">Ranked 5th position out of 40+ participating college engineering teams for system
+              feasibility, architectural rigor, and live jury defense.</div>
+            <div class="award-year mono">2026</div>
+          </div>
+
+          <div class="award-row" data-reveal="row">
+            <div class="award-place">4th Place</div>
+            <div class="award-name">HackPulse Hackathon<span class="mono">UEM Jaipur</span></div>
+            <div class="award-detail">Delivered a functional production prototype within 36 hours; successfully defended
+              decoupled client-server architecture before industry judges.</div>
+            <div class="award-year mono">2026</div>
+          </div>
+
+          <div class="award-row" data-reveal="row">
+            <div class="award-place">2nd Runner-Up</div>
+            <div class="award-name">Pitchathon by Kalshinax<span class="mono">RIET Jaipur</span></div>
+            <div class="award-detail">Recognized for technical viability, go-to-market execution, and architectural
+              clarity for an innovative enterprise solution.</div>
+            <div class="award-year mono">2026</div>
+          </div>
+
+          <div class="award-row" data-reveal="row">
+            <div class="award-place">3x Lead</div>
+            <div class="award-name">Technical Team Lead<span class="mono">Hackathon Circuit</span></div>
+            <div class="award-detail">Directed cross-functional engineering teams across 3 hackathons; owned sprint
+              backlogs, task delegation, and final presentations.</div>
+            <div class="award-year mono">2026</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section id="about" class="section about" data-section-name="About" aria-label="About" tabindex="-1">
+      <div class="container">
+        <p class="section-label mono" data-reveal><span>04</span> Background &amp; Philosophy</p>
+
+        <p class="about-lead" id="aboutLead" data-scrub>The deepest understanding of software comes from building
+          systems from scratch.</p>
+
+        <div class="cells cells-3 principles">
+          <div class="cell principle" data-reveal style="--d:0ms">
+            <span class="principle-k mono">01 · Fundamentals</span>
+            <p>I am a 1st-year Computer Science engineer at RIET Jaipur. Rather than relying on superficial
+              abstractions, I focus on fundamental mechanics: explicit memory profiling in <strong>C++</strong>,
+              networked replication metatables in <strong>Luau</strong>, and token-compressed inference chains in
+              <strong>LLM workflows</strong>.
+            </p>
+          </div>
+          <div class="cell principle" data-reveal style="--d:100ms">
+            <span class="principle-k mono">02 · Execution</span>
+            <p>As a 3-time Hackathon Team Lead, I treat hackathons as high-stakes engineering sprints—translating
+              architectural decisions into production-ready software within strict 24- to 48-hour windows.</p>
+          </div>
+          <div class="cell principle" data-reveal style="--d:200ms">
+            <span class="principle-k mono">03 · Mathematics</span>
+            <p>Everything is grounded in mathematical intuition: algorithmic asymptotic bounds (Big-O), discrete
+              structures, spatial geometry, and matrix transformations.</p>
           </div>
         </div>
 
-        <div class="competencies-box">
-          <div>
-            <p class="comp-group-title">Languages &amp; Core</p>
+        <div class="cells cells-2 competencies">
+          <div class="cell comp" data-reveal style="--d:0ms">
+            <p class="comp-title mono">Languages &amp; Core</p>
             <ul class="comp-list">
               <li>Advanced Lua / Luau <span>Metatables, OOP, RemoteEvents</span></li>
               <li>Modern C++ <span>Pointers, Memory, STL, DSA</span></li>
@@ -508,9 +637,8 @@
               <li>Discrete Mathematics <span>Big-O Bounds, Matrix Math</span></li>
             </ul>
           </div>
-
-          <div>
-            <p class="comp-group-title">AI &amp; Workflows</p>
+          <div class="cell comp" data-reveal style="--d:120ms">
+            <p class="comp-title mono">AI &amp; Workflows</p>
             <ul class="comp-list">
               <li>Prompt Architecture <span>Chain-of-Thought, Evaluation</span></li>
               <li>Context Window Tuning <span>Token Budget Compression</span></li>
@@ -519,153 +647,171 @@
             </ul>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- CONTACT CTA -->
-    <section id="contact" class="contact-section fade-in-on-scroll" data-section-name="Contact" aria-label="Contact" tabindex="-1">
-      <h2 class="contact-headline">
-        Let's build something<br>
-        <span>extraordinary.</span>
-      </h2>
-      <p class="contact-sub">
-        Available for competitive hackathon teams, open-source engineering, and early-career software engineering &amp; technical product roles.
-      </p>
-      
-      <div class="contact-actions-row">
-        <a href="#" id="copyEmailBtn" class="btn-primary">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-          <span id="copyEmailText">Copy Email Address</span>
-        </a>
-
-        <a href="https://www.linkedin.com/in/arjun-singh-682453378/" target="_blank" rel="noopener noreferrer" class="btn-secondary btn-contact-card">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-          <div class="contact-btn-text">
-            <strong>LinkedIn</strong>
-            <span>arjun-singh-682453378 ↗</span>
-          </div>
-        </a>
-
-        <a href="https://unstop.com/u/arjunsin14938" target="_blank" rel="noopener noreferrer" class="btn-secondary btn-contact-card">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path><path d="M7 12h2"></path><path d="M15 12h2"></path></svg>
-          <div class="contact-btn-text">
-            <strong>Unstop</strong>
-            <span>arjunsin14938 ↗</span>
-          </div>
-        </a>
-
-        <a href="https://github.com/wdymarjun" target="_blank" rel="noopener noreferrer" class="btn-secondary btn-contact-card">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-          <div class="contact-btn-text">
-            <strong>GitHub</strong>
-            <span>@wdymarjun ↗</span>
-          </div>
-        </a>
-      </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-      <div class="footer-top-row">
-        <p>© 2026 Arjun Singh (@wdymarjun) · Systems-Oriented Software Engineer</p>
-        <div class="footer-links">
-          <a href="https://github.com/wdymarjun" target="_blank" rel="noopener noreferrer">GitHub</a>
-          <a href="https://www.linkedin.com/in/arjun-singh-682453378/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href="https://unstop.com/u/arjunsin14938" target="_blank" rel="noopener noreferrer">Unstop</a>
-          <a href="mailto:mail6arjun478@gmail.com">Email</a>
-          <a href="Arjun_Singh_Resume.pdf" download="Arjun_Singh_Resume.pdf">Resume</a>
+        <div class="about-cta" data-reveal>
+          <a href="Arjun_Singh_Resume.pdf" download="Arjun_Singh_Resume.pdf" class="btn btn-primary"><span>Download
+              Official Resume</span><span class="btn-arrow" aria-hidden="true">↗</span></a>
         </div>
       </div>
+    </section>
 
-      <!-- Monumental Architectural Titanium Wordmark -->
-      <div class="footer-wordmark" aria-hidden="true">
-        <span>ARJUN</span>
-        <span>SINGH</span>
+    <!-- ============ CONTACT ============ -->
+    <section id="contact" class="section contact" data-section-name="Contact" aria-label="Contact" tabindex="-1">
+      <div class="container">
+        <p class="section-label mono" data-reveal><span>05</span> Contact</p>
+        <div class="cta-stage">
+          <div class="cta-bg" aria-hidden="true"></div>
+          <div class="cta-tiles" aria-hidden="true"><i class="cta-tile mono" style="--x:8%;--y:12%;--i:0"
+              aria-hidden="true">Lu</i><i class="cta-tile mono" style="--x:30%;--y:12%;--i:1"
+              aria-hidden="true">3D</i><i class="cta-tile mono" style="--x:50%;--y:17%;--i:2"
+              aria-hidden="true">C++</i><i class="cta-tile mono" style="--x:70%;--y:12%;--i:3"
+              aria-hidden="true">RE</i><i class="cta-tile mono" style="--x:92%;--y:12%;--i:4"
+              aria-hidden="true">O(n)</i><i class="cta-tile mono" style="--x:12%;--y:31%;--i:5"
+              aria-hidden="true">∑</i><i class="cta-tile mono" style="--x:88%;--y:31%;--i:6" aria-hidden="true">SV</i><i
+              class="cta-tile mono" style="--x:8%;--y:46%;--i:7" aria-hidden="true">CW</i><i class="cta-tile mono"
+              style="--x:92%;--y:46%;--i:8" aria-hidden="true">Lu</i><i class="cta-tile mono"
+              style="--x:16%;--y:64%;--i:9" aria-hidden="true">C++</i><i class="cta-tile mono"
+              style="--x:84%;--y:64%;--i:10" aria-hidden="true">3D</i><i class="cta-tile mono"
+              style="--x:8%;--y:80%;--i:11" aria-hidden="true">RE</i><i class="cta-tile mono"
+              style="--x:92%;--y:80%;--i:12" aria-hidden="true">O(n)</i><i class="cta-tile mono"
+              style="--x:30%;--y:92%;--i:13" aria-hidden="true">∑</i><i class="cta-tile mono"
+              style="--x:70%;--y:92%;--i:14" aria-hidden="true">SV</i></div>
+          <div class="cta-copy">
+            <h2 class="contact-title" data-split aria-label="Let’s build something extraordinary.">Let’s build something
+              extraordinary.</h2>
+            <p class="contact-sub" data-reveal>
+              Available for competitive hackathon teams, open-source engineering, and early-career software engineering
+              &amp; technical product roles.
+            </p>
+            <a href="#" id="copyEmailBtn" class="btn btn-primary cta-btn" data-reveal><span id="copyEmailText">Copy
+                Email Address</span><span class="btn-arrow" aria-hidden="true"><svg width="15" height="15"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg></span></a>
+          </div>
+        </div>
+
+        <div class="cells cells-3 contact-cells" data-reveal>
+          <a href="https://www.linkedin.com/in/arjun-singh-682453378/" target="_blank" rel="noopener noreferrer"
+            class="cell cell-link contact-cell">
+            <span class="cell-k mono"><svg class="cell-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg> LinkedIn</span>
+            <span class="cell-v">arjun-singh-682453378 <span class="cell-arrow" aria-hidden="true">↗</span></span>
+          </a>
+          <a href="https://unstop.com/u/arjunsin14938" target="_blank" rel="noopener noreferrer"
+            class="cell cell-link contact-cell">
+            <span class="cell-k mono"><svg class="cell-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.394 0 0 5.394 0 12s5.394 12 12 12 12-5.394 12-12S18.606 0 12 0Zm-1.2 16.86H8.303v-1.127c-.715 1.091-1.588 1.552-2.897 1.552-2.085 0-3.248-1.2-3.248-3.333V7.248h2.509v6.182c0 1.164.533 1.722 1.6 1.722 1.224 0 2.012-.752 2.012-1.891V7.236h2.509v9.625zm8.533 0v-5.939c0-1.14-.533-1.721-1.6-1.721-1.224 0-2.012.752-2.012 1.89v5.77h-2.509V7.237h2.497V8.63c.715-1.09 1.588-1.551 2.897-1.551 2.085 0 3.249 1.2 3.249 3.333v6.449z"/></svg> Unstop</span>
+            <span class="cell-v">arjunsin14938 <span class="cell-arrow" aria-hidden="true">↗</span></span>
+          </a>
+          <a href="https://github.com/wdymarjun" target="_blank" rel="noopener noreferrer"
+            class="cell cell-link contact-cell">
+            <span class="cell-k mono"><svg class="cell-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg> GitHub</span>
+            <span class="cell-v">@wdymarjun <span class="cell-arrow" aria-hidden="true">↗</span></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-row">
+          <p class="mono">© 2026 Arjun Singh (@wdymarjun) · Systems-Oriented Software Engineer</p>
+          <div class="footer-links" aria-label="Official Links">
+            <a href="https://github.com/wdymarjun" target="_blank" rel="noopener noreferrer" class="footer-logo-link" title="GitHub (@wdymarjun)" aria-label="GitHub">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/in/arjun-singh-682453378/" target="_blank" rel="noopener noreferrer" class="footer-logo-link" title="LinkedIn" aria-label="LinkedIn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </a>
+            <a href="https://unstop.com/u/arjunsin14938" target="_blank" rel="noopener noreferrer" class="footer-logo-link" title="Unstop (arjunsin14938)" aria-label="Unstop">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.394 0 0 5.394 0 12s5.394 12 12 12 12-5.394 12-12S18.606 0 12 0Zm-1.2 16.86H8.303v-1.127c-.715 1.091-1.588 1.552-2.897 1.552-2.085 0-3.248-1.2-3.248-3.333V7.248h2.509v6.182c0 1.164.533 1.722 1.6 1.722 1.224 0 2.012-.752 2.012-1.891V7.236h2.509v9.625zm8.533 0v-5.939c0-1.14-.533-1.721-1.6-1.721-1.224 0-2.012.752-2.012 1.89v5.77h-2.509V7.237h2.497V8.63c.715-1.09 1.588-1.551 2.897-1.551 2.085 0 3.249 1.2 3.249 3.333v6.449z"/></svg>
+            </a>
+            <a href="mailto:mail6arjun478@gmail.com" class="footer-logo-link" title="Email (mail6arjun478@gmail.com)" aria-label="Email">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="3"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+            </a>
+            <a href="Arjun_Singh_Resume.pdf" download="Arjun_Singh_Resume.pdf" class="footer-logo-link" title="Download Resume (PDF)" aria-label="Download Resume">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="wordmark" id="wordmark" role="button" tabindex="0" aria-label="Arjun Singh">
+        <span>ARJUN</span><span>SINGH</span>
       </div>
     </footer>
 
   </main>
 
-  <!-- HIGH-ENGINEERED APPLE KEYNOTE POP-UP LIGHTBOX (Fluid Spring Physics & Inspection Engine) -->
-  <div id="imageModal" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="modal-container" id="modalChassis">
-      
-      <!-- Specular Top Highlight Glow -->
-      <div class="modal-specular-glow" aria-hidden="true"></div>
-
-      <!-- Header with Navigation and Telemetry Index -->
-      <div class="modal-header">
-        <div class="modal-meta-row">
-          <span class="modal-badge-index" id="modalIndexPill">SYSTEM_SPEC // 01 OF 03</span>
-          <div class="modal-title-wrap">
+  <!-- ============ LIGHTBOX ============ -->
+  <div id="imageModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Project inspector">
+    <div class="modal-box" id="modalChassis">
+      <div class="modal-head">
+        <div class="modal-meta">
+          <span class="modal-index mono" id="modalIndexPill">SYSTEM_SPEC // 01 OF 04</span>
+          <div class="modal-titles">
             <h3 id="modalTitle">System Architecture View</h3>
-            <p id="modalSubtitle">Hardware &amp; Systems Specification</p>
+            <p class="mono" id="modalSubtitle">Hardware &amp; Systems Specification</p>
           </div>
         </div>
-
         <div class="modal-controls">
-          <button id="modalPrevBtn" class="modal-ctrl-btn" title="Previous Architecture (← Arrow)">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          <button id="modalPrevBtn" class="modal-btn" title="Previous (← Arrow)" aria-label="Previous project">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              aria-hidden="true">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
           </button>
-          <button id="modalNextBtn" class="modal-ctrl-btn" title="Next Architecture (→ Arrow)">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          <button id="modalNextBtn" class="modal-btn" title="Next (→ Arrow)" aria-label="Next project">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              aria-hidden="true">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
           </button>
-          <button id="modalZoomBtn" class="modal-ctrl-btn" title="Toggle Optical Inspection Zoom (Z)">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+          <button id="modalZoomBtn" class="modal-btn mono" title="Toggle zoom (Z)" aria-label="Toggle zoom">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              <line x1="11" y1="8" x2="11" y2="14"></line>
+              <line x1="8" y1="11" x2="14" y2="11"></line>
+            </svg>
             <span class="ctrl-label">Zoom</span>
           </button>
-          <kbd class="modal-kbd" title="Press Escape to exit">ESC</kbd>
-          <button id="modalCloseBtn" class="modal-close-btn" aria-label="Close modal">✕</button>
+          <button id="modalCloseBtn" class="modal-btn modal-close" aria-label="Close modal">✕</button>
         </div>
       </div>
 
-      <!-- Modal Body -->
       <div class="modal-body">
-        
-        <!-- Interactive Viewport -->
         <div class="modal-viewport" id="modalViewport">
           <div class="modal-image-frame" id="modalImageFrame">
             <img id="modalImage" src="" alt="System Preview">
-            <div class="modal-zoom-badge" id="zoomBadge">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-              <span>Click to Zoom</span>
-            </div>
+          </div>
+          <span class="zoom-badge mono" id="zoomBadge">Click to Zoom</span>
+        </div>
+
+        <div class="modal-specs" id="modalSpecs"></div>
+
+        <div class="modal-foot">
+          <p class="modal-desc" id="modalDesc"></p>
+          <div class="modal-actions">
+            <a href="https://github.com/wdymarjun" id="modalRepoBtn" target="_blank" rel="noopener noreferrer"
+              class="btn btn-primary"><span>Inspect Source</span><span class="btn-arrow" aria-hidden="true">↗</span></a>
+            <button id="modalFooterNextBtn" class="btn btn-ghost" type="button"><span>Next Project</span><span
+                class="btn-arrow" aria-hidden="true">→</span></button>
           </div>
         </div>
 
-        <!-- Telemetry Benchmarks Bar -->
-        <div class="modal-telemetry-panel">
-          <div class="modal-telemetry-header">
-            <span class="telemetry-tag">● BENCHMARK_TELEMETRY</span>
-            <span class="telemetry-mode">STABLE_PRODUCTION</span>
-          </div>
-          <div class="modal-specs-bar" id="modalSpecs"></div>
+        <div class="modal-keys mono">
+          <span><kbd>ESC</kbd> Close</span>
+          <span><kbd>←</kbd> <kbd>→</kbd> Navigate</span>
+          <span><kbd>Z</kbd> Zoom</span>
         </div>
-
-        <!-- Details & Repository Launch Action -->
-        <div class="modal-footer-row">
-          <p class="modal-details" id="modalDesc"></p>
-          <div class="modal-action-buttons">
-            <a href="https://github.com/wdymarjun" id="modalRepoBtn" target="_blank" rel="noopener noreferrer" class="btn-primary modal-action-btn">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-              <span>Inspect Source ↗</span>
-            </a>
-            <button id="modalFooterNextBtn" class="btn-secondary modal-action-btn">
-              <span>Next Architecture →</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="modal-shortcuts-bar">
-          <span><kbd class="shortcut-kbd">ESC</kbd> Close</span>
-          <span><kbd class="shortcut-kbd">←</kbd> <kbd class="shortcut-kbd">→</kbd> Navigate Architecture</span>
-          <span><kbd class="shortcut-kbd">Z</kbd> Toggle Optical Zoom</span>
-        </div>
-
       </div>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=stack-blur-1.6"></script>
 </body>
+
 </html>
