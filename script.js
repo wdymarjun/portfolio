@@ -222,6 +222,22 @@
   const footer = $('.footer');
   const wordmark = $('#wordmark');
 
+  // Pre-cached geometry to completely eliminate layout thrashing during scroll
+  let cardHeights = [];
+  let cardStuckTops = [];
+  let lastProgs = [];
+
+  function measureCards() {
+    if (!projects.length) return;
+    const isMobile = state.vw <= 600;
+    const navH = isMobile ? 52 : 56;
+    const offsetPerCard = isMobile ? 8 : 14;
+    const baseOffset = isMobile ? 10 : 20;
+    cardHeights = projects.map((p) => p.offsetHeight || 500);
+    cardStuckTops = projects.map((_, i) => navH + baseOffset + i * offsetPerCard);
+    lastProgs = projects.map(() => -1);
+  }
+
   function updateScroll() {
     const { y, vh } = state;
     const docH = document.documentElement.scrollHeight - vh;
@@ -251,8 +267,8 @@
       }
     }
 
-    // Image parallax inside frames
-    if (!reduceMotion) {
+    // Image parallax inside frames (desktop / fine pointer only to save mobile GPU)
+    if (!reduceMotion && finePointer) {
       frames.forEach((f) => {
         const r = f.getBoundingClientRect();
         if (r.bottom < -50 || r.top > vh + 50) return;
@@ -261,38 +277,47 @@
       });
     }
 
-    // Stacked project cards: previous card shrinks + dims + fully blurs as next covers it
-    projects.forEach((p, i) => {
-      const box = p.firstElementChild;
-      if (!box) return;
-      const next = projects[i + 1];
-      if (!next) {
-        box.style.removeProperty('--s');
-        box.style.removeProperty('--dim');
-        box.style.removeProperty('--blur');
-        return;
+    // Stacked project cards: batch-read all rects first, calculate, then batch-write changed values (zero layout reflows)
+    if (state.canStack && projects.length > 1) {
+      if (!cardHeights.length || cardHeights.length !== projects.length) {
+        measureCards();
       }
-      const isMobile = state.vw <= 600;
-      const navH = isMobile ? 52 : 56;
-      const offsetPerCard = isMobile ? 8 : 14;
-      const baseOffset = isMobile ? 10 : 20;
-      const stuckTop = navH + baseOffset + i * offsetPerCard;
-      const nextStuckTop = navH + baseOffset + (i + 1) * offsetPerCard;
-      const h = p.offsetHeight;
-      const nextTop = next.getBoundingClientRect().top;
-      const coverDistance = Math.max((stuckTop + h) - nextStuckTop, 1);
-      const prog = clamp(((stuckTop + h) - nextTop) / coverDistance);
 
-      if (prog > 0) {
-        box.style.setProperty('--s', (1 - prog * 0.10).toFixed(4));
-        box.style.setProperty('--dim', (prog * 0.85).toFixed(3));
-        box.style.setProperty('--blur', prog.toFixed(3));
-      } else {
-        box.style.removeProperty('--s');
-        box.style.removeProperty('--dim');
-        box.style.removeProperty('--blur');
+      const numActive = projects.length - 1;
+      // Step 1: Pure batch READ of next project card tops (1 single layout pass)
+      const nextTops = new Array(numActive);
+      for (let i = 0; i < numActive; i++) {
+        nextTops[i] = projects[i + 1].getBoundingClientRect().top;
       }
-    });
+
+      // Step 2: Pure batch WRITE with dirty-check to avoid redundant DOM mutations
+      for (let i = 0; i < numActive; i++) {
+        const box = projects[i].firstElementChild;
+        if (!box) continue;
+
+        const stuckTop = cardStuckTops[i];
+        const nextStuckTop = cardStuckTops[i + 1];
+        const h = cardHeights[i];
+        const coverDistance = Math.max((stuckTop + h) - nextStuckTop, 1);
+        const distanceCovered = (stuckTop + h) - nextTops[i];
+        const rawProg = clamp(distanceCovered / coverDistance);
+        const prog = Math.round(rawProg * 1000) / 1000;
+
+        // Skip DOM write if progress hasn't changed meaningfully
+        if (Math.abs(prog - lastProgs[i]) < 0.002) continue;
+        lastProgs[i] = prog;
+
+        if (prog > 0) {
+          box.style.setProperty('--s', (1 - prog * 0.10).toFixed(3));
+          box.style.setProperty('--dim', (prog * 0.85).toFixed(3));
+          box.style.setProperty('--blur', prog.toFixed(3));
+        } else {
+          box.style.removeProperty('--s');
+          box.style.removeProperty('--dim');
+          box.style.removeProperty('--blur');
+        }
+      }
+    }
 
     // Footer wordmark rises into place
     if (footer && wordmark) {
@@ -323,6 +348,7 @@
     state.vh = window.innerHeight; state.vw = window.innerWidth;
     state.canStack = true;
     html.classList.add('can-stack');
+    measureCards();
     state.dirty = true;
   }
 
@@ -671,11 +697,13 @@
     state.ready = true;
     html.classList.add('ready');
     initReveals();
+    measureCards();
     field.resize();
     ticker.rebuild();
     positionIndicator(desktopLinks.find((l) => l.dataset.section === activeSection), true);
     state.dirty = true;
   }
+  window.addEventListener('load', measureCards, { once: true });
 
   // Wordmark & Logo Interactive Glow (Touch & Pointer)
   if (wordmark) {

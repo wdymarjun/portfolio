@@ -522,24 +522,24 @@ html.intro-on .intro { display: flex; }
   top: calc(var(--nav-h) + 20px + var(--k, 0) * 14px);
   z-index: calc(var(--k, 0) + 1);
   will-change: top, transform;
+  contain: layout style;
 }
 
 .project-box {
   position: relative;
-  background: rgba(8, 8, 8, 0.96);
-  -webkit-backdrop-filter: blur(28px);
-  backdrop-filter: blur(28px);
+  background: rgba(10, 10, 10, 0.98);
   border: 1px solid var(--line-2);
   border-radius: 28px;
   overflow: hidden;
   transform-origin: 50% 0;
-  transform: scale(var(--s, 1));
-  filter: blur(calc(var(--blur, 0) * 28px));
-  will-change: transform, filter;
+  transform: scale(var(--s, 1)) translateZ(0);
+  will-change: transform;
+  contain: paint layout;
+  isolation: isolate;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   box-shadow: 0 -16px 44px rgba(0, 0, 0, 0.8), 0 28px 64px rgba(0, 0, 0, 0.95);
-  transition: box-shadow 0.4s var(--ease), border-color 0.4s var(--ease);
+  transition: border-color 0.4s var(--ease), box-shadow 0.4s var(--ease);
 }
 
 .project-box::after {
@@ -547,12 +547,19 @@ html.intro-on .intro { display: flex; }
   position: absolute;
   inset: 0;
   z-index: 10;
-  background: #000;
-  opacity: var(--dim, 0);
+  background: rgba(0, 0, 0, 0.82);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  opacity: var(--blur, 0);
   pointer-events: none;
-  -webkit-backdrop-filter: blur(calc(var(--blur, 0) * 24px));
-  backdrop-filter: blur(calc(var(--blur, 0) * 24px));
-  transition: opacity 0.05s linear;
+  will-change: opacity;
+  transform: translateZ(0);
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .project-box {
+    filter: blur(calc(var(--blur, 0) * 16px));
+  }
 }
 
 .project-bar {
@@ -993,10 +1000,15 @@ kbd { font-family: var(--mono); font-size: 10.5px; padding: 2px 7px; border: 1px
     position: sticky;
     top: calc(var(--nav-h) + 10px + var(--k, 0) * 8px);
     z-index: calc(var(--k, 0) + 1);
-    will-change: top, transform, filter;
+    will-change: top, transform;
+    contain: layout style;
   }
   .project-box {
     border-radius: 22px;
+  }
+  .project-box::after {
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
   }
   .project-copy {
     padding: 20px 18px 16px;
