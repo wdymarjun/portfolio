@@ -544,6 +544,7 @@
   const mNext2 = $('#modalFooterNextBtn');
   const mZoom = $('#modalZoomBtn');
   const zoomBadge = $('#zoomBadge');
+  const mVideo = $('#modalVideo');
 
   const triggers = $$('[data-modal-img]');
   const projectsData = triggers.map((t, idx) => {
@@ -552,6 +553,7 @@
     return {
       index: idx,
       img: t.getAttribute('data-modal-img'),
+      video: t.getAttribute('data-modal-video') || null,
       title: t.getAttribute('data-modal-title'),
       subtitle: t.getAttribute('data-modal-subtitle'),
       desc: t.getAttribute('data-modal-desc'),
@@ -575,7 +577,23 @@
     current = idx;
     if (zoomed) setZoom(false);
     mIndex.textContent = `SYSTEM_SPEC // ${String(idx + 1).padStart(2, '0')} OF ${String(projectsData.length).padStart(2, '0')}`;
-    mImg.src = d.img; mImg.alt = d.title;
+    
+    if (d.video && mVideo) {
+      mImg.style.display = 'none';
+      mVideo.style.display = 'block';
+      mVideo.src = d.video;
+      mVideo.play().catch(() => {});
+    } else {
+      if (mVideo) {
+        try { mVideo.pause(); } catch (_) {}
+        mVideo.style.display = 'none';
+        mVideo.src = '';
+      }
+      mImg.style.display = 'block';
+      mImg.src = d.img;
+      mImg.alt = d.title;
+    }
+
     mTitle.textContent = d.title; mSub.textContent = d.subtitle; mDesc.textContent = d.desc;
     mRepo.href = d.repo;
     mSpecs.replaceChildren(...d.specs.map((s) => {
@@ -598,6 +616,11 @@
   }
   function closeModal() {
     if (zoomed) setZoom(false);
+    if (mVideo) {
+      try { mVideo.pause(); } catch (_) {}
+      mVideo.style.display = 'none';
+      mVideo.src = '';
+    }
     modal.classList.remove('active');
     modal.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('modal-open');
@@ -670,24 +693,43 @@
   });
 
   // Multi-angle gallery switchers inside project cards
-  function setupGallery(stripId, wrapId, imgId) {
+  function setupGallery(stripId, wrapId, imgId, videoId = null) {
     const strip = $(`#${stripId}`), wrap = $(`#${wrapId}`), img = $(`#${imgId}`);
+    const vid = videoId ? $(`#${videoId}`) : null;
     if (!strip || !wrap || !img) return;
     const thumbs = $$('.thumb', strip);
     thumbs.forEach((th) => th.addEventListener('click', () => {
       thumbs.forEach((t) => t.classList.toggle('active', t === th));
-      const src = th.dataset.img, title = th.dataset.title, desc = th.dataset.desc;
-      img.style.opacity = '0.2';
-      setTimeout(() => { img.src = src; img.alt = title || img.alt; img.style.opacity = '1'; }, 160);
-      wrap.setAttribute('data-modal-img', src);
+      const src = th.dataset.img, videoSrc = th.dataset.video, title = th.dataset.title, desc = th.dataset.desc;
+
+      if (videoSrc && vid) {
+        img.style.display = 'none';
+        vid.style.display = 'block';
+        if (!vid.src || !vid.src.includes(videoSrc)) vid.src = videoSrc;
+        vid.play().catch(() => {});
+        wrap.setAttribute('data-modal-video', videoSrc);
+        wrap.setAttribute('data-modal-img', src || 'hackathon_video_thumb.jpg');
+      } else {
+        if (vid) {
+          try { vid.pause(); } catch (_) {}
+          vid.style.display = 'none';
+        }
+        img.style.display = 'block';
+        img.style.opacity = '0.2';
+        setTimeout(() => { img.src = src; img.alt = title || img.alt; img.style.opacity = '1'; }, 160);
+        wrap.removeAttribute('data-modal-video');
+        wrap.setAttribute('data-modal-img', src);
+      }
+
       wrap.setAttribute('data-modal-title', title);
       wrap.setAttribute('data-modal-desc', desc);
       const i = triggers.indexOf(wrap);
-      if (i !== -1) Object.assign(projectsData[i], { img: src, title, desc });
+      if (i !== -1) Object.assign(projectsData[i], { img: src || 'hackathon_video_thumb.jpg', video: videoSrc || null, title, desc });
     }));
   }
   setupGallery('ascGalleryStrip', 'ascMediaMain', 'ascMainImg');
   setupGallery('inboxGalleryStrip', 'inboxQuestBentoMedia', 'inboxQuestBentoImg');
+  setupGallery('hackathonGalleryStrip', 'hackathonMediaMain', 'hackathonMainImg', 'hackathonMainVideo');
 
   // ------------------------------------------------------------------------
   // 9. BOOT: intro (once per session) → start site
