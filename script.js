@@ -264,23 +264,34 @@
     // Stacked project cards: previous card shrinks + dims + fully blurs as next covers it
     projects.forEach((p, i) => {
       const box = p.firstElementChild;
+      if (!box) return;
       const next = projects[i + 1];
-      if (!state.canStack || !next) {
+      if (!next) {
         box.style.removeProperty('--s');
         box.style.removeProperty('--dim');
         box.style.removeProperty('--blur');
         return;
       }
-      const stuckTop = NAV_H + 20 + i * 14;
-      const nextStuckTop = NAV_H + 20 + (i + 1) * 14;
+      const isMobile = state.vw <= 600;
+      const navH = isMobile ? 52 : 56;
+      const offsetPerCard = isMobile ? 8 : 14;
+      const baseOffset = isMobile ? 10 : 20;
+      const stuckTop = navH + baseOffset + i * offsetPerCard;
+      const nextStuckTop = navH + baseOffset + (i + 1) * offsetPerCard;
       const h = p.offsetHeight;
       const nextTop = next.getBoundingClientRect().top;
       const coverDistance = Math.max((stuckTop + h) - nextStuckTop, 1);
       const prog = clamp(((stuckTop + h) - nextTop) / coverDistance);
 
-      box.style.setProperty('--s', (1 - prog * 0.08).toFixed(4));
-      box.style.setProperty('--dim', (prog * 0.75).toFixed(3));
-      box.style.setProperty('--blur', prog.toFixed(3));
+      if (prog > 0) {
+        box.style.setProperty('--s', (1 - prog * 0.10).toFixed(4));
+        box.style.setProperty('--dim', (prog * 0.85).toFixed(3));
+        box.style.setProperty('--blur', prog.toFixed(3));
+      } else {
+        box.style.removeProperty('--s');
+        box.style.removeProperty('--dim');
+        box.style.removeProperty('--blur');
+      }
     });
 
     // Footer wordmark rises into place
@@ -310,8 +321,8 @@
 
   function updateLayoutFlags() {
     state.vh = window.innerHeight; state.vw = window.innerWidth;
-    state.canStack = !reduceMotion && state.vw >= 600;
-    html.classList.toggle('can-stack', state.canStack);
+    state.canStack = true;
+    html.classList.add('can-stack');
     state.dirty = true;
   }
 

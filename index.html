@@ -44,7 +44,7 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap"
     rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css?v=stack-blur-1.6">
+  <link rel="stylesheet" href="styles.css?v=stack-blur-2.0">
 </head>
 
 <body>
@@ -54,8 +54,8 @@
 
   <!-- INTRO CINEMATIC (plays once per session, skippable) -->
   <div id="introVideoOverlay" class="intro" role="dialog" aria-label="Intro cinematic">
-    <video id="introVideo" class="intro-video" src="intro_cinematic.mp4" muted playsinline autoplay
-      preload="auto"></video>
+    <video id="introVideo" class="intro-video" src="intro_cinematic.mp4" muted playsinline webkit-playsinline="true" x5-playsinline="true" autoplay
+      preload="auto" disablePictureInPicture controlslist="nodownload nofullscreen noremoteplayback"></video>
     <button type="button" class="intro-skip mono" id="introSkip">Skip intro <span aria-hidden="true">↵</span></button>
   </div>
 
@@ -811,7 +811,7 @@
     </div>
   </div>
 
-  <script src="script.js?v=stack-blur-1.6"></script>
+  <script src="script.js?v=stack-blur-2.0"></script>
 </body>
 
 </html>
